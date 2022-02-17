@@ -12,6 +12,9 @@ import App from './App'
 import store from './store'
 import router from './router'
 
+import * as echarts from 'echarts';
+Vue.use(echarts)
+
 import '@/icons' // icon
 import '@/permission' // permission control
 
