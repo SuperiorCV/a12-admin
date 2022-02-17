@@ -28,6 +28,7 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
+import {mapGetters} from 'vuex'
 
 export default {
   components: { ScrollPane },
@@ -44,9 +45,9 @@ export default {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    routes() {
-      return this.$store.state.permission.routes
-    }
+    ...mapGetters([
+      'routes'
+    ])
   },
   watch: {
     $route() {

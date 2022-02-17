@@ -4,6 +4,7 @@ const getters = {
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
-  visitedviews: state => state.tagsview.visitedviews  //新增
+  visitedviews: state => state.tagsview.visitedviews,  //新增
+  routes: state => state.router.routes
 }
 export default getters

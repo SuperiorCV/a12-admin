@@ -5,6 +5,7 @@ import app from './modules/app'
 import settings from './modules/settings'
 import user from './modules/user'
 import tagsView from './modules/tagsView'  //新增
+import router from './modules/router'
 
 Vue.use(Vuex)
 
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
     app,
     settings,
     user,
-    tagsView    //新增
+    tagsView,    //新增
+    router
   },
   getters
 })
