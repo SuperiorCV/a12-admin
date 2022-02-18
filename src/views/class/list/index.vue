@@ -67,47 +67,47 @@ export default {
   },
   created() {
     this.listLoading = true;
-      this.classData = [
-        {
-          id: 1,
-          className: "1班",
-          password: "1",
-          num: 200,
-        },
-        {
-          id: 2,
-          className: "2班",
-          password: "2",
-          num: 200,
-        },
-        {
-          id: 3,
-          className: "3班",
-          password: "3",
-          num: 200,
-        },
-         {
-          id: 4,
-          className: "4班",
-          password: "4",
-          num: 200,
-        },
-         {
-          id: 5,
-          className: "5班",
-          password: "5",
-          num: 200,
-        },
-         {
-          id: 6,
-          className: "6班",
-          password: "6",
-          num: 200,
-        },
-      ];
-      this.total = 6;
-      this.queryParam.pageIndex = 1;
-      this.listLoading = false;
+    this.classData = [
+      {
+        id: 1,
+        className: "1班",
+        password: "1",
+        num: 200,
+      },
+      {
+        id: 2,
+        className: "2班",
+        password: "2",
+        num: 200,
+      },
+      {
+        id: 3,
+        className: "3班",
+        password: "3",
+        num: 200,
+      },
+      {
+        id: 4,
+        className: "4班",
+        password: "4",
+        num: 200,
+      },
+      {
+        id: 5,
+        className: "5班",
+        password: "5",
+        num: 200,
+      },
+      {
+        id: 6,
+        className: "6班",
+        password: "6",
+        num: 200,
+      },
+    ];
+    this.total = 6;
+    this.queryParam.pageIndex = 1;
+    this.listLoading = false;
   },
   methods: {
     search() {
@@ -131,19 +131,18 @@ export default {
           password: "3",
           num: 200,
         },
-         {
+        {
           id: 4,
           className: "4班",
           password: "4",
           num: 200,
         },
-         {
+        {
           id: 5,
           className: "5班",
           password: "5",
           num: 200,
         },
-        
       ];
       this.total = 5;
       this.queryParam.pageIndex = 1;
