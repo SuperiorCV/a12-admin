@@ -3,10 +3,10 @@
         <!-- 查询框 -->
         <el-form :model="queryParam" ref="queryForm" :inline="true">
             <el-form-item label="账号：">
-                <el-input v-model="queryParam.accountNo"></el-input>
+                <el-input v-model="queryParam.userName"></el-input>
             </el-form-item>
             <el-form-item label="用户昵称：">
-                <el-input v-model="queryParam.userName"></el-input>
+                <el-input v-model="queryParam.name"></el-input>
             </el-form-item>
             <el-form-item label="邮箱：">
                 <el-input v-model="queryParam.email"></el-input>
@@ -25,10 +25,9 @@
             style="width: 100%"
         >
             <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="accountNo" label="账号"></el-table-column>
-            <el-table-column prop="trueName" label="姓名"></el-table-column>
+            <el-table-column prop="userName" label="账号"></el-table-column>
+            <el-table-column prop="name" label="姓名"></el-table-column>
             <el-table-column prop="sex" label="性别"></el-table-column>
-            <el-table-column prop="userName" label="用户昵称"></el-table-column>
             <el-table-column prop="email" label="邮箱"></el-table-column>
             <el-table-column label="操作" align="center">
         <template>
@@ -66,8 +65,8 @@ export default {
     data() {
     return {
       queryParam: {
-        accountNo: "",
         userName: "",
+        name: "",
         email: "",
         role: 1,
         pageIndex: 1,
@@ -83,50 +82,44 @@ export default {
     this.userData = [
       {
         id: 1,
-        accountNo: "301901",
-        trueName: "泰达米尔",
+        userName: "301901",
+        name: "泰达米尔",
         sex: "男",
-        userName: "蛮族之王",
         email: "1234@dasd",
       },
       {
         id: 2,
-        accountNo: "301902",
-        trueName: "沃里克",
+        userName: "301902",
+        name: "沃里克",
         sex: "男",
-        userName: "祖安怒兽",
         email: "12345@dasd",
       },
       {
         id: 3,
-        accountNo: "301903",
-        trueName: "艾希",
+        userName: "301903",
+        name: "艾希",
         sex: "女",
-        userName: "寒冰射手",
         email: "123456@dasd",
       },
       {
         id: 4,
-        accountNo: "301904",
-        trueName: "卡萨丁",
+        userName: "301904",
+        name: "卡萨丁",
         sex: "不详",
-        userName: "虚空行者",
         email: "1234567@dasd",
       },
       {
         id: 5,
-        accountNo: "301905",
-        trueName: "亚索",
+        userName: "301905",
+        name: "亚索",
         sex: "男",
-        userName: "疾风剑豪",
         email: "12345678@dasd",
       },
       {
         id: 6,
-        accountNo: "301906",
-        trueName: "金克斯",
+        userName: "301906",
+        name: "金克斯",
         sex: "女",
-        userName: "暴走萝莉",
         email: "123456789@dasd",
       },
     ];
@@ -140,42 +133,37 @@ export default {
       this.userData = [
         {
         id: 1,
-        accountNo: "301901",
-        trueName: "泰达米尔",
+        userName: "301901",
+        name: "泰达米尔",
         sex: "男",
-        userName: "蛮族之王",
         email: "1234@dasd",
       },
       {
         id: 2,
-        accountNo: "301902",
-        trueName: "沃里克",
+        userName: "301902",
+        name: "沃里克",
         sex: "男",
-        userName: "祖安怒兽",
         email: "12345@dasd",
       },
       {
         id: 3,
-        accountNo: "301903",
-        trueName: "艾希",
+        userName: "301903",
+        name: "艾希",
         sex: "女",
-        userName: "寒冰射手",
         email: "123456@dasd",
       },
       {
         id: 4,
-        accountNo: "301904",
-        trueName: "卡萨丁",
+        userName: "301904",
+        name: "卡萨丁",
         sex: "不详",
-        userName: "虚空行者",
         email: "1234567@dasd",
       },
       {
         id: 5,
-        accountNo: "301905",
-        trueName: "亚索",
+        userName: "301905",
+        name: "亚索",
         sex: "男",
-        userName: "疾风剑豪",
         email: "12345678@dasd",
       },
       ];
