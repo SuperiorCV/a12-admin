@@ -1,68 +1,68 @@
 <template>
-    <div id="user">
-        <!-- 查询框 -->
-        <el-form :model="queryParam" ref="queryForm" :inline="true">
-            <el-form-item label="账号：">
-                <el-input v-model="queryParam.userName"></el-input>
-            </el-form-item>
-            <el-form-item label="用户昵称：">
-                <el-input v-model="queryParam.name"></el-input>
-            </el-form-item>
-            <el-form-item label="邮箱：">
-                <el-input v-model="queryParam.email"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="search">查询</el-button>
-            </el-form-item>
-        </el-form>
-        <!-- table -->
-        <el-table
-            :data="userData"
-            v-loading
-            border
-            fit
-            highlight-current-row
-            style="width: 100%"
-        >
-            <el-table-column prop="id" label="ID"></el-table-column>
-            <el-table-column prop="userName" label="账号"></el-table-column>
-            <el-table-column prop="name" label="姓名"></el-table-column>
-            <el-table-column prop="sex" label="性别"></el-table-column>
-            <el-table-column prop="email" label="邮箱"></el-table-column>
-            <el-table-column label="操作" align="center">
+  <div id="user">
+    <!-- 查询框 -->
+    <el-form :model="queryParam" ref="queryForm" :inline="true">
+      <el-form-item label="账号：">
+        <el-input v-model="queryParam.userName"></el-input>
+      </el-form-item>
+      <el-form-item label="用户昵称：">
+        <el-input v-model="queryParam.name"></el-input>
+      </el-form-item>
+      <el-form-item label="邮箱：">
+        <el-input v-model="queryParam.email"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="search">查询</el-button>
+      </el-form-item>
+    </el-form>
+    <!-- table -->
+    <el-table
+      :data="userData"
+      v-loading="listLoading"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+    >
+      <el-table-column prop="id" label="ID"></el-table-column>
+      <el-table-column prop="userName" label="账号"></el-table-column>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="sex" label="性别"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
+      <el-table-column label="操作" align="center">
         <template>
           <!-- <router-link
             :to="{ path: '/class/edit', query: { id: row.id } }"
             class="link-left"
           > -->
-            <el-button size="mini" type="success">邀请加入班级</el-button>
+          <el-button size="mini" type="success">邀请加入班级</el-button>
           <!-- </router-link> -->
           <!-- <el-button size="mini" type="danger" class="link-left"
             >解散</el-button
           > -->
         </template>
       </el-table-column>
-        </el-table>
+    </el-table>
 
-        <!-- 页码下标 -->
-        <pagination
+    <!-- 页码下标 -->
+    <pagination
       v-show="total > 0"
       :total="total"
       :page.sync="queryParam.pageIndex"
       :limit.sync="queryParam.pageSize"
       @pagination="search"
     />
-    </div>
+  </div>
 </template>
 
 <script>
 import Pagination from "@/components/Pagination";
 export default {
-    components: {
+  components: {
     Pagination,
   },
-    name: 'user',
-    data() {
+  name: "user",
+  data() {
     return {
       queryParam: {
         userName: "",
@@ -76,9 +76,9 @@ export default {
       userData: [],
       total: 0,
     };
-    },
-    created() {
-        this.listLoading = true;
+  },
+  created() {
+    this.listLoading = true;
     this.userData = [
       {
         id: 1,
@@ -126,61 +126,61 @@ export default {
     this.total = 6;
     this.queryParam.pageIndex = 1;
     this.listLoading = false;
-    },
-    methods: {
+  },
+  methods: {
     search() {
       this.listLoading = true;
       this.userData = [
         {
-        id: 1,
-        userName: "301901",
-        name: "泰达米尔",
-        sex: "男",
-        email: "1234@dasd",
-      },
-      {
-        id: 2,
-        userName: "301902",
-        name: "沃里克",
-        sex: "男",
-        email: "12345@dasd",
-      },
-      {
-        id: 3,
-        userName: "301903",
-        name: "艾希",
-        sex: "女",
-        email: "123456@dasd",
-      },
-      {
-        id: 4,
-        userName: "301904",
-        name: "卡萨丁",
-        sex: "不详",
-        email: "1234567@dasd",
-      },
-      {
-        id: 5,
-        userName: "301905",
-        name: "亚索",
-        sex: "男",
-        email: "12345678@dasd",
-      },
+          id: 1,
+          userName: "301901",
+          name: "泰达米尔",
+          sex: "男",
+          email: "1234@dasd",
+        },
+        {
+          id: 2,
+          userName: "301902",
+          name: "沃里克",
+          sex: "男",
+          email: "12345@dasd",
+        },
+        {
+          id: 3,
+          userName: "301903",
+          name: "艾希",
+          sex: "女",
+          email: "123456@dasd",
+        },
+        {
+          id: 4,
+          userName: "301904",
+          name: "卡萨丁",
+          sex: "不详",
+          email: "1234567@dasd",
+        },
+        {
+          id: 5,
+          userName: "301905",
+          name: "亚索",
+          sex: "男",
+          email: "12345678@dasd",
+        },
       ];
       this.total = 5;
       this.queryParam.pageIndex = 1;
       this.listLoading = false;
     },
   },
-}
+};
 </script>
 
 <style scoped>
-#user{
-    width: 100%;
-    min-height: 50vh;
-    box-sizing: border-box;
+#user {
+  width: 100%;
+  min-height: 50vh;
+  box-sizing: border-box;
   padding: 20px;
-    /* background: pink; */
+  /* background: pink; */
 }
 </style>

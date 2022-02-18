@@ -107,6 +107,33 @@ export const constantRoutes = [{
       hidden: true
     }]
   },
+  {
+    path: '/exam',
+    component: Layout,
+    redirect: '/exam/list',
+    name: 'exam',
+    meta: {
+      title: '试卷管理',
+      icon: 'form',
+    },
+    children: [{
+      path: 'list',
+      name: 'examList',
+      component: () => import('@/views/exam/list/index'),
+      meta: {
+        title: '试卷列表',
+        noCache: true
+      }
+    },{
+      path: 'create',
+      name: 'examCreate',
+      component: () => import('@/views/exam/create/index'),
+      meta: {
+        title: '试卷创编',
+        noCache: true
+      }
+    }]
+  },
 
   // {
   //   path: '/example',

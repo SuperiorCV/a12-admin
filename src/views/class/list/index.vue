@@ -11,7 +11,7 @@
 
     <el-table
       :data="classData"
-      v-loading
+      v-loading="listLoading"
       border
       fit
       highlight-current-row
