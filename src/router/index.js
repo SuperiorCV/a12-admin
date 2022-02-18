@@ -30,8 +30,7 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -51,7 +50,61 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '主页概览', icon: 'home', affix: true }
+      meta: {
+        title: '主页概览',
+        icon: 'home',
+        affix: true
+      }
+    }]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    children: [{
+      path: 'index',
+      name: 'user',
+      component: () => import('@/views/user/index'),
+      meta: {
+        title: '学生列表',
+        icon: 'users',
+        nocache: true
+      }
+    }]
+  },
+  {
+    path: '/class',
+    component: Layout,
+    redirect: '/class/list',
+    name: 'class',
+    meta: {
+      title: '班级管理',
+      icon: 'tree',
+    },
+    children: [{
+      path: 'list',
+      name: 'classList',
+      component: () => import('@/views/class/list/index'),
+      meta: {
+        title: '班级列表',
+        noCache: true
+      }
+    }, {
+      path: 'create',
+      name: 'classCreate',
+      component: () => import('@/views/class/create/index'),
+      meta: {
+        title: '班级创建',
+        noCache: true
+      },
+    }, {
+      path: 'edit',
+      name: "classEdit",
+      component: () => import('@/views/class/edit/index'),
+      meta: {
+        title: '班级编辑',
+        noCache: true
+      },
+      hidden: true
     }]
   },
 
@@ -151,12 +204,18 @@ export const constantRoutes = [
 
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '*',
+    redirect: '/404',
+    hidden: true
+  }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
+  scrollBehavior: () => ({
+    y: 0
+  }),
   routes: constantRoutes
 })
 
