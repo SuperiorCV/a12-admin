@@ -12,8 +12,19 @@
         <el-input v-model="queryParam.email"></el-input>
       </el-form-item>
       <el-form-item label="题型：">
-        <el-select v-model="queryParam.type" placeholder="请选择" clearable style="width: 90px" class="filter-item">
-          <el-option v-for="item in typeOptions" :key="item" :label="item" :value="item" />
+        <el-select
+          v-model="queryParam.type"
+          placeholder="请选择"
+          clearable
+          style="width: 90px"
+          class="filter-item"
+        >
+          <el-option
+            v-for="item in typeOptions"
+            :key="item"
+            :label="item"
+            :value="item"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -37,18 +48,17 @@
       <el-table-column prop="difficulty" label="难度">
         <template slot-scope="{ row }">
           <!-- <el-rate v-model="row.difficulty"></el-rate> -->
-          <el-rate
-            v-model="row.difficulty"
-            disabled
-            show-score
-            text-color="#ff9900"
-            score-template="{row.difficulty}"
-          >
-          </el-rate>
+          <div class="rate-wrapper">
+            <el-rate v-model="row.difficulty" disabled> </el-rate
+            ><span style="color: #ff9900">{{ row.difficulty }}</span>
+          </div>
         </template>
       </el-table-column>
       <el-table-column prop="teacherTrueName" label="教师"></el-table-column>
-      <el-table-column prop="teacherUserName" label="教师昵称"></el-table-column>
+      <el-table-column
+        prop="teacherUserName"
+        label="教师昵称"
+      ></el-table-column>
       <el-table-column label="操作" align="center">
         <template>
           <el-button size="mini" type="success">邀请加入班级</el-button>
@@ -88,7 +98,7 @@ export default {
       listLoading: true,
       questionData: [],
       total: 0,
-      typeOptions: ["单选题","多选题","判断题","简答题",],
+      typeOptions: ["单选题", "多选题", "判断题", "简答题"],
     };
   },
   created() {
@@ -126,7 +136,7 @@ export default {
         type: "简答题",
         questionBody: "简答题1",
         grade: "5",
-        difficulty: 3,
+        difficulty: 3.1,
         teacherTrueName: "朗文翀",
         teacherUserName: "朗文翀",
       },
@@ -135,7 +145,7 @@ export default {
         type: "单选题",
         questionBody: "单选题2",
         grade: "1",
-        difficulty: 2,
+        difficulty: 2.5,
         teacherTrueName: "朗文翀",
         teacherUserName: "朗文翀",
       },
@@ -158,50 +168,50 @@ export default {
       this.listLoading = true;
       this.questionData = [
         {
-        id: 1,
-        type: "单选题",
-        questionBody: "单选题1",
-        grade: "2",
-        difficulty: 1,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
-      },
-      {
-        id: 2,
-        type: "多选题",
-        questionBody: "多选题1",
-        grade: "2",
-        difficulty: "2",
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
-      },
-      {
-        id: 3,
-        type: "判断题",
-        questionBody: "判断题1",
-        grade: "1",
-        difficulty: "1",
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
-      },
-      {
-        id: 4,
-        type: "简答题",
-        questionBody: "简答题1",
-        grade: "5",
-        difficulty: "3",
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
-      },
-      {
-        id: 5,
-        type: "单选题",
-        questionBody: "单选题2",
-        grade: "1",
-        difficulty: "2",
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
-      },
+          id: 1,
+          type: "单选题",
+          questionBody: "单选题1",
+          grade: "2",
+          difficulty: 1,
+          teacherTrueName: "朗文翀",
+          teacherUserName: "朗文翀",
+        },
+        {
+          id: 2,
+          type: "多选题",
+          questionBody: "多选题1",
+          grade: "2",
+          difficulty: "2",
+          teacherTrueName: "朗文翀",
+          teacherUserName: "朗文翀",
+        },
+        {
+          id: 3,
+          type: "判断题",
+          questionBody: "判断题1",
+          grade: "1",
+          difficulty: "1",
+          teacherTrueName: "朗文翀",
+          teacherUserName: "朗文翀",
+        },
+        {
+          id: 4,
+          type: "简答题",
+          questionBody: "简答题1",
+          grade: "5",
+          difficulty: "3",
+          teacherTrueName: "朗文翀",
+          teacherUserName: "朗文翀",
+        },
+        {
+          id: 5,
+          type: "单选题",
+          questionBody: "单选题2",
+          grade: "1",
+          difficulty: "2",
+          teacherTrueName: "朗文翀",
+          teacherUserName: "朗文翀",
+        },
       ];
       this.total = 5;
       this.queryParam.pageIndex = 1;
@@ -218,5 +228,10 @@ export default {
   box-sizing: border-box;
   padding: 20px;
   /* background: red; */
+}
+.rate-wrapper{
+  display:flex;
+  align-items:center;
+  width: 200px;
 }
 </style>

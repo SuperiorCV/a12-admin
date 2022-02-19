@@ -1,5 +1,6 @@
 <template>
   <div id="richEditor">
+    <el-input @focus="dialogVisible = true" v-model="cont"></el-input>
     <el-upload
       style="display: none"
       class="quill-picture-uploader"
@@ -9,13 +10,27 @@
       with-credentials
     >
     </el-upload>
-    <quill-editor
-      class="editor"
-      v-model="content"
-      ref="myQuillEditor"
-      :options="editorOption"
-      @change="onEditorChange($event)"
-    />
+    <el-dialog
+      :visible.sync="dialogVisible"
+      append-to-body
+      :close-on-click-modal="false"
+      style="width: 100%; height: 100%"
+      class="dialog"
+      :show-close="false"
+      center
+    >
+      <quill-editor
+        class="editor"
+        v-model="content"
+        ref="myQuillEditor"
+        :options="editorOption"
+        @change="onEditorChange($event)"
+      />
+      <div class="footer">
+        <el-button type="primary" @click="updateContent">确 定</el-button>
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -25,15 +40,28 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import hljs from "highlight.js";
 // highlight.js style
-import "highlight.js/styles/github-dark.css";
+import "highlight.js/styles/vs2015.css";
 import { quillEditor } from "vue-quill-editor";
+var quilEditorUploader = null;
 export default {
+  props: {
+    id: {
+      type: Number,
+      default: -99,
+    },
+    cont: {
+      type: String,
+      default: ``,
+    },
+  },
   name: "RichEditor",
   components: {
     quillEditor,
   },
   mounted() {
-    this.quilEditorUploader = this.$refs.quilEditorUploader;
+    quilEditorUploader =
+      this.$refs.quilEditorUploader.$el.firstChild.firstChild;
+    // console.log(quilEditorUploader);
   },
   data() {
     const toolbarOptions = [
@@ -49,8 +77,8 @@ export default {
       ["link", "image"],
     ];
     return {
-      quilEditorUploader: null,
-      content: "", // 富文本里的内容
+      dialogVisible: false,
+      content: this.cont, // 富文本里的内容
       editorOption: {
         // 富文本编辑器的工具栏
         modules: {
@@ -62,7 +90,7 @@ export default {
                 if (value) {
                   //   document
                   //     .querySelector(".quill-picture-uploader input")
-                  this.quillEditor.click(); //核心
+                  quilEditorUploader.click(); //核心
                 } else {
                   this.quill.format("image", false);
                 }
@@ -78,6 +106,14 @@ export default {
     };
   },
   methods: {
+    updateContent() {
+      var payload = {
+        id: this.id,
+        content: this.content,
+      };
+      this.$emit("updateContent", payload);
+      this.dialogVisible = false;
+    },
     onEditorChange(e) {
       // console.log(this.content);
       const _this = this;
@@ -96,11 +132,21 @@ export default {
 </script>
 
 <style scoped>
+#richEditor{
+  width: 100%;
+  margin-left: 5px;
+}
 .editor {
   height: 100%;
   width: 100%;
 }
 .editor /deep/ .ql-container {
-  font-size: 18px !important;
+  font-size: 14px !important;
+  min-height: 300px !important;
+}
+.footer {
+  width: 200px;
+  margin: 0px auto;
+  margin-top: 20px;
 }
 </style>

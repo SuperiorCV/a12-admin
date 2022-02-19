@@ -67,3 +67,16 @@ div:focus {
 .link-left {
   margin-left: 5px;
 }
+
+.question-item-label {
+  margin-top: 10px;
+  margin-bottom: 10px !important;
+}
+
+.item .el-form-item__content{
+  display: flex;
+}
+
+.question-item-remove{
+  margin-left: 20px;
+}
