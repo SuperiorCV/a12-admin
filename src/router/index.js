@@ -124,7 +124,7 @@ export const constantRoutes = [{
         title: '试卷列表',
         noCache: true
       }
-    },{
+    }, {
       path: 'create',
       name: 'examCreate',
       component: () => import('@/views/exam/create/index'),
@@ -134,7 +134,63 @@ export const constantRoutes = [{
       }
     }]
   },
+  {
+    path: '/question',
+    component: Layout,
+    redirect: '/question/list',
+    name: 'question',
+    meta: {
+      title: '题库管理',
+      icon: 'exam'
+    },
+    children: [{
+        path: 'list',
+        component: () => import('@/views/question/list/index'),
+        name: 'questionList',
+        meta: {
+          title: '题目列表',
+          noCache: true
+        },
+      },
+      {
+        path: 'singleChoice',
+        name: 'singleChoice',
+        component: () => import("@/views/question/singleChoice/index"),
+        name: 'singleChoice',
+        meta: {
+          title: '单选题创编',
+          noCache: true
+        },
+      },
+      {
+        path: 'multipleChoice',
+        name: 'multipleChoice',
+        component: () => import("@/views/question/multipleChoice/index"),
+        meta: {
+          title: '多选题创编',
+          noCache: true
+        },
+      },
+      {
+        path: 'trueFalse',
+        name: 'trueFalse',
+        component: () => import("@/views/question/trueFalse"),
+        meta: {
+          title: '判断题创编',
+          noCache: true
+        },
+      }, {
+        path: 'shortAnswer',
+        name: 'shortAnswer',
+        component: () => import("@/views/question/shortAnswer"),
+        meta: {
+          title: '简答题创编',
+          noCache: true
+        }
+      }
+    ]
 
+  },
   // {
   //   path: '/example',
   //   component: Layout,
