@@ -2,18 +2,19 @@
   <div id="singleChoice">
     <el-form
       :model="question"
-      ref="form"
+      :rules="rules"
+      ref="question"
       label-width="100px"
       v-loading="formLoading"
     >
-      <el-form-item label="题干" prop="title" required>
+      <el-form-item label="题干：" prop="title" required>
         <RichEditor
           :id="-1"
           :cont="question.title"
           @updateContent="updateContent"
         ></RichEditor>
       </el-form-item>
-      <el-form-item label="选项" required>
+      <el-form-item label="选项：" required>
         <el-form-item
           :label="idx + `、`"
           :key="idx"
@@ -36,12 +37,42 @@
           ></el-button>
         </el-form-item>
       </el-form-item>
-      <el-form-item label="解析" prop="analyze" required>
+      <el-form-item label="答案：" prop="answer" required>
+        <el-radio-group v-model="question.answer">
+          <el-radio
+            v-for="item in question.items"
+            :key="item.prefix"
+            :label="item.prefix"
+          >
+            {{ item.prefix }}
+          </el-radio>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="解析：" prop="analyze" required>
         <RichEditor
           :id="-2"
           :cont="question.analyze"
           @updateContent="updateContent"
         ></RichEditor>
+      </el-form-item>
+      <el-form-item label="分数：" prop="score" required>
+        <el-input-number
+          :min="0"
+          :step="0.5"
+          v-model="question.score"
+        ></el-input-number>
+      </el-form-item>
+      <el-form-item label="难度：" required>
+        <el-rate
+          v-model="question.difficult"
+          class="question-item-rate"
+        ></el-rate>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitQuestion">提交</el-button>
+        <el-button @click="resetQuestion">重置</el-button>
+        <el-button type="success" @click="questionItemAdd">添加选项</el-button>
+        <el-button type="success" @click="showQuestion">预览题目</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -74,11 +105,28 @@ export default {
         score: "",
       },
       formLoading: false,
+      rules: {
+        title: [{ required: true, message: "请输入题干", trigger: "blur" }],
+        analyze: [{ required: true, message: "请输入解析", trigger: "blur" }],
+        score: [{ required: true, message: "请输入分数", trigger: "blur" }],
+        answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
+      },
     };
   },
   methods: {
     questionItemRemove(idx) {
       this.question.items.splice(idx, 1);
+    },
+    questionItemAdd() {
+      let items = this.question.items;
+      let newLastPrefix = null;
+      if (items.length > 0) {
+        let last = items[items.length - 1];
+        newLastPrefix = String.fromCharCode(last.prefix.charCodeAt() + 1);
+      } else {
+        newLastPrefix = "A";
+      }
+      items.push({ prefix: newLastPrefix, content: "" });
     },
     updateContent({ id, content }) {
       if (id === -1) {
@@ -89,6 +137,38 @@ export default {
       } else if (id >= 0) {
         this.question.items[id].content = content;
       }
+    },
+    submitQuestion() {
+      let that=this;
+      this.$refs.question.validate((valid)=>{
+        if(valid){
+
+        }else{
+          return false
+        }
+      })
+    },
+    showQuestion() {},
+    resetQuestion() {
+      let lastId = this.question.id;
+      this.$refs.question.resetFields();
+      this.question = {
+        id: null,
+        questionType: 1,
+        difficult: 0,
+        // -1表示标题
+        title: "",
+        items: [
+          { prefix: "A", content: "" },
+          { prefix: "B", content: "" },
+          { prefix: "C", content: "" },
+          { prefix: "D", content: "" },
+        ],
+        answer: "",
+        // -2表示解析
+        analyze: "",
+        score: "",
+      };
     },
   },
 };

@@ -61,7 +61,11 @@
       ></el-table-column>
       <el-table-column label="操作" align="center">
         <template>
-          <el-button size="mini" type="success">邀请加入班级</el-button>
+          <el-button size="mini">预览</el-button>
+          <el-button size="mini">编辑</el-button>
+          <el-button size="mini" type="danger" class="link-left"
+            >删除</el-button
+          >
         </template>
       </el-table-column>
     </el-table>
@@ -229,9 +233,9 @@ export default {
   padding: 20px;
   /* background: red; */
 }
-.rate-wrapper{
-  display:flex;
-  align-items:center;
+.rate-wrapper {
+  display: flex;
+  align-items: center;
   width: 200px;
 }
 </style>
