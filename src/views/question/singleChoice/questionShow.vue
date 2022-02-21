@@ -1,9 +1,7 @@
 <template>
   <div id="questionShow">
-    <div id="stem">
-      <span style="margin-right:10px">[{{question.score}}分]</span>
-      <div class="ql-editor" v-html="question.title"></div>
-    </div>
+    <p class="head">[{{ question.score }}分] 单选题</p>
+    <div class="ql-editor" v-html="question.title"></div>
     <el-radio-group v-model="radio">
       <div v-for="(el, idx) in question.items" :key="idx">
         <el-radio :label="el.prefix">
@@ -40,11 +38,13 @@ export default {
   width: 100%;
   min-height: 200px;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
 }
-#stem{
-  display: flex;
-  margin-bottom: 10px;
+.head {
+  margin-top: 0;
+  background: #8cbda4;
+  padding: 8px;
+  color: #fff;
 }
 .ql-container.ql-snow {
   border: none !important;
@@ -60,8 +60,8 @@ export default {
 .radio {
   display: flex;
 }
-.radio p{
-  margin-block-start: 0!important;
-    margin-block-end: 0!important;
+.radio p {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
 }
 </style>
