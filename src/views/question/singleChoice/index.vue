@@ -5,7 +5,6 @@
       :rules="rules"
       ref="question"
       label-width="100px"
-      v-loading="formLoading"
     >
       <el-form-item label="题干：" prop="title" required>
         <RichEditor
@@ -72,17 +71,22 @@
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
         <el-button type="success" @click="questionItemAdd">添加选项</el-button>
-        <el-button type="success" @click="showQuestion">预览题目</el-button>
+        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
+      <QuestionShow :question="question"/>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
+import QuestionShow from './questionShow.vue';
 export default {
   components: {
     RichEditor,
+    QuestionShow
   },
   name: "singleChoice",
   data() {
@@ -104,13 +108,13 @@ export default {
         analyze: "",
         score: "",
       },
-      formLoading: false,
       rules: {
         title: [{ required: true, message: "请输入题干", trigger: "blur" }],
         analyze: [{ required: true, message: "请输入解析", trigger: "blur" }],
         score: [{ required: true, message: "请输入分数", trigger: "blur" }],
         answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
+      questionVisible: false,
     };
   },
   methods: {
@@ -139,16 +143,14 @@ export default {
       }
     },
     submitQuestion() {
-      let that=this;
-      this.$refs.question.validate((valid)=>{
-        if(valid){
-
-        }else{
-          return false
+      let that = this;
+      this.$refs.question.validate((valid) => {
+        if (valid) {
+        } else {
+          return false;
         }
-      })
+      });
     },
-    showQuestion() {},
     resetQuestion() {
       let lastId = this.question.id;
       this.$refs.question.resetFields();
