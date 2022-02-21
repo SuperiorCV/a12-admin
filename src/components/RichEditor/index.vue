@@ -1,6 +1,6 @@
 <template>
   <div id="richEditor">
-    <el-input @focus="dialogVisible = true" v-model="cont"></el-input>
+    <el-input @focus="dialogVisible = true" v-model="cont" clearable></el-input>
     <el-upload
       style="display: none"
       class="quill-picture-uploader"

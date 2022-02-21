@@ -18,18 +18,18 @@
       <el-form-item label="选项：" required>
         <el-form-item
           :label="idx + '、'"
-          v-for="(item,idx) in question.items"
+          v-for="(item, idx) in question.items"
           :key="idx"
           class="item question-item-label"
           label-width="50px"
         >
-        <el-input v-model="item.prefix" style="width: 50px"></el-input>
-        <RichEditor
+          <el-input v-model="item.prefix" style="width: 50px"></el-input>
+          <RichEditor
             :id="idx"
             :cont="item.content"
             @updateContent="updateContent"
           ></RichEditor>
-        <el-button
+          <el-button
             type="danger"
             size="mini"
             class="question-item-remove"
@@ -40,25 +40,13 @@
       </el-form-item>
 
       <el-form-item label="答案：" prop="answer" required>
-        <!-- <el-radio-group v-model="question.answer">
-          <el-radio
-            v-for="item in question.items"
-            :key="item.prefix"
-            :label="item.prefix"
-          >
-            {{ item.prefix }}
-          </el-radio>
-        </el-radio-group> -->
-
-        <el-checkbox-group 
-          v-model="question.answer"
-        >
+        <el-checkbox-group v-model="question.answer">
           <el-checkbox
-            v-for="item in question.items" 
-            :label="item.prefix" 
+            v-for="item in question.items"
+            :label="item.prefix"
             :key="item.prefix"
-            >
-            {{ item.prefix }}
+          >
+          {{item.prefix}}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -92,7 +80,6 @@
         <el-button type="success" @click="questionItemAdd">添加选项</el-button>
         <el-button type="success" @click="showQuestion">预览题目</el-button>
       </el-form-item>
-
     </el-form>
   </div>
 </template>
@@ -113,10 +100,10 @@ export default {
         difficult: 0,
         title: "",
         items: [
-          { prefix: "A", content: ""},
-          { prefix: "B", content: ""},
-          { prefix: "C", content: ""},
-          { prefix: "D", content: ""},
+          { prefix: "A", content: "" },
+          { prefix: "B", content: "" },
+          { prefix: "C", content: "" },
+          { prefix: "D", content: "" },
         ],
         answer: [],
         analyze: "",
@@ -125,47 +112,45 @@ export default {
 
       formLoading: false,
       rules: {
-        title: [{ required: true, message: "请输入题干", trigger: "blur"}],
-        analyze: [{ required: true, message: "请输入解析", trigger: "blur"}],
-        score: [{ required: true, message: "请输入分数", trigger: "blur"}],
-        answer: [{ required: true, message: "请输入答案", trigger: "blur"}],
+        title: [{ required: true, message: "请输入题干", trigger: "blur" }],
+        analyze: [{ required: true, message: "请输入解析", trigger: "blur" }],
+        score: [{ required: true, message: "请输入分数", trigger: "blur" }],
+        answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
     };
   },
   methods: {
     questionItemRemove(idx) {
-      this.question.items.splice(idx,1);
+      this.question.items.splice(idx, 1);
     },
     questionItemAdd() {
       let items = this.question.items;
       let newLastPrefix = null;
-      if(items.length > 0){
+      if (items.length > 0) {
         let last = items[items.length - 1];
         newLastPrefix = String.fromCharCode(last.prefix.charCodeAt() + 1);
-      }else {
+      } else {
         newLastPrefix = "A";
       }
-      items.push({ prefix: newLastPrefix, content: ""});
+      items.push({ prefix: newLastPrefix, content: "" });
     },
-    updateContent({ id, content}) {
-      if(id == -1){
+    updateContent({ id, content }) {
+      if (id == -1) {
         this.question.title = content;
-      }else if(id == -2){
+      } else if (id == -2) {
         this.question.analyze = content;
-      }else if(id >= 0){
+      } else if (id >= 0) {
         this.question.items[id].content = content;
       }
     },
     submitQuestion() {
       let that = this;
       this.$refs.question.validate((valid) => {
-        if(valid) {
-
-        }else {
+        if (valid) {
+        } else {
           return false;
         }
-      }
-      )
+      });
     },
     resetQuestion() {
       let lastId = this.question.id;
@@ -176,10 +161,10 @@ export default {
         difficult: 0,
         title: "",
         items: [
-          { prefix: "A", content: ""},
-          { prefix: "B", content: ""},
-          { prefix: "C", content: ""},
-          { prefix: "D", content: ""},
+          { prefix: "A", content: "" },
+          { prefix: "B", content: "" },
+          { prefix: "C", content: "" },
+          { prefix: "D", content: "" },
         ],
         answer: [],
         analyze: "",
@@ -188,7 +173,6 @@ export default {
     },
     showQuestion() {},
   },
-
 };
 </script>
 
