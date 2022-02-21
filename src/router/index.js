@@ -187,6 +187,23 @@ export const constantRoutes = [{
           title: '简答题创编',
           noCache: true
         }
+      },{
+        path: 'sort',
+        name: 'sort',
+        component: () => import("@/views/question/sort"),
+        meta: {
+          title: '排序题创编',
+          noCache: true
+        }
+      },
+      {
+        path: 'fill',
+        name: 'fill',
+        component: () => import("@/views/question/fill"),
+        meta: {
+          title: '填空题创编',
+          noCache: true
+        }
       }
     ]
 
