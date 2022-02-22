@@ -46,7 +46,7 @@
             :label="item.prefix"
             :key="item.prefix"
           >
-          {{item.prefix}}
+            {{ item.prefix }}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -122,7 +122,6 @@ export default {
         score: [{ required: true, message: "请输入分数", trigger: "blur" }],
         answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
-
       questionVisible: false,
     };
   },

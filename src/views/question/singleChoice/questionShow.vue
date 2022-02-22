@@ -5,7 +5,7 @@
     <el-radio-group v-model="radio">
       <div v-for="(el, idx) in question.items" :key="idx">
         <el-radio :label="el.prefix">
-          <div class="radio" ql-container ql-show>
+          <div class="radio">
             <span class="ql-editor">{{ el.prefix }}.</span>
             <div class="ql-editor" v-html="el.content"></div>
           </div>

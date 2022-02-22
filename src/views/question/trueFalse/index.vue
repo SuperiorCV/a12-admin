@@ -86,7 +86,7 @@ export default {
     return {
       question: {
         id: null,
-        questionType: 1,
+        questionType: 5,
         difficult: 0,
         // -1表示标题
         title: "",
@@ -106,7 +106,6 @@ export default {
         score: [{ required: true, message: "请输入分数", trigger: "blur" }],
         answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
-
       questionVisible: false,
     };
   },
@@ -135,7 +134,7 @@ export default {
       let lastId = this.question.id;
       this.$refs.question.resetFields();
       this.question = {
-       id: null,
+        id: null,
         questionType: 1,
         difficult: 0,
         // -1表示标题

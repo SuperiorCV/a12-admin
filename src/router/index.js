@@ -187,7 +187,7 @@ export const constantRoutes = [{
           title: '简答题创编',
           noCache: true
         }
-      },{
+      }, {
         path: 'sort',
         name: 'sort',
         component: () => import("@/views/question/sort"),
@@ -196,17 +196,36 @@ export const constantRoutes = [{
           noCache: true
         }
       },
-      {
-        path: 'fill',
-        name: 'fill',
-        component: () => import("@/views/question/fill"),
-        meta: {
-          title: '填空题创编',
-          noCache: true
-        }
-      }
+
     ]
 
+  },
+  {
+    path: '/answerpaper',
+    component: Layout,
+    redirect: '/answerpaper/examCorrect',
+    name: 'answerpaper',
+    meta: {
+      title: '答卷管理',
+      icon: 'task'
+    },
+    children: [{
+      path: 'examCorrect',
+      name: 'examCorrect',
+      component: () => import("@/views/answerpaper/examCorrect"),
+      meta: {
+        title: '批改列表',
+        noCache: true
+      }
+    }, {
+      path: 'resultList',
+      name: 'resultList',
+      component: () => import("@/views/answerpaper/resultList"),
+      meta: {
+        title: '试卷完成',
+        noCache: true
+      }
+    }]
   },
   // {
   //   path: '/example',

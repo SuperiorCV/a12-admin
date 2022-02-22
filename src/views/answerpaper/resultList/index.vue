@@ -1,19 +1,20 @@
 <template>
-  <div id="fill"></div>
+    <div id="resultList"></div>
 </template>
+
 
 <script>
 export default {
-  name: "fill",
-};
-</script>
+    name: 'resultList',    
+}
 
+
+</script>
 <style scoped>
-#fill {
-  width: 100%;
+#resultList{
+     width: 100%;
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  background: red;
 }
 </style>
