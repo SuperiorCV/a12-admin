@@ -1,19 +1,19 @@
 <template>
-  <div id="fill"></div>
+  <div id="examCorrect"></div>
 </template>
+
 
 <script>
 export default {
-  name: "fill",
+  name: "examCorrect",
 };
 </script>
 
 <style scoped>
-#fill {
+#examCorrect {
   width: 100%;
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  background: red;
 }
 </style>

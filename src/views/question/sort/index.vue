@@ -45,7 +45,8 @@
               :key="element.prefix"
             >
               <div class="ql-container ql-snow">
-                <span>{{j}}</span><div class="content ql-editor" v-html="element.content" />
+                <span>{{ j }}</span>
+                <div class="content ql-editor" v-html="element.content" />
               </div>
             </div>
           </transition-group>
@@ -80,6 +81,12 @@
         >
       </el-form-item>
     </el-form>
+    <el-dialog
+      :visible.sync="questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="question" />
+    </el-dialog>
   </div>
 </template>
 
@@ -90,11 +97,13 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import RichEditor from "@/components/RichEditor/index.vue";
 import draggable from "vuedraggable";
+import QuestionShow from "./questionShow.vue";
 export default {
   name: "sort",
   components: {
     RichEditor,
     draggable,
+    QuestionShow,
   },
   data() {
     return {
@@ -133,7 +142,7 @@ export default {
     questionItemRemove(idx) {
       this.question.items.splice(idx, 1);
       this.question.answer = this.question.items;
-    //   console.log(this.question.answer);
+      //   console.log(this.question.answer);
     },
     questionItemAdd() {
       let items = this.question.items;
@@ -146,7 +155,7 @@ export default {
       }
       items.push({ prefix: newLastPrefix, content: "" });
       this.question.answer = this.question.items;
-    //   console.log(this.question.answer);
+      //   console.log(this.question.answer);
     },
     updateContent({ id, content }) {
       if (id === -1) {
@@ -158,7 +167,7 @@ export default {
         this.question.items[id].content = content;
       }
       this.question.answer = this.question.items;
-    //   console.log(this.question.answer);
+      //   console.log(this.question.answer);
     },
     submitQuestion() {
       let that = this;
@@ -195,9 +204,9 @@ export default {
         score: "",
       };
     },
-    onDragEnd(){
-        console.log(this.question.answer)
-    }
+    onDragEnd() {
+      console.log(this.question.answer);
+    },
   },
 };
 </script>
@@ -221,7 +230,7 @@ export default {
 .answerBox:hover {
   background: #f5f7fa;
 }
-.ql-container.ql-snow{
-    border: none!important
+.ql-container.ql-snow {
+  border: none !important;
 }
 </style>

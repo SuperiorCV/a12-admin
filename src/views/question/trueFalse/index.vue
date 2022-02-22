@@ -64,24 +64,34 @@
       <el-form-item>
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
-        <el-button type="success" @click="showQuestion">预览题目</el-button>
+        <el-button type="success" @click="questionVisible = true"
+          >预览题目</el-button
+        >
       </el-form-item>
     </el-form>
+    <el-dialog
+      :visible.sync="questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="question" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
+import QuestionShow from "./questionShow.vue";
 export default {
   name: "trueFalse",
   components: {
     RichEditor,
+    QuestionShow,
   },
   data() {
     return {
       question: {
         id: null,
-        questionType: 1,
+        questionType: 5,
         difficult: 0,
         // -1表示标题
         title: "",
@@ -101,6 +111,7 @@ export default {
         score: [{ required: true, message: "请输入分数", trigger: "blur" }],
         answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
       },
+      questionVisible: false,
     };
   },
   methods: {
@@ -128,7 +139,7 @@ export default {
       let lastId = this.question.id;
       this.$refs.question.resetFields();
       this.question = {
-       id: null,
+        id: null,
         questionType: 1,
         difficult: 0,
         // -1表示标题
