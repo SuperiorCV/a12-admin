@@ -7,7 +7,7 @@
       :min="3"
       :max="6"
       placeholder="请输入答案"
-      v-model="question.answer">
+      v-model="ans">
     </el-input>
     
   </div>
@@ -25,7 +25,7 @@ export default {
   },
   data() {
     return {
-      radio: "",
+      ans: "",
     };
   },
 };
