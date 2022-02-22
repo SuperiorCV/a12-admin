@@ -78,23 +78,18 @@
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
         <el-button type="success" @click="questionItemAdd">添加选项</el-button>
-        <el-button type="success" @click="questionVisible = true"
-          >预览题目</el-button
-        >
+        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog
-      :visible.sync="questionVisible"
-      style="width: 100%; height: 100%"
-    >
-      <QuestionShow :question="question" />
+    <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
+      <QuestionShow :question="question"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from "./questionShow.vue";
+import QuestionShow from './questionShow.vue';
 // import { valid } from 'mockjs';
 export default {
   components: {

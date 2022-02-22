@@ -64,23 +64,18 @@
       <el-form-item>
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
-        <el-button type="success" @click="questionVisible = true"
-          >预览题目</el-button
-        >
+        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog
-      :visible.sync="questionVisible"
-      style="width: 100%; height: 100%"
-    >
-      <QuestionShow :question="question" />
+    <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
+      <QuestionShow :question="question"/>
     </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from "./questionShow.vue";
+import QuestionShow from './questionShow.vue';
 export default {
   name: "trueFalse",
   components: {
@@ -96,8 +91,8 @@ export default {
         // -1表示标题
         title: "",
         items: [
-          { prefix: "A", content: "<p>是</p>" },
-          { prefix: "B", content: "<p>否</p>" },
+          { prefix: "A", content: "<p>正确</p>" },
+          { prefix: "B", content: "<p>错误</p>" },
         ],
         answer: "",
         // -2表示解析
