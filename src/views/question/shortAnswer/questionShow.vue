@@ -1,6 +1,14 @@
 <template>
   <div id="questionShow">
     <p class="head">[{{ question.score }}分] 简答题</p>
+    <div class="ql-editor" v-html="question.title"></div>
+    <el-input
+      type="textarea"
+      :min="3"
+      :max="6"
+      placeholder="请输入答案"
+      v-model="question.answer">
+    </el-input>
     
   </div>
 </template>
@@ -42,5 +50,6 @@ export default {
 .ql-editor {
   padding: 0 !important;
   margin-right: 10px;
+  margin-bottom: 10px;
 }
 </style>
