@@ -1,7 +1,17 @@
 <template>
   <div id="questionShow">
     <p class="head">[{{ question.score }}分] 判断题</p>
-    
+    <div class="ql-editor" v-html="question.title"></div>
+    <el-radio-group v-model="radio">
+      <div v-for="(el, idx) in question.items" :key="idx">
+        <el-radio :label="el.prefix">
+          <div class="radio" ql-container ql-show>
+            <span class="ql-editor">{{ el.prefix }}.</span>
+            <div class="ql-editor" v-html="el.content"></div>
+          </div>
+        </el-radio>
+      </div>
+    </el-radio-group>
   </div>
 </template>
 
@@ -32,7 +42,7 @@ export default {
 }
 .head {
   margin-top: 0;
-  background: #778beb;
+  background: #83b5f7;
   padding: 8px;
   color: #fff;
 }

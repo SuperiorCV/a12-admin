@@ -1,7 +1,17 @@
 <template>
   <div id="questionShow">
     <p class="head">[{{ question.score }}分] 多选题</p>
-    
+    <div class="ql-editor" v-html="question.title"></div>
+    <el-checkbox-group v-model="checkList">
+      <div v-for="(el, idx) in question.items" :key="idx">
+        <el-checkbox :label="el.prefix">
+          <div class="checkbox" ql-container ql-show>
+            <span class="ql-editor">{{ el.prefix }}.</span>
+            <div class="ql-editor" v-html="el.content"></div>
+          </div>
+        </el-checkbox>
+      </div>
+    </el-checkbox-group>
   </div>
 </template>
 
@@ -17,7 +27,7 @@ export default {
   },
   data() {
     return {
-      radio: "",
+      checkList: [],
     };
   },
 };
@@ -32,7 +42,7 @@ export default {
 }
 .head {
   margin-top: 0;
-  background: #f3a683;
+  background: #e9ad69;
   padding: 8px;
   color: #fff;
 }
@@ -42,5 +52,16 @@ export default {
 .ql-editor {
   padding: 0 !important;
   margin-right: 10px;
+}
+.el-checkbox {
+  display: flex;
+  margin-top: 10px;
+}
+.checkbox {
+  display: flex;
+}
+.checkbox p {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
 }
 </style>

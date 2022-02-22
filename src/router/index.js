@@ -207,7 +207,7 @@ export const constantRoutes = [{
     name: 'answerpaper',
     meta: {
       title: '答卷管理',
-      icon: 'task'
+      icon: 'edit'
     },
     children: [{
       path: 'examCorrect',

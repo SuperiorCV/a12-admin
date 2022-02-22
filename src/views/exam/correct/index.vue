@@ -57,7 +57,7 @@
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: "examCorrect",
+  name: "list",
   components: { Pagination },
   data() {
     return {
