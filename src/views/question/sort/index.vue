@@ -220,6 +220,7 @@ export default {
   /* background: red; */
 }
 .answerBox {
+   cursor: pointer;
   min-height: 40px;
   margin-bottom: 15px;
   background: #ffff;
