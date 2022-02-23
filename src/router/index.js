@@ -212,7 +212,7 @@ export const constantRoutes = [{
     children: [{
       path: 'examCorrect',
       name: 'examCorrect',
-      component: () => import("@/views/answerpaper/examCorrect"),
+      component: () => import("@/views/answerpaper/examCorrect/list"),
       meta: {
         title: '批改列表',
         noCache: true
@@ -220,10 +220,18 @@ export const constantRoutes = [{
     }, {
       path: 'resultList',
       name: 'resultList',
-      component: () => import("@/views/answerpaper/resultList"),
+      component: () => import("@/views/answerpaper/resultList/list"),
       meta: {
         title: '试卷完成',
         noCache: true
+      }
+    }, {
+      path: 'examCorrectCheck',
+      name: 'examCorrectCheck',
+      hidden: true,
+      component: () => import("@/views/answerpaper/examCorrect/check"),
+      meta: {
+        noCache: true,
       }
     }]
   },

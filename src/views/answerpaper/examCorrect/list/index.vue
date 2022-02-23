@@ -164,6 +164,7 @@ export default {
     // },
 
     showQuestion(row) {
+      this.$router.push({name:'examCorrectCheck'});
     //   let _this = this;
     //   this.questionShow.dialog = true;
     //   this.questionShow.loading = true;
