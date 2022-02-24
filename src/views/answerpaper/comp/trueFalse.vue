@@ -79,7 +79,7 @@ export default {
 }
 .head {
   margin-top: 0;
-  background: #8cbda4;
+  background: #6a89cc;
   padding: 8px;
   color: #fff;
 }

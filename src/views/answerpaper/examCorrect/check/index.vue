@@ -34,9 +34,21 @@
           v-for="(question, j) in mod.questionList"
           :key="j"
         >
-          <singleChoice v-if="idx==0" :question="question" :idx="j + 1"></singleChoice>
-          <multipleChoice v-else-if="idx==1" :question="question" :idx="j + 1"></multipleChoice>
-          <trueFalse v-else-if="idx==2" :question="question" :idx="j + 1"></trueFalse>
+          <singleChoice
+            v-if="idx == 0"
+            :question="question"
+            :idx="j + 1"
+          ></singleChoice>
+          <multipleChoice
+            v-else-if="idx == 1"
+            :question="question"
+            :idx="j + 1"
+          ></multipleChoice>
+          <trueFalse
+            v-else-if="idx == 2"
+            :question="question"
+            :idx="j + 1"
+          ></trueFalse>
         </div>
       </div>
     </div>
@@ -151,8 +163,8 @@ export default {
                   { prefix: "D", content: "cccc" },
                 ],
                 status: 1, //-1表示错误，0表示待批改，1表示正确
-                answer: ['A',"C","D"],
-                studentAnswer: ["A","C","D"],
+                answer: ["A", "C", "D"],
+                studentAnswer: ["A", "C", "D"],
                 // -2表示解析
                 analyze: "fsagsagsagsag",
                 score: 1,
@@ -173,8 +185,8 @@ export default {
                 status: -1, //-1表示错误，0表示待批改，1表示正确
                 answer: "A",
                 // -2表示解析
-                answer: ["A","C","B"],
-                studentAnswer: ["A","C"],
+                answer: ["A", "C", "B"],
+                studentAnswer: ["A", "C"],
                 score: 2,
                 studentScore: 0,
               },
@@ -191,8 +203,8 @@ export default {
                   { prefix: "D", content: "fsaf" },
                 ],
                 status: 1, //-1表示错误，0表示待批改，1表示正确
-                answer: ["A","C"],
-                studentAnswer: ["A","C"],
+                answer: ["A", "C"],
+                studentAnswer: ["A", "C"],
                 // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
@@ -256,6 +268,41 @@ export default {
                 analyze: "",
                 score: 2,
                 studentScore: 0,
+              },
+            ],
+          },
+          {
+            title: "排序题",
+            questionList: [
+              {
+                id: 13,
+                questionType: 5,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                items: [
+                  { prefix: "A", content: "<pre>A</pre>" },
+                  { prefix: "B", content: "<p>B</p>" },
+                  { prefix: "C", content: "<pre>C</pre>" },
+                  { prefix: "D", content: "<p>D</p>" },
+                ],
+                status: 1, //-1表示错误，0表示待批改，1表示正确
+                answer: [
+                  { prefix: "A", content: "<pre>A</pre>" },
+                  { prefix: "B", content: "<p>B</p>" },
+                  { prefix: "D", content: "<p>D</p>" },
+                  { prefix: "C", content: "<pre>C</pre>" },
+                ],
+                studentAnswer: [
+                  { prefix: "A", content: "<pre>A</pre>" },
+                  { prefix: "B", content: "<p>B</p>" },
+                  { prefix: "C", content: "<pre>C</pre>" },
+                  { prefix: "D", content: "<p>D</p>" },
+                ],
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: 2,
               },
             ],
           },

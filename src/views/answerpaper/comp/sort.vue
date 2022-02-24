@@ -1,11 +1,11 @@
 <template>
   <div id="questionShow">
-    <p class="head">[{{ question.score }}分] 排序题</p>
-    <draggable v-model="arr" @end="onDragEnd">
+    <p class="head">{{ idx }}、排序题</p>
+    <draggable v-model="question.studentAnswer" @end="onDragEnd">
       <transition-group>
         <div
           class="answerBox"
-          v-for="(element, j) in arr"
+          v-for="(element, j) in question.studentAnswer"
           :key="element.prefix"
         >
           <div class="ql-container ql-snow">
@@ -28,16 +28,12 @@ export default {
   name: "questionShow",
   props: {
     question: Object,
+    idx: Number,
   },
-
   components: {
     draggable,
   },
-  data() {
-    return {
-      arr: this.question.items,
-    };
-  },
+
 };
 </script>
 

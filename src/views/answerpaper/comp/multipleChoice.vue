@@ -84,7 +84,7 @@ export default {
 }
 .head {
   margin-top: 0;
-  background: #8cbda4;
+  background: #e9ad69;
   padding: 8px;
   color: #fff;
 }
@@ -98,13 +98,6 @@ export default {
 .el-checkbox {
   display: flex;
   margin-top: 10px;
-}
-.radio {
-  display: flex;
-}
-.radio p {
-  margin-block-start: 0 !important;
-  margin-block-end: 0 !important;
 }
 .answer {
   display: flex;
