@@ -1,8 +1,17 @@
 <template>
   <div id="list">
     <el-form :model="queryParam" ref="queryForm" :inline="true">
-      <el-form-item label="用户账号查询：">
+      <el-form-item label="试卷ID：">
         <el-input v-model="queryParam.id" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="试卷名称：">
+        <el-input v-model="queryParam.examTitle" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="用户名称：">
+        <el-input v-model="queryParam.name" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="用户账号：">
+        <el-input v-model="queryParam.username" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">查询</el-button>
@@ -21,10 +30,10 @@
       <el-table-column prop="testName" label="试卷名称" show-overflow-tooltip />
       <el-table-column prop="name" label="用户名称" />
       <el-table-column prop="account" label="用户账号" />
-      <el-table-column prop="grade" label="得分" width="80px"/>
-      <el-table-column prop="rate" label="题目正确率" width="100px"/>
-      <el-table-column prop="cost" label="耗时" width="160px"/>
-      <el-table-column prop="time" label="提交时间" width="160px"/>
+      <el-table-column prop="grade" label="得分" width="80px" />
+      <el-table-column prop="rate" label="题目正确率" width="100px" />
+      <el-table-column prop="cost" label="耗时" width="160px" />
+      <el-table-column prop="time" label="提交时间" width="160px" />
       <el-table-column label="操作" align="center" width="80px">
         <template slot-scope="{ row }">
           <el-button size="mini" @click="showQuestion(row)">批改</el-button>
@@ -54,7 +63,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination'
+import Pagination from "@/components/Pagination";
 
 export default {
   name: "examCorrect",
@@ -63,6 +72,9 @@ export default {
     return {
       queryParam: {
         id: null,
+        examTitle: "",
+        username: "",
+        name: "",
         pageIndex: 1,
         pageSize: 10,
       },
@@ -75,61 +87,61 @@ export default {
           testName: "第一次高数月考",
           name: "langwenchong",
           account: "3019244520",
-          grade:"2/15",
-          rate:"1/6",
-          cost:"10秒",
-          time:"2020-2-22 19:09:32"
+          grade: "2/15",
+          rate: "1/6",
+          cost: "10秒",
+          time: "2020-2-22 19:09:32",
         },
         {
           id: 132,
           testName: "操作系统期末考试",
           name: "langwenchong",
           account: "3019244520",
-          grade:"88/100",
-          rate:"26/30",
-          cost:"1小时20分10秒",
-          time:"2020-2-23 19:23:32"
+          grade: "88/100",
+          rate: "26/30",
+          cost: "1小时20分10秒",
+          time: "2020-2-23 19:23:32",
         },
         {
           id: 2,
           testName: "第二次高数月考",
           name: "langwenchong",
           account: "3019244520",
-          grade:"15/15",
-          rate:"6/6",
-          cost:"20分10秒",
-          time:"2020-3-12 19:09:32"
+          grade: "15/15",
+          rate: "6/6",
+          cost: "20分10秒",
+          time: "2020-3-12 19:09:32",
         },
         {
           id: 3,
           testName: "第三次高数月考",
           name: "langwenchong",
           account: "3019244520",
-          grade:"12/15",
-          rate:"5/6",
-          cost:"10分10秒",
-          time:"2020-3-22 19:09:32"
+          grade: "12/15",
+          rate: "5/6",
+          cost: "10分10秒",
+          time: "2020-3-22 19:09:32",
         },
         {
           id: 32,
           testName: "第一次高数月考",
           name: "Guotao",
           account: "3019244999",
-          grade:"0/15",
-          rate:"0/6",
-          cost:"1秒",
-          time:"2020-2-22 19:09:32"
+          grade: "0/15",
+          rate: "0/6",
+          cost: "1秒",
+          time: "2020-2-22 19:09:32",
         },
       ],
 
-        total: 10,
-      
-        questionShow: {
-          qType: 0,
-          dialog: false,
-          question: null,
-          loading: false,
-        },
+      total: 10,
+
+      questionShow: {
+        qType: 0,
+        dialog: false,
+        question: null,
+        loading: false,
+      },
     };
   },
   //   created() {
@@ -164,32 +176,32 @@ export default {
     // },
 
     showQuestion(row) {
-      this.$router.push({name:'examCorrectCheck'});
-    //   let _this = this;
-    //   this.questionShow.dialog = true;
-    //   this.questionShow.loading = true;
-    //   questionApi.select(row.id).then((re) => {
-    //     _this.questionShow.qType = re.response.questionType;
-    //     _this.questionShow.question = re.response;
-    //     _this.questionShow.loading = false;
-    //   });
+      this.$router.push({ name: "examCorrectCheck" });
+      //   let _this = this;
+      //   this.questionShow.dialog = true;
+      //   this.questionShow.loading = true;
+      //   questionApi.select(row.id).then((re) => {
+      //     _this.questionShow.qType = re.response.questionType;
+      //     _this.questionShow.question = re.response;
+      //     _this.questionShow.loading = false;
+      //   });
     },
 
     editQuestion(row) {
-    //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
-    //   this.$router.push({ path: url, query: { id: row.id } });
+      //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
+      //   this.$router.push({ path: url, query: { id: row.id } });
     },
 
     deleteQuestion(row) {
-    //   let _this = this;
-    //   questionApi.deleteQuestion(row.id).then((re) => {
-    //     if (re.code === 1) {
-    //       _this.search();
-    //       _this.$message.success(re.message);
-    //     } else {
-    //       _this.$message.error(re.message);
-    //     }
-    //   });
+      //   let _this = this;
+      //   questionApi.deleteQuestion(row.id).then((re) => {
+      //     if (re.code === 1) {
+      //       _this.search();
+      //       _this.$message.success(re.message);
+      //     } else {
+      //       _this.$message.error(re.message);
+      //     }
+      //   });
     },
 
     // questionTypeFormatter(row, column, cellValue, index) {

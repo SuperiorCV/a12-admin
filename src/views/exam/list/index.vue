@@ -1,8 +1,14 @@
 <template>
   <div id="list">
     <el-form :model="queryParam" ref="queryForm" :inline="true">
-      <el-form-item label="题目ID：">
+      <el-form-item label="试卷ID：">
         <el-input v-model="queryParam.id" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="试卷名称：">
+        <el-input v-model="queryParam.examTitle" clearable></el-input>
+      </el-form-item>
+      <el-form-item label="考试班级：">
+        <el-input v-model="queryParam.examClass" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm">查询</el-button>
@@ -57,7 +63,7 @@
 </template>
 
 <script>
-import Pagination from '@/components/Pagination'
+import Pagination from "@/components/Pagination";
 
 export default {
   name: "list",
@@ -66,6 +72,8 @@ export default {
     return {
       queryParam: {
         id: null,
+        examTitle: "",
+        examClass: "",
         pageIndex: 1,
         pageSize: 10,
       },
@@ -105,14 +113,14 @@ export default {
         },
       ],
 
-        total: 10,
-      
-        questionShow: {
-          qType: 0,
-          dialog: false,
-          question: null,
-          loading: false,
-        },
+      total: 10,
+
+      questionShow: {
+        qType: 0,
+        dialog: false,
+        question: null,
+        loading: false,
+      },
     };
   },
   //   created() {
@@ -147,31 +155,31 @@ export default {
     // },
 
     showQuestion(row) {
-    //   let _this = this;
-    //   this.questionShow.dialog = true;
-    //   this.questionShow.loading = true;
-    //   questionApi.select(row.id).then((re) => {
-    //     _this.questionShow.qType = re.response.questionType;
-    //     _this.questionShow.question = re.response;
-    //     _this.questionShow.loading = false;
-    //   });
+      //   let _this = this;
+      //   this.questionShow.dialog = true;
+      //   this.questionShow.loading = true;
+      //   questionApi.select(row.id).then((re) => {
+      //     _this.questionShow.qType = re.response.questionType;
+      //     _this.questionShow.question = re.response;
+      //     _this.questionShow.loading = false;
+      //   });
     },
 
     editQuestion(row) {
-    //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
-    //   this.$router.push({ path: url, query: { id: row.id } });
+      //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
+      //   this.$router.push({ path: url, query: { id: row.id } });
     },
 
     deleteQuestion(row) {
-    //   let _this = this;
-    //   questionApi.deleteQuestion(row.id).then((re) => {
-    //     if (re.code === 1) {
-    //       _this.search();
-    //       _this.$message.success(re.message);
-    //     } else {
-    //       _this.$message.error(re.message);
-    //     }
-    //   });
+      //   let _this = this;
+      //   questionApi.deleteQuestion(row.id).then((re) => {
+      //     if (re.code === 1) {
+      //       _this.search();
+      //       _this.$message.success(re.message);
+      //     } else {
+      //       _this.$message.error(re.message);
+      //     }
+      //   });
     },
 
     // questionTypeFormatter(row, column, cellValue, index) {

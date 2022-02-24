@@ -447,7 +447,7 @@ export default {
   width: 100%;
 }
 .tag {
-  margin-bottom:5px;
+  margin-bottom: 5px;
   margin-left: 5px;
   cursor: pointer;
 }
