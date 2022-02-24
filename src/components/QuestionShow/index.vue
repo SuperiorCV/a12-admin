@@ -61,7 +61,7 @@
       id="shortAnswer"
       class="wrapper"
     >
-      <p class="head" style="background: #cf6a87;">
+      <p class="head" style="background: #cf6a87">
         [{{ question.score }}分] 简答题
       </p>
       <div class="ql-editor" v-html="question.title"></div>
@@ -78,7 +78,7 @@
       <p class="head" style="background: #596275">
         [{{ question.score }}分] 排序题
       </p>
-      <draggable v-model="arr" @end="onDragEnd">
+      <draggable v-model="arr">
         <transition-group>
           <div
             class="answerBox"
@@ -135,6 +135,8 @@ export default {
   margin-top: 0;
   padding: 8px;
   color: #fff;
+  font-size: 16px;
+  line-height: 34px;
 }
 .ql-container.ql-snow {
   border: none !important;

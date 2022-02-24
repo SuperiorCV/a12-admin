@@ -1,6 +1,6 @@
 <template>
   <div id="create">
-    <el-form :model="exam" :rules="rules" ref="exam" label-width="100px">
+    <el-form :model="exam" :rules="rules" ref="exam" label-width="auto">
       <el-form-item label="试卷名称：" prop="title" required="">
         <el-input placeholder="请输入试卷名称" v-model="exam.title" clearable>
         </el-input>
@@ -70,27 +70,30 @@
         <el-button
           type="danger"
           class="link-left"
-          icon="el-icon-delete
-"
+          icon="el-icon-delete"
           size="medium"
           style="margin-top: 10px"
+          @click="deleteModule(idx)"
           >删除模块</el-button
         >
         <el-card v-if="mod.questionList.length > 0" style="margin-top: 20px">
           <el-form-item
             :key="questionIdx"
-            v-for="(question, questionIdx) in mod.questionList"
-            :label="`[${question.score}分] 题目${questionIdx + 1}：`"
             style="margin-bottom: 15px"
+            :label="`${questionIdx + 1}、`"
+            v-for="(question, questionIdx) in mod.questionList"
           >
             <el-row>
-              <el-col :span="23"></el-col>
-              <el-col :span="1">
+              <el-col :span="20">
+                <QuestionShow :question="question"></QuestionShow>
+              </el-col>
+              <el-col :span="4">
                 <el-button
+                  style="margin-left: 40px"
                   type="danger"
-                  size="mini"
                   icon="el-icon-delete"
                   circle
+                  @click="deleteQuestion(idx, questionIdx)"
                 ></el-button>
               </el-col>
             </el-row>
@@ -103,7 +106,13 @@
         <el-button type="success" @click="addModule">添加模块</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog :visible.sync="questionPage.showQuestionList" width="70%">
+    <el-dialog
+      :visible.sync="questionPage.questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="previewQuestionItem" />
+    </el-dialog>
+    <el-dialog :visible.sync="questionPage.showQuestionList" width="75%">
       <el-form :model="questionPage.queryParam" ref="queryForm" :inline="true">
         <el-form-item label="ID：">
           <el-input v-model="questionPage.queryParam.id" clearable></el-input>
@@ -118,7 +127,6 @@
             ></el-option>
           </el-select>
         </el-form-item>
-
         <el-form-item label="难度：">
           <el-input
             v-model="questionPage.queryParam.difficulty"
@@ -146,6 +154,7 @@
       </el-form>
       <el-table
         v-loading="questionPage.listLoading"
+        ref="questionList"
         :data="questionPage.questionList"
         @selection-change="handleSelectionChange"
         border
@@ -169,24 +178,145 @@
         <el-table-column prop="difficult" label="难度"></el-table-column>
         <el-table-column prop="username" label="教师账号"></el-table-column>
         <el-table-column prop="name" label="教师昵称"></el-table-column>
-        <template slot-scope="{ row }">
-          <el-button size="mini" @click="editQuestion(row)">查看</el-button>
-        </template>
+        <el-table-column label="操作" align="center">
+          <template slot-scope="{ row }">
+            <el-button size="mini" @click="previewQuestion(row)"
+              >查看</el-button
+            >
+          </template>
+        </el-table-column>
       </el-table>
+      <pagination
+        style="margin-top: 20px"
+        v-show="questionPage.total > 0"
+        :total="questionPage.total"
+        :page.sync="questionPage.queryParam.pageIndex"
+        :limit.sync="questionPage.queryParam.pageSize"
+        @pagination="search"
+      />
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="questionPage.showQuestionList = false"
+          >取 消</el-button
+        >
+        <el-button type="primary" @click="confirmQuestionSelect"
+          >确定</el-button
+        >
+      </span>
     </el-dialog>
   </div>
 </template>
 
 
 <script>
+import Pagination from "@/components/Pagination";
+import QuestionShow from "@/components/QuestionShow/index.vue";
 export default {
   name: "create",
+  components: {
+    Pagination,
+    QuestionShow,
+  },
   data() {
     return {
+      previewQuestionItem: null,
+      modIdx: undefined,
       questionPage: {
+        total: 5,
+        questionVisible: false,
         listLoading: false,
         showQuestionList: false,
-        questionList: [],
+        multipleSlection: [],
+        questionList: [
+          {
+            id: 1,
+            questionType: 1,
+            difficult: 4,
+            // -1表示标题
+            title: "fsfsf",
+            items: [
+              { prefix: "A", content: "fsfs" },
+              { prefix: "B", content: "fsfsf" },
+              { prefix: "C", content: "fsfs" },
+              { prefix: "D", content: "fsfsf" },
+            ],
+            answer: "",
+            // -2表示解析
+            analyze: "",
+            score: "2",
+            name: "郎老师",
+            username: "langwenchong",
+          },
+          {
+            id: 2,
+            questionType: 2,
+            difficult: 1,
+            title: "hdhh",
+            items: [
+              { prefix: "A", content: "ewuhehu" },
+              { prefix: "B", content: "fs" },
+              { prefix: "C", content: "gdsgd" },
+              { prefix: "D", content: "ujrj" },
+            ],
+            answer: [],
+            analyze: "",
+            score: "4",
+            name: "郎老师",
+            username: "langwenchong",
+          },
+          {
+            id: 3,
+            questionType: 3,
+            difficult: 2,
+            // -1表示标题
+            title: "jrhhrshesehdshdhd",
+            items: [
+              { prefix: "A", content: "<p>正确</p>" },
+              { prefix: "B", content: "<p>错误</p>" },
+            ],
+            answer: "",
+            // -2表示解析
+            analyze: "",
+            score: "1",
+            name: "郎老师",
+            username: "langwenchong",
+          },
+          {
+            id: 4,
+            questionType: 4,
+            difficult: 3,
+            title: "fsafsfsgshgs",
+            answer: "",
+            analyze: "",
+            score: "3",
+            name: "郎老师",
+            username: "langwenchong",
+          },
+          {
+            id: 5,
+            questionType: 5,
+            difficult: 0,
+            // -1表示标题
+            title: "hsahshgas",
+            items: [
+              { prefix: "A", content: "fs" },
+              { prefix: "B", content: "fsf" },
+              { prefix: "C", content: "hyehs" },
+              { prefix: "D", content: "hdshds" },
+            ],
+            answer: [
+              { prefix: "A", content: "" },
+              { prefix: "B", content: "" },
+              { prefix: "C", content: "" },
+              { prefix: "D", content: "" },
+            ],
+            // -2表示解析
+            analyze: "",
+            score: "2",
+            name: "郎老师",
+            username: "langwenchong",
+          },
+        ],
         queryParam: {
           id: null,
           questionType: null,
@@ -278,6 +408,16 @@ export default {
     };
   },
   methods: {
+    search() {},
+    submitForm() {},
+    previewQuestion(question) {
+      this.previewQuestionItem = question;
+      this.questionPage.questionVisible = true;
+    },
+    handleSelectionChange(val) {
+      this.questionPage.multipleSlection = val;
+      console.log(this.questionPage.multipleSlection);
+    },
     questionTypeFormatter(row, column) {
       if (row.questionType === 1) {
         return `单选题`;
@@ -301,7 +441,22 @@ export default {
       // this.exam.modules[idx].questionList.push({
       //   score: 2,
       // });
+      this.modIdx = idx;
       this.questionPage.showQuestionList = true;
+    },
+    confirmQuestionSelect() {
+      var that = this;
+      this.questionPage.multipleSlection.forEach((q) => {
+        that.exam.modules[that.modIdx].questionList.push(q);
+      });
+      this.$refs.questionList.clearSelection();
+      this.questionPage.showQuestionList = false;
+    },
+    deleteModule(idx) {
+      this.exam.modules.splice(idx, 1);
+    },
+    deleteQuestion(idx, questionIdx) {
+      this.exam.modules[idx].questionList.splice(questionIdx, 1);
     },
   },
 };
@@ -315,4 +470,3 @@ export default {
   padding: 20px;
   /* background: yellow; */
 }
-</style>
