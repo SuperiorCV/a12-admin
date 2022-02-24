@@ -34,7 +34,7 @@
           v-for="(question, j) in mod.questionList"
           :key="j"
         >
-          <singleChoice :question="question" :idx="j + 1"></singleChoice>
+          <singleChoice v-if="idx===0" :question="question" :idx="j + 1"></singleChoice>
         </div>
       </div>
     </div>
@@ -63,11 +63,12 @@ export default {
         dateMap: [],
         duration: 1,
         modules: [
+          // 单选题模块
           {
             title: "选择题",
             questionList: [
               {
-                id: 0,
+                id: 1,
                 questionType: 1,
                 difficult: 3,
                 // -1表示标题
@@ -87,7 +88,7 @@ export default {
                 studentScore: 1,
               },
               {
-                id: 1,
+                id: 2,
                 questionType: 1,
                 difficult: 2,
                 // -1表示标题
@@ -128,6 +129,21 @@ export default {
               },
             ],
           },
+          // 多选题模块
+          {
+            title:``,
+            questionList:[
+              {
+
+              },
+              {
+
+              },
+              {
+
+              },
+            ]
+          }
         ],
       },
     };
