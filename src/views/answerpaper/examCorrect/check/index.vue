@@ -49,8 +49,9 @@
             :question="question"
             :idx="j + 1"
           ></trueFalse>
+          <sort v-else-if="idx==3" :question="question" :idx="j+1"></sort>
         </div>
-      </div>
+      </div> 
     </div>
   </div>
 </template>
@@ -60,12 +61,14 @@
 import singleChoice from "../../comp/singleChoice";
 import multipleChoice from "../../comp/multipleChoice";
 import trueFalse from "../../comp/trueFalse";
+import sort from "../../comp/sort"
 export default {
   name: "check",
   components: {
     singleChoice,
     multipleChoice,
     trueFalse,
+    sort
   },
   data() {
     return {

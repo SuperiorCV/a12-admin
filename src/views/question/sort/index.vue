@@ -37,7 +37,7 @@
         </el-form-item>
       </el-form-item>
       <el-form-item label="答案：" prop="answer" required>
-        <draggable v-model="question.answer" @end="onDragEnd">
+        <draggable v-model="question.answer">
           <transition-group>
             <div
               class="answerBox"
@@ -203,9 +203,6 @@ export default {
         analyze: "",
         score: "",
       };
-    },
-    onDragEnd() {
-      console.log(this.question.answer);
     },
   },
 };

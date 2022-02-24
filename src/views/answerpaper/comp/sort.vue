@@ -1,7 +1,7 @@
 <template>
   <div id="questionShow">
     <p class="head">{{ idx }}、排序题</p>
-    <draggable v-model="question.studentAnswer" @end="onDragEnd">
+    <draggable v-model="question.studentAnswer">
       <transition-group>
         <div
           class="answerBox"
@@ -15,6 +15,33 @@
         </div>
       </transition-group>
     </draggable>
+    <div class="info">
+      <p>
+        结果：<el-tag :type="questionStatus(question.status)">
+          {{ tagContent(question.status) }}</el-tag
+        >
+      </p>
+      <p>得分：{{ question.studentScore }} / {{ question.score }}分</p>
+      <p class="rate">
+        难度：<el-rate disabled v-model="question.difficult"></el-rate>
+      </p>
+      <p>解析：{{ question.analyze }}</p>
+      <p>正确答案：</p>
+      <draggable v-model="question.answer">
+        <transition-group>
+          <div
+            class="answerBox"
+            v-for="(element, j) in question.answer"
+            :key="element.prefix"
+          >
+            <div class="ql-container ql-snow">
+              <span>{{ j }}</span>
+              <div class="content ql-editor" v-html="element.content" />
+            </div>
+          </div>
+        </transition-group>
+      </draggable>
+    </div>
   </div>
 </template>
 
@@ -33,7 +60,26 @@ export default {
   components: {
     draggable,
   },
-
+  methods: {
+    questionStatus(status) {
+      if (status === -1) {
+        return `danger`;
+      } else if (status === 0) {
+        return `warning`;
+      } else if (status === 1) {
+        return `success`;
+      }
+    },
+    tagContent(status) {
+      if (status === -1) {
+        return `错误`;
+      } else if (status === 0) {
+        return `待批改`;
+      } else if (status === 1) {
+        return `正确`;
+      }
+    },
+  },
 };
 </script>
 

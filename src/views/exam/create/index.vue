@@ -43,6 +43,14 @@
         ></el-input-number
         ><span>&nbsp;分钟</span>
       </el-form-item>
+      <el-form-item label="公布答案：">
+        <el-switch
+          v-model="exam.showAnswer"
+          active-text="是"
+          inactive-text="否"
+        >
+        </el-switch>
+      </el-form-item>
       <el-form-item
         :key="idx"
         :label="`模块${idx + 1}`"
@@ -68,18 +76,25 @@
           style="margin-top: 10px"
           >删除模块</el-button
         >
-        <el-card v-if="mod.questionList.length>0" style="margin-top:20px">
-            <el-form-item :key="questionIdx" v-for="(question,questionIdx) in mod.questionList" :label="`[${question.score}分] 题目${questionIdx+1}：`" style="margin-bottom:15px">
-                <el-row>
-                    <el-col :span="23">
-                        
-                    </el-col>
-                    <el-col :span="1">
-                        <el-button type="danger" size="mini" icon="el-icon-delete" circle></el-button>
-                    </el-col>
-                </el-row>
-
-            </el-form-item>
+        <el-card v-if="mod.questionList.length > 0" style="margin-top: 20px">
+          <el-form-item
+            :key="questionIdx"
+            v-for="(question, questionIdx) in mod.questionList"
+            :label="`[${question.score}分] 题目${questionIdx + 1}：`"
+            style="margin-bottom: 15px"
+          >
+            <el-row>
+              <el-col :span="23"></el-col>
+              <el-col :span="1">
+                <el-button
+                  type="danger"
+                  size="mini"
+                  icon="el-icon-delete"
+                  circle
+                ></el-button>
+              </el-col>
+            </el-row>
+          </el-form-item>
         </el-card>
       </el-form-item>
       <el-form-item>
@@ -88,6 +103,18 @@
         <el-button type="success" @click="addModule">添加模块</el-button>
       </el-form-item>
     </el-form>
+    <el-dialog :visible.sync="quesionPage.showDialog" width="90%">
+      <el-form :model="questionPage.queryParam" ref="queryForm" :inline="true">
+        <el-form-item label="ID：">
+          <el-input v-model="questionPage.param.id" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="题型：">
+          <el-select v-model="questionPage.param.questionType" clearable>
+            <el-option v-for="(item,i) in quesitonTypeEnum" :key="i" :value="item.key" :label="item.value"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -104,6 +131,7 @@ export default {
         dateMap: [],
         duration: 1,
         modules: [],
+        showAnswer: false,
       },
       myClass: [
         {
@@ -157,14 +185,14 @@ export default {
     addModule() {
       this.exam.modules.push({
         title: "",
-        questionList:[]
+        questionList: [],
       });
     },
-    addQuestion(idx){
-        this.exam.modules[idx].questionList.push({
-            score: 2
-        })
-    }
+    addQuestion(idx) {
+      this.exam.modules[idx].questionList.push({
+        score: 2,
+      });
+    },
   },
 };
 </script>
