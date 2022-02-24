@@ -135,23 +135,6 @@ export default {
               },
             ],
           },
-<<<<<<< HEAD
-          // 多选题模块
-          {
-            title:``,
-            questionList:[
-              {
-
-              },
-              {
-
-              },
-              {
-
-              },
-            ]
-          }
-=======
           {
             title: "多选题",
             questionList: [
@@ -276,7 +259,6 @@ export default {
               },
             ],
           },
->>>>>>> e63b2de2d77042c42ba33746f6cf2dbcaf189ebe
         ],
       },
     };
