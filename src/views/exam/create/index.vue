@@ -103,13 +103,13 @@
         <el-button type="success" @click="addModule">添加模块</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog :visible.sync="showQuestionList" width="70%">
-      <el-form :model="queryParam" ref="queryForm" :inline="true">
+    <el-dialog :visible.sync="questionPage.showQuestionList" width="70%">
+      <el-form :model="questionPage.queryParam" ref="queryForm" :inline="true">
         <el-form-item label="ID：">
-          <el-input v-model="queryParam.id" clearable></el-input>
+          <el-input v-model="questionPage.queryParam.id" clearable></el-input>
         </el-form-item>
         <el-form-item label="题型：">
-          <el-select v-model="queryParam.questionType" clearable>
+          <el-select v-model="questionPage.queryParam.questionType" clearable>
             <el-option
               v-for="(item, i) in questionTypeEnum"
               :key="i"
@@ -118,22 +118,61 @@
             ></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="题干：">
-          <el-input v-model="queryParam.content" clearable></el-input>
-        </el-form-item>
+
         <el-form-item label="难度：">
-          <el-input v-model="queryParam.difficulty" clearable></el-input>
+          <el-input
+            v-model="questionPage.queryParam.difficulty"
+            clearable
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="题干：">
+          <el-input
+            v-model="questionPage.queryParam.content"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item label="教师账号：">
-          <el-input v-model="queryParam.username" clearable></el-input>
+          <el-input
+            v-model="questionPage.queryParam.username"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item label="教师昵称：">
-          <el-input v-model="queryParam.name" clearable></el-input>
+          <el-input v-model="questionPage.queryParam.name" clearable></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm">查询</el-button>
         </el-form-item>
       </el-form>
+      <el-table
+        v-loading="questionPage.listLoading"
+        :data="questionPage.questionList"
+        @selection-change="handleSelectionChange"
+        border
+        fit
+        highlight-current-row
+        style="width: 100%"
+      >
+        <el-table-column type="selection" width="35"></el-table-column>
+        <el-table-column prop="id" label="ID" width="60px"></el-table-column>
+        <el-table-column
+          prop="questionType"
+          lebel="题型"
+          :formatter="questionTypeFormatter"
+          width="70px"
+        ></el-table-column>
+        <el-table-column
+          prop="title"
+          label="题干"
+          show-overflow-tooltip
+        ></el-table-column>
+        <el-table-column prop="difficult" label="难度"></el-table-column>
+        <el-table-column prop="username" label="教师账号"></el-table-column>
+        <el-table-column prop="name" label="教师昵称"></el-table-column>
+        <template slot-scope="{ row }">
+          <el-button size="mini" @click="editQuestion(row)">查看</el-button>
+        </template>
+      </el-table>
     </el-dialog>
   </div>
 </template>
@@ -144,16 +183,20 @@ export default {
   name: "create",
   data() {
     return {
-      showQuestionList: false,
-      queryParam: {
-        id: null,
-        questionType: null,
-        content: "",
-        difficulty: undefined,
-        name: "",
-        username: "",
-        pageIndex: 1,
-        pagesize: 5,
+      questionPage: {
+        listLoading: false,
+        showQuestionList: false,
+        questionList: [],
+        queryParam: {
+          id: null,
+          questionType: null,
+          content: "",
+          difficulty: undefined,
+          name: "",
+          username: "",
+          pageIndex: 1,
+          pagesize: 5,
+        },
       },
       questionTypeEnum: [
         {
@@ -235,6 +278,19 @@ export default {
     };
   },
   methods: {
+    questionTypeFormatter(row, column) {
+      if (row.questionType === 1) {
+        return `单选题`;
+      } else if (row.questionType === 2) {
+        return `多选题`;
+      } else if (row.questionType === 3) {
+        return `判断题`;
+      } else if (row.questionType === 4) {
+        return `简答题`;
+      } else if (row.questionType === 5) {
+        return `排序题`;
+      }
+    },
     addModule() {
       this.exam.modules.push({
         title: "",
@@ -245,7 +301,7 @@ export default {
       // this.exam.modules[idx].questionList.push({
       //   score: 2,
       // });
-      this.showQuestionList = true;
+      this.questionPage.showQuestionList = true;
     },
   },
 };

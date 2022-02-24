@@ -82,7 +82,7 @@
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from './questionShow.vue';
+import QuestionShow from '@/components/QuestionShow/index.vue';
 export default {
   components: {
     RichEditor,

@@ -75,7 +75,7 @@
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from './questionShow.vue';
+import QuestionShow from '@/components/QuestionShow/index.vue';
 export default {
   name: "trueFalse",
   components: {
@@ -86,7 +86,7 @@ export default {
     return {
       question: {
         id: null,
-        questionType: 5,
+        questionType: 3,
         difficult: 0,
         // -1表示标题
         title: "",

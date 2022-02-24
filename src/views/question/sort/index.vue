@@ -97,7 +97,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import RichEditor from "@/components/RichEditor/index.vue";
 import draggable from "vuedraggable";
-import QuestionShow from "./questionShow.vue";
+import QuestionShow from '@/components/QuestionShow/index.vue';
 export default {
   name: "sort",
   components: {
@@ -109,7 +109,7 @@ export default {
     return {
       question: {
         id: null,
-        questionType: 1,
+        questionType: 5,
         difficult: 0,
         // -1表示标题
         title: "",

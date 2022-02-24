@@ -89,8 +89,7 @@
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from './questionShow.vue';
-// import { valid } from 'mockjs';
+import QuestionShow from '@/components/QuestionShow/index.vue';
 export default {
   components: {
     RichEditor,
