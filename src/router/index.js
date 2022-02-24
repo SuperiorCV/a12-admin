@@ -231,6 +231,7 @@ export const constantRoutes = [{
       hidden: true,
       component: () => import("@/views/answerpaper/examCorrect/check"),
       meta: {
+        name: '试卷审批',
         noCache: true,
       }
     }]

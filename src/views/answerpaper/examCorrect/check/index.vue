@@ -11,7 +11,7 @@
       <div class="menu">
         <el-tag
           class="tag"
-          :type="questionStatus(item.status)"
+          :type="questionStatus(item.status, item.questionType)"
           v-for="(item, j) in tags"
           :key="j"
           @click="goAnchor(`#question-${item.id}`)"
@@ -35,23 +35,29 @@
           :key="j"
         >
           <singleChoice
-            v-if="idx == 0"
+            v-if="idx === 0"
             :question="question"
             :idx="j + 1"
           ></singleChoice>
           <multipleChoice
-            v-else-if="idx == 1"
+            v-else-if="idx === 1"
             :question="question"
             :idx="j + 1"
           ></multipleChoice>
           <trueFalse
-            v-else-if="idx == 2"
+            v-else-if="idx === 2"
             :question="question"
             :idx="j + 1"
           ></trueFalse>
-          <sort v-else-if="idx==3" :question="question" :idx="j+1"></sort>
+          <shortAnswer
+            @updateExam="updateExam"
+            v-else-if="idx == 3"
+            :question="question"
+            :idx="j + 1"
+          ></shortAnswer>
+          <sort v-else-if="idx === 4" :question="question" :idx="j + 1"></sort>
         </div>
-      </div> 
+      </div>
     </div>
   </div>
 </template>
@@ -61,14 +67,16 @@
 import singleChoice from "../../comp/singleChoice";
 import multipleChoice from "../../comp/multipleChoice";
 import trueFalse from "../../comp/trueFalse";
-import sort from "../../comp/sort"
+import sort from "../../comp/sort";
+import shortAnswer from "../../comp/shortAnswer";
 export default {
   name: "check",
   components: {
     singleChoice,
     multipleChoice,
     trueFalse,
-    sort
+    sort,
+    shortAnswer,
   },
   data() {
     return {
@@ -275,6 +283,52 @@ export default {
             ],
           },
           {
+            title: "简答题",
+            questionList: [
+              {
+                id: 10,
+                questionType: 4,
+                difficult: 3,
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "答案1",
+                studentAnswer: "sddfsssssssssssssssssss",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: undefined,
+              },
+              {
+                id: 11,
+                questionType: 4,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "123123",
+                studentAnswer: "rtyui",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: undefined,
+              },
+              {
+                id: 12,
+                questionType: 4,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "456",
+                studentAnswer: "oiuttd",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: undefined,
+              },
+            ],
+          },
+          {
             title: "排序题",
             questionList: [
               {
@@ -327,13 +381,15 @@ export default {
     },
   },
   methods: {
-    questionStatus(status) {
+    questionStatus(status, type) {
       if (status === -1) {
         return `danger`;
       } else if (status === 0) {
         return `warning`;
-      } else if (status === 1) {
+      } else if (status === 1 && type != 4) {
         return `success`;
+      } else if (status === 1 && type === 1) {
+        return ``;
       }
     },
     goAnchor(id) {
@@ -342,6 +398,18 @@ export default {
         block: "center",
         inline: "nearest",
       });
+    },
+    updateExam(n, o) {
+      n.status = 1;
+      var modules = this.exam.modules;
+      for (let i = 0; i < modules.length; i++) {
+        var questionList = modules[i].questionList;
+        var idx = questionList.indexOf(o);
+        if (idx !== -1) {
+          questionList[idx] = n;
+          return;
+        }
+      }
     },
   },
 };
@@ -379,6 +447,7 @@ export default {
   width: 100%;
 }
 .tag {
+  margin-bottom:5px;
   margin-left: 5px;
   cursor: pointer;
 }
