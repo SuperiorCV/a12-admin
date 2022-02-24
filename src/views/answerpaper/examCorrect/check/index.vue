@@ -34,7 +34,9 @@
           v-for="(question, j) in mod.questionList"
           :key="j"
         >
-          <singleChoice v-if="idx===0" :question="question" :idx="j + 1"></singleChoice>
+          <singleChoice v-if="idx==0" :question="question" :idx="j + 1"></singleChoice>
+          <multipleChoice v-else-if="idx==1" :question="question" :idx="j + 1"></multipleChoice>
+          <trueFalse v-else-if="idx==2" :question="question" :idx="j + 1"></trueFalse>
         </div>
       </div>
     </div>
@@ -44,10 +46,14 @@
 
 <script>
 import singleChoice from "../../comp/singleChoice";
+import multipleChoice from "../../comp/multipleChoice";
+import trueFalse from "../../comp/trueFalse";
 export default {
   name: "check",
   components: {
     singleChoice,
+    multipleChoice,
+    trueFalse,
   },
   data() {
     return {
@@ -129,6 +135,7 @@ export default {
               },
             ],
           },
+<<<<<<< HEAD
           // 多选题模块
           {
             title:``,
@@ -144,6 +151,132 @@ export default {
               },
             ]
           }
+=======
+          {
+            title: "多选题",
+            questionList: [
+              {
+                id: 4,
+                questionType: 1,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsafsafsfsa",
+                items: [
+                  { prefix: "A", content: "ggg" },
+                  { prefix: "B", content: "gggggg" },
+                  { prefix: "C", content: "aaa" },
+                  { prefix: "D", content: "cccc" },
+                ],
+                status: 1, //-1表示错误，0表示待批改，1表示正确
+                answer: ['A',"C","D"],
+                studentAnswer: ["A","C","D"],
+                // -2表示解析
+                analyze: "fsagsagsagsag",
+                score: 1,
+                studentScore: 1,
+              },
+              {
+                id: 5,
+                questionType: 1,
+                difficult: 2,
+                // -1表示标题
+                title: "fsfsfssd",
+                items: [
+                  { prefix: "A", content: "fafsa" },
+                  { prefix: "B", content: "gsagsgs" },
+                  { prefix: "C", content: "faf" },
+                  { prefix: "D", content: "fasfs" },
+                ],
+                status: -1, //-1表示错误，0表示待批改，1表示正确
+                answer: "A",
+                // -2表示解析
+                answer: ["A","C","B"],
+                studentAnswer: ["A","C"],
+                score: 2,
+                studentScore: 0,
+              },
+              {
+                id: 6,
+                questionType: 1,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                items: [
+                  { prefix: "A", content: "fsafs" },
+                  { prefix: "B", content: "fsaf" },
+                  { prefix: "C", content: "fsafs" },
+                  { prefix: "D", content: "fsaf" },
+                ],
+                status: 1, //-1表示错误，0表示待批改，1表示正确
+                answer: ["A","C"],
+                studentAnswer: ["A","C"],
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: 2,
+              },
+            ],
+          },
+          {
+            title: "判断题",
+            questionList: [
+              {
+                id: 7,
+                questionType: 1,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsafsafsfsa",
+                items: [
+                  { prefix: "A", content: "正确" },
+                  { prefix: "B", content: "错误" },
+                ],
+                status: 1, //-1表示错误，0表示待批改，1表示正确
+                answer: "A",
+                studentAnswer: "A",
+                // -2表示解析
+                analyze: "fsagsagsagsag",
+                score: 1,
+                studentScore: 1,
+              },
+              {
+                id: 8,
+                questionType: 1,
+                difficult: 2,
+                // -1表示标题
+                title: "fsfsfssd",
+                items: [
+                  { prefix: "A", content: "正确" },
+                  { prefix: "B", content: "错误" },
+                ],
+                status: -1, //-1表示错误，0表示待批改，1表示正确
+                answer: "A",
+                // -2表示解析
+                analyze: "fafsfs",
+                studentAnswer: "B",
+                score: 2,
+                studentScore: 0,
+              },
+              {
+                id: 9,
+                questionType: 1,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                items: [
+                  { prefix: "A", content: "正确" },
+                  { prefix: "B", content: "错误" },
+                ],
+                status: -1, //-1表示错误，0表示待批改，1表示正确
+                answer: "A",
+                studentAnswer: "B",
+                // -2表示解析
+                analyze: "",
+                score: 2,
+                studentScore: 0,
+              },
+            ],
+          },
+>>>>>>> e63b2de2d77042c42ba33746f6cf2dbcaf189ebe
         ],
       },
     };

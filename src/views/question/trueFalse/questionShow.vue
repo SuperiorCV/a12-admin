@@ -42,7 +42,7 @@ export default {
 }
 .head {
   margin-top: 0;
-  background: #83b5f7;
+  background: #8cbda4;
   padding: 8px;
   color: #fff;
 }
@@ -52,5 +52,16 @@ export default {
 .ql-editor {
   padding: 0 !important;
   margin-right: 10px;
+}
+.el-radio {
+  display: flex;
+  margin-top: 10px;
+}
+.radio {
+  display: flex;
+}
+.radio p {
+  margin-block-start: 0 !important;
+  margin-block-end: 0 !important;
 }
 </style>
