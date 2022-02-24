@@ -470,3 +470,4 @@ export default {
   padding: 20px;
   /* background: yellow; */
 }
+</style>
