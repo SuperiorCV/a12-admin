@@ -49,6 +49,11 @@
             :question="question"
             :idx="j + 1"
           ></trueFalse>
+          <shortAnswer
+            v-else-if="idx == 3"
+            :question="question"
+            :idx="j+1"
+          ></shortAnswer>
         </div>
       </div>
     </div>
@@ -60,12 +65,14 @@
 import singleChoice from "../../comp/singleChoice";
 import multipleChoice from "../../comp/multipleChoice";
 import trueFalse from "../../comp/trueFalse";
+import shortAnswer from "../../comp/shortAnswer";
 export default {
   name: "check",
   components: {
     singleChoice,
     multipleChoice,
     trueFalse,
+    shortAnswer,
   },
   data() {
     return {
@@ -268,6 +275,52 @@ export default {
                 analyze: "",
                 score: 2,
                 studentScore: 0,
+              },
+            ],
+          },
+          {
+            title: "简答题",
+            questionList: [
+              {
+                id: 10,
+                questionType: 4,
+                difficult: 3,
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "答案1",
+                studentAnswer: "sddfsssssssssssssssssss",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: 2,
+              },
+              {
+                id: 11,
+                questionType: 4,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "123123",
+                studentAnswer: "rtyui",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: 2,
+              },
+              {
+                id: 12,
+                questionType: 4,
+                difficult: 3,
+                // -1表示标题
+                title: "fsfsfss",
+                status: 0, //-1表示错误，0表示待批改，1表示正确
+                answer: "456",
+                studentAnswer: "oiuttd",
+                // -2表示解析
+                analyze: "SASASASA",
+                score: 2,
+                studentScore: 2,
               },
             ],
           },
