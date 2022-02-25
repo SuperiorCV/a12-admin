@@ -48,17 +48,6 @@
       :limit.sync="queryParam.pageSize"
       @pagination="search"
     />
-
-    <!-- <el-dialog
-      :visible.sync="questionShow.dialog"
-      style="width: 100%; height: 100%"
-    >
-      <QuestionShow
-        :qType="questionShow.qType"
-        :question="questionShow.question"
-        :qLoading="questionShow.loading"
-      />
-    </el-dialog> -->
   </div>
 </template>
 
@@ -176,7 +165,7 @@ export default {
     // },
 
     showQuestion(row) {
-      this.$router.push({ name: "examCorrectCheck" });
+      this.$router.push({ name: "check", params: { edit: true } });
       //   let _this = this;
       //   this.questionShow.dialog = true;
       //   this.questionShow.loading = true;
@@ -189,7 +178,7 @@ export default {
 
     editQuestion(row) {
       //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
-      //   this.$router.push({ path: url, query: { id: row.id } });
+      // this.$router.push({ path: url, query: { id: row.id, edit: true } });
     },
 
     deleteQuestion(row) {

@@ -37,7 +37,7 @@
           :key="j"
         >
           <AnswerShow
-          :edit="edit"
+            :edit="edit"
             :idx="IndexCompute(idx, j)"
             :question="question"
             @updateExam="updateExam"
@@ -55,6 +55,12 @@ export default {
   name: "check",
   components: {
     AnswerShow,
+  },
+  created(){                                                
+    var params=this.$route.params;
+    if(params!=null){      
+      this.edit=params.edit;
+    }
   },
   data() {
     return {

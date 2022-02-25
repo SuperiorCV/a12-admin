@@ -37,7 +37,7 @@
       <el-table-column label="操作" align="center" width="160px">
         <template slot-scope="{ row }">
           <el-button size="mini" @click="showQuestion(row)">查看</el-button>
-          <el-button size="mini" @click="showQuestion(row)">打印</el-button>
+          <!-- <el-button size="mini" @click="showQuestion(row)">打印</el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -50,16 +50,6 @@
       @pagination="search"
     />
 
-    <!-- <el-dialog
-      :visible.sync="questionShow.dialog"
-      style="width: 100%; height: 100%"
-    >
-      <QuestionShow
-        :qType="questionShow.qType"
-        :question="questionShow.question"
-        :qLoading="questionShow.loading"
-      />
-    </el-dialog> -->
   </div>
 </template>
 
@@ -177,6 +167,7 @@ export default {
     // },
 
     showQuestion(row) {
+      this.$router.push({ name: "check", params: { edit: false } });
       //   let _this = this;
       //   this.questionShow.dialog = true;
       //   this.questionShow.loading = true;
