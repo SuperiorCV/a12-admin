@@ -226,12 +226,12 @@ export const constantRoutes = [{
         noCache: true
       }
     }, {
-      path: 'examCorrectCheck',
-      name: 'examCorrectCheck',
+      path: 'check',
+      name: 'check',
       hidden: true,
-      component: () => import("@/views/answerpaper/examCorrect/check"),
+      component: () => import("@/views/answerpaper/check"),
       meta: {
-        name: '试卷审批',
+        title: '试卷审阅',
         noCache: true,
       }
     }]

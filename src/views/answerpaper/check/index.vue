@@ -19,8 +19,10 @@
         >
       </div>
       <div class="tool">
-        <el-button type="primary" plain>提交批改</el-button>
-        <el-button plain>返回列表</el-button>
+        <el-button type="primary" plain v-if="edit === true"
+          >提交批改</el-button
+        >
+        <el-button plain @click="toList">返回列表</el-button>
       </div>
     </div>
     <div id="r-main">
@@ -34,28 +36,12 @@
           v-for="(question, j) in mod.questionList"
           :key="j"
         >
-          <singleChoice
-            v-if="idx === 0"
+          <AnswerShow
+          :edit="edit"
+            :idx="IndexCompute(idx, j)"
             :question="question"
-            :idx="j + 1"
-          ></singleChoice>
-          <multipleChoice
-            v-else-if="idx === 1"
-            :question="question"
-            :idx="j + 1"
-          ></multipleChoice>
-          <trueFalse
-            v-else-if="idx === 2"
-            :question="question"
-            :idx="j + 1"
-          ></trueFalse>
-          <shortAnswer
             @updateExam="updateExam"
-            v-else-if="idx == 3"
-            :question="question"
-            :idx="j + 1"
-          ></shortAnswer>
-          <sort v-else-if="idx === 4" :question="question" :idx="j + 1"></sort>
+          ></AnswerShow>
         </div>
       </div>
     </div>
@@ -64,22 +50,15 @@
 
 
 <script>
-import singleChoice from "../../comp/singleChoice";
-import multipleChoice from "../../comp/multipleChoice";
-import trueFalse from "../../comp/trueFalse";
-import sort from "../../comp/sort";
-import shortAnswer from "../../comp/shortAnswer";
+import AnswerShow from "@/components/AnswerShow";
 export default {
   name: "check",
   components: {
-    singleChoice,
-    multipleChoice,
-    trueFalse,
-    sort,
-    shortAnswer,
+    AnswerShow,
   },
   data() {
     return {
+      edit: true,
       exam: {
         currentScore: 80,
         fullScore: 150,
@@ -163,7 +142,7 @@ export default {
             questionList: [
               {
                 id: 4,
-                questionType: 1,
+                questionType: 2,
                 difficult: 3,
                 // -1表示标题
                 title: "fsfsafsafsfsa",
@@ -183,7 +162,7 @@ export default {
               },
               {
                 id: 5,
-                questionType: 1,
+                questionType: 2,
                 difficult: 2,
                 // -1表示标题
                 title: "fsfsfssd",
@@ -203,7 +182,7 @@ export default {
               },
               {
                 id: 6,
-                questionType: 1,
+                questionType: 2,
                 difficult: 3,
                 // -1表示标题
                 title: "fsfsfss",
@@ -228,7 +207,7 @@ export default {
             questionList: [
               {
                 id: 7,
-                questionType: 1,
+                questionType: 3,
                 difficult: 3,
                 // -1表示标题
                 title: "fsfsafsafsfsa",
@@ -246,7 +225,7 @@ export default {
               },
               {
                 id: 8,
-                questionType: 1,
+                questionType: 3,
                 difficult: 2,
                 // -1表示标题
                 title: "fsfsfssd",
@@ -264,7 +243,7 @@ export default {
               },
               {
                 id: 9,
-                questionType: 1,
+                questionType: 3,
                 difficult: 3,
                 // -1表示标题
                 title: "fsfsfss",
@@ -381,6 +360,13 @@ export default {
     },
   },
   methods: {
+    toList() {
+      if (this.edit) {
+        this.$router.push({ name: "examCorrect" });
+      } else {
+        this.$router.push({ name: "resultList" });
+      }
+    },
     questionStatus(status, type) {
       if (status === -1) {
         return `danger`;
@@ -400,7 +386,7 @@ export default {
       });
     },
     updateExam(n, o) {
-      n.status = 1;
+      n.status = 2; //对于简答题只能是0和2表示等待审批和已审批完
       var modules = this.exam.modules;
       for (let i = 0; i < modules.length; i++) {
         var questionList = modules[i].questionList;
@@ -410,6 +396,13 @@ export default {
           return;
         }
       }
+    },
+    IndexCompute(idx, j) {
+      var ans = 0;
+      for (let i = 0; i < idx; i++) {
+        ans += this.exam.modules[i].questionList.length;
+      }
+      return ans + j + 1;
     },
   },
 };

@@ -13,6 +13,9 @@
       <el-form-item label="用户账号：">
         <el-input v-model="queryParam.username" clearable></el-input>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm">查询</el-button>
+      </el-form-item>
     </el-form>
 
     <el-table
