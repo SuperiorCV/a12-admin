@@ -71,22 +71,27 @@
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
         <el-button type="success" @click="questionItemAdd">添加选项</el-button>
-        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
+        <el-button type="success" @click="questionVisible = true"
+          >预览题目</el-button
+        >
       </el-form-item>
     </el-form>
-    <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
-      <QuestionShow :question="question"/>
+    <el-dialog
+      :visible.sync="questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="question" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from '@/components/QuestionShow/index.vue';
+import QuestionShow from "@/components/QuestionShow/index.vue";
 export default {
   components: {
     RichEditor,
-    QuestionShow
+    QuestionShow,
   },
   name: "singleChoice",
   data() {
@@ -95,7 +100,7 @@ export default {
         id: null,
         questionType: 1,
         difficult: 0,
-        // -1表示标题
+
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -104,7 +109,7 @@ export default {
           { prefix: "D", content: "" },
         ],
         answer: "",
-        // -2表示解析
+
         analyze: "",
         score: "",
       },
@@ -135,7 +140,6 @@ export default {
     updateContent({ id, content }) {
       if (id === -1) {
         this.question.title = content;
-        // alert(this.question.title);
       } else if (id === -2) {
         this.question.analyze = content;
       } else if (id >= 0) {
@@ -158,7 +162,7 @@ export default {
         id: null,
         questionType: 1,
         difficult: 0,
-        // -1表示标题
+
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -167,7 +171,7 @@ export default {
           { prefix: "D", content: "" },
         ],
         answer: "",
-        // -2表示解析
+
         analyze: "",
         score: "",
       };
@@ -182,6 +186,5 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: red; */
 }
 </style>

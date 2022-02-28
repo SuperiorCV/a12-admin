@@ -88,14 +88,14 @@ export default {
         id: null,
         questionType: 3,
         difficult: 0,
-        // -1表示标题
+        
         title: "",
         items: [
           { prefix: "A", content: "<p>正确</p>" },
           { prefix: "B", content: "<p>错误</p>" },
         ],
         answer: "",
-        // -2表示解析
+        
         analyze: "",
         score: "",
       },
@@ -113,7 +113,7 @@ export default {
     updateContent({ id, content }) {
       if (id === -1) {
         this.question.title = content;
-        // alert(this.question.title);
+        
       } else if (id === -2) {
         this.question.analyze = content;
       } else if (id >= 0) {
@@ -137,14 +137,14 @@ export default {
         id: null,
         questionType: 1,
         difficult: 0,
-        // -1表示标题
+        
         title: "",
         items: [
           { prefix: "A", content: "<p>是</p>" },
           { prefix: "B", content: "<p>否</p>" },
         ],
         answer: "",
-        // -2表示解析
+        
         analyze: "",
         score: "",
       };
@@ -159,6 +159,6 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: red; */
+  
 }
 </style>

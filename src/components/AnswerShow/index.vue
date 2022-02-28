@@ -228,7 +228,6 @@ export default {
           this.$emit("updateExam", n, o);
         }
       },
-      // immediate: true,
       deep: true,
     },
   },

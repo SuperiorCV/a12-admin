@@ -77,7 +77,6 @@ export default {
         dateMap: [],
         duration: 1,
         modules: [
-          // 单选题模块
           {
             title: "选择题",
             questionList: [
@@ -105,7 +104,6 @@ export default {
                 id: 2,
                 questionType: 1,
                 difficult: 2,
-                // -1表示标题
                 title: "fsfsfssd",
                 items: [
                   { prefix: "A", content: "fafsa" },
@@ -113,9 +111,8 @@ export default {
                   { prefix: "C", content: "faf" },
                   { prefix: "D", content: "fasfs" },
                 ],
-                status: -1, //-1表示错误，0表示待批改，1表示正确
+                status: -1, 
                 answer: "A",
-                // -2表示解析
                 analyze: "fafsfs",
                 studentAnswer: "C",
                 score: 2,
@@ -125,7 +122,6 @@ export default {
                 id: 3,
                 questionType: 1,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
                 items: [
                   { prefix: "A", content: "fsafs" },
@@ -133,10 +129,9 @@ export default {
                   { prefix: "C", content: "fsafs" },
                   { prefix: "D", content: "fsaf" },
                 ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
+                status: 1, 
                 answer: "D",
                 studentAnswer: "C",
-                // -2表示解析
                 analyze: "",
                 score: 2,
                 studentScore: 2,
@@ -150,7 +145,6 @@ export default {
                 id: 4,
                 questionType: 2,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsafsafsfsa",
                 items: [
                   { prefix: "A", content: "ggg" },
@@ -158,10 +152,9 @@ export default {
                   { prefix: "C", content: "aaa" },
                   { prefix: "D", content: "cccc" },
                 ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
+                status: 1, 
                 answer: ["A", "C", "D"],
                 studentAnswer: ["A", "C", "D"],
-                // -2表示解析
                 analyze: "fsagsagsagsag",
                 score: 1,
                 studentScore: 1,
@@ -170,7 +163,6 @@ export default {
                 id: 5,
                 questionType: 2,
                 difficult: 2,
-                // -1表示标题
                 title: "fsfsfssd",
                 items: [
                   { prefix: "A", content: "fafsa" },
@@ -178,9 +170,8 @@ export default {
                   { prefix: "C", content: "faf" },
                   { prefix: "D", content: "fasfs" },
                 ],
-                status: -1, //-1表示错误，0表示待批改，1表示正确
+                status: -1,
                 answer: "A",
-                // -2表示解析
                 answer: ["A", "C", "B"],
                 studentAnswer: ["A", "C"],
                 score: 2,
@@ -190,7 +181,6 @@ export default {
                 id: 6,
                 questionType: 2,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
                 items: [
                   { prefix: "A", content: "fsafs" },
@@ -198,10 +188,9 @@ export default {
                   { prefix: "C", content: "fsafs" },
                   { prefix: "D", content: "fsaf" },
                 ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
+                status: 1, 
                 answer: ["A", "C"],
                 studentAnswer: ["A", "C"],
-                // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
                 studentScore: 2,
@@ -215,16 +204,14 @@ export default {
                 id: 7,
                 questionType: 3,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsafsafsfsa",
                 items: [
                   { prefix: "A", content: "正确" },
                   { prefix: "B", content: "错误" },
                 ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
+                status: 1, 
                 answer: "A",
                 studentAnswer: "A",
-                // -2表示解析
                 analyze: "fsagsagsagsag",
                 score: 1,
                 studentScore: 1,
@@ -233,15 +220,13 @@ export default {
                 id: 8,
                 questionType: 3,
                 difficult: 2,
-                // -1表示标题
                 title: "fsfsfssd",
                 items: [
                   { prefix: "A", content: "正确" },
                   { prefix: "B", content: "错误" },
                 ],
-                status: -1, //-1表示错误，0表示待批改，1表示正确
+                status: -1, 
                 answer: "A",
-                // -2表示解析
                 analyze: "fafsfs",
                 studentAnswer: "B",
                 score: 2,
@@ -251,16 +236,14 @@ export default {
                 id: 9,
                 questionType: 3,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
                 items: [
                   { prefix: "A", content: "正确" },
                   { prefix: "B", content: "错误" },
                 ],
-                status: -1, //-1表示错误，0表示待批改，1表示正确
+                status: -1, 
                 answer: "A",
                 studentAnswer: "B",
-                // -2表示解析
                 analyze: "",
                 score: 2,
                 studentScore: 0,
@@ -275,10 +258,9 @@ export default {
                 questionType: 4,
                 difficult: 3,
                 title: "fsfsfss",
-                status: 0, //-1表示错误，0表示待批改，1表示正确
+                status: 0, 
                 answer: "答案1",
                 studentAnswer: "sddfsssssssssssssssssss",
-                // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
                 studentScore: undefined,
@@ -287,12 +269,10 @@ export default {
                 id: 11,
                 questionType: 4,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
-                status: 0, //-1表示错误，0表示待批改，1表示正确
+                status: 0,
                 answer: "123123",
                 studentAnswer: "rtyui",
-                // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
                 studentScore: undefined,
@@ -301,12 +281,10 @@ export default {
                 id: 12,
                 questionType: 4,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
-                status: 0, //-1表示错误，0表示待批改，1表示正确
+                status: 0, 
                 answer: "456",
                 studentAnswer: "oiuttd",
-                // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
                 studentScore: undefined,
@@ -320,7 +298,6 @@ export default {
                 id: 13,
                 questionType: 5,
                 difficult: 3,
-                // -1表示标题
                 title: "fsfsfss",
                 items: [
                   { prefix: "A", content: "<pre>A</pre>" },
@@ -328,7 +305,7 @@ export default {
                   { prefix: "C", content: "<pre>C</pre>" },
                   { prefix: "D", content: "<p>D</p>" },
                 ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
+                status: 1, 
                 answer: [
                   { prefix: "A", content: "<pre>A</pre>" },
                   { prefix: "B", content: "<p>B</p>" },
@@ -341,7 +318,6 @@ export default {
                   { prefix: "C", content: "<pre>C</pre>" },
                   { prefix: "D", content: "<p>D</p>" },
                 ],
-                // -2表示解析
                 analyze: "SASASASA",
                 score: 2,
                 studentScore: 2,
@@ -417,7 +393,6 @@ export default {
 <style scoped>
 #check {
   width: 100%;
-  /* min-height: 90vh; */
   background: #eff3f7;
   box-sizing: border-box;
   padding: 20px;
@@ -428,7 +403,6 @@ export default {
   position: fixed;
   top: 105px;
   background: #fff;
-  /* min-height: 200px; */
   width: 300px;
   height: 100%;
   box-sizing: border-box;
@@ -442,7 +416,6 @@ export default {
   padding: 10px 0px;
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: space-between; */
   width: 100%;
 }
 .tag {
@@ -470,7 +443,6 @@ export default {
 }
 #r-main {
   width: calc(100% - 320px);
-  /* min-height: 200px; */
   margin-left: 320px;
   background: #fff;
 }

@@ -78,7 +78,6 @@
 </template>
 
 <script>
-// import resize from './components/mixins/resize'
 import CountTo from "vue-count-to";
 export default {
   name: "Dashboard",

@@ -49,15 +49,7 @@
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="操作" align="center">
         <template>
-          <!-- <router-link
-            :to="{ path: '/class/edit', query: { id: row.id } }"
-            class="link-left"
-          > -->
           <el-button size="mini" type="danger">移出</el-button>
-          <!-- </router-link> -->
-          <!-- <el-button size="mini" type="danger" class="link-left"
-            >解散</el-button
-          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -226,7 +218,6 @@ export default {
 #edit {
   width: 100%;
   min-height: 100vh;
-  /* background: pink; */
   box-sizing: border-box;
   padding: 20px;
 }

@@ -187,6 +187,5 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: red; */
 }
 </style>

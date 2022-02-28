@@ -3,13 +3,13 @@
     <!-- 查询框 -->
     <el-form :model="queryParam" ref="queryForm" :inline="true">
       <el-form-item label="题目ID：">
-        <el-input v-model="queryParam.userName"></el-input>
+        <el-input v-model="queryParam.questionId"></el-input>
       </el-form-item>
       <el-form-item label="题干：">
-        <el-input v-model="queryParam.name"></el-input>
+        <el-input v-model="queryParam.questionBody"></el-input>
       </el-form-item>
       <el-form-item label="分数：">
-        <el-input v-model="queryParam.email"></el-input>
+        <el-input v-model="queryParam.score"></el-input>
       </el-form-item>
       <el-form-item label="题型：">
         <el-select
@@ -44,19 +44,18 @@
       <el-table-column prop="id" label="ID"></el-table-column>
       <el-table-column prop="type" label="题型"></el-table-column>
       <el-table-column prop="questionBody" label="题干"></el-table-column>
-      <el-table-column prop="grade" label="分数"></el-table-column>
-      <el-table-column prop="difficulty" label="难度">
+      <el-table-column prop="score" label="分数"></el-table-column>
+      <el-table-column prop="difficult" label="难度">
         <template slot-scope="{ row }">
-          <!-- <el-rate v-model="row.difficulty"></el-rate> -->
           <div class="rate-wrapper">
-            <el-rate v-model="row.difficulty" disabled> </el-rate
-            ><span style="color: #ff9900">{{ row.difficulty }}</span>
+            <el-rate v-model="row.difficult" disabled> </el-rate
+            ><span style="color: #ff9900">{{ row.difficult }}</span>
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="teacherTrueName" label="教师"></el-table-column>
+      <el-table-column prop="teacherUsername" label="教师"></el-table-column>
       <el-table-column
-        prop="teacherUserName"
+        prop="name"
         label="教师昵称"
       ></el-table-column>
       <el-table-column label="操作" align="center">
@@ -92,8 +91,8 @@ export default {
     return {
       queryParam: {
         questionId: "",
-        stem: "",
-        grade: "",
+        questionBody: "",
+        score: "",
         type: "",
         role: 1,
         pageIndex: 1,
@@ -112,55 +111,55 @@ export default {
         id: 1,
         type: "单选题",
         questionBody: "单选题1",
-        grade: "2",
-        difficulty: 1,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "2",
+        difficult: 1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
       {
         id: 2,
         type: "多选题",
         questionBody: "多选题1",
-        grade: "2",
-        difficulty: 2,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "2",
+        difficult: 2,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
       {
         id: 3,
         type: "判断题",
         questionBody: "判断题1",
-        grade: "1",
-        difficulty: 1,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "1",
+        difficult: 1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
       {
         id: 4,
         type: "简答题",
         questionBody: "简答题1",
-        grade: "5",
-        difficulty: 3.1,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "5",
+        difficult: 3.1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
       {
         id: 5,
         type: "单选题",
         questionBody: "单选题2",
-        grade: "1",
-        difficulty: 2.5,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "1",
+        difficult: 2.5,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
       {
         id: 6,
         type: "多选题",
         questionBody: "多选题2",
-        grade: "2",
-        difficulty: 3,
-        teacherTrueName: "朗文翀",
-        teacherUserName: "朗文翀",
+        score: "2",
+        difficult: 3,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
       },
     ];
     this.total = 6;
@@ -172,50 +171,50 @@ export default {
       this.listLoading = true;
       this.questionData = [
         {
-          id: 1,
-          type: "单选题",
-          questionBody: "单选题1",
-          grade: "2",
-          difficulty: 1,
-          teacherTrueName: "朗文翀",
-          teacherUserName: "朗文翀",
-        },
-        {
-          id: 2,
-          type: "多选题",
-          questionBody: "多选题1",
-          grade: "2",
-          difficulty: "2",
-          teacherTrueName: "朗文翀",
-          teacherUserName: "朗文翀",
-        },
-        {
-          id: 3,
-          type: "判断题",
-          questionBody: "判断题1",
-          grade: "1",
-          difficulty: "1",
-          teacherTrueName: "朗文翀",
-          teacherUserName: "朗文翀",
-        },
-        {
-          id: 4,
-          type: "简答题",
-          questionBody: "简答题1",
-          grade: "5",
-          difficulty: "3",
-          teacherTrueName: "朗文翀",
-          teacherUserName: "朗文翀",
-        },
-        {
-          id: 5,
-          type: "单选题",
-          questionBody: "单选题2",
-          grade: "1",
-          difficulty: "2",
-          teacherTrueName: "朗文翀",
-          teacherUserName: "朗文翀",
-        },
+        id: 1,
+        type: "单选题",
+        questionBody: "单选题1",
+        score: "2",
+        difficult: 1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
+      },
+      {
+        id: 2,
+        type: "多选题",
+        questionBody: "多选题1",
+        score: "2",
+        difficult: 2,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
+      },
+      {
+        id: 3,
+        type: "判断题",
+        questionBody: "判断题1",
+        score: "1",
+        difficult: 1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
+      },
+      {
+        id: 4,
+        type: "简答题",
+        questionBody: "简答题1",
+        score: "5",
+        difficult: 3.1,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
+      },
+      {
+        id: 5,
+        type: "单选题",
+        questionBody: "单选题2",
+        score: "1",
+        difficult: 2.5,
+        teacherUsername: "朗文翀",
+        name: "朗文翀",
+      },
       ];
       this.total = 5;
       this.queryParam.pageIndex = 1;

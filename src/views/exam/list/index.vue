@@ -49,16 +49,7 @@
       @pagination="search"
     />
 
-    <!-- <el-dialog
-      :visible.sync="questionShow.dialog"
-      style="width: 100%; height: 100%"
-    >
-      <QuestionShow
-        :qType="questionShow.qType"
-        :question="questionShow.question"
-        :qLoading="questionShow.loading"
-      />
-    </el-dialog> -->
+    
   </div>
 </template>
 
@@ -78,7 +69,7 @@ export default {
         pageSize: 10,
       },
 
-      //   subjectFilter: null,
+     
       listLoading: false,
       tableData: [
         {
