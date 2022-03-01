@@ -56,12 +56,12 @@ export default {
     return {
       queryParam: {
         className: "",
-        role: 1,
         pageIndex: 1,
         pageSize: 10,
       },
       listLoading: true,
       classData: [],
+      pages:30,
       total: 0,
     };
   },

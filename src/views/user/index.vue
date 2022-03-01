@@ -68,12 +68,12 @@ export default {
         userName: "",
         name: "",
         email: "",
-        role: 1,
         pageIndex: 1,
         pageSize: 10,
       },
       listLoading: true,
       userData: [],
+      pages:1,
       total: 0,
     };
   },

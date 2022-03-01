@@ -227,6 +227,7 @@ export default {
         listLoading: false,
         showQuestionList: false,
         multipleSlection: [],
+        pages:1,
         questionList: [
           {
             id: 1,
