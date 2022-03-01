@@ -1,14 +1,18 @@
 <template>
   <div id="create">
     <el-form :model="exam" :rules="rules" ref="exam" label-width="auto">
-      <el-form-item label="试卷名称：" prop="title" required="">
+      <el-form-item label="考试学科：" prop="subject" required>
+        <el-input placeholder="请输入考试学科" v-model="exam.subject" clearable>
+        </el-input>
+      </el-form-item>
+      <el-form-item label="试卷名称：" prop="title" required>
         <el-input placeholder="请输入试卷名称" v-model="exam.title" clearable>
         </el-input>
       </el-form-item>
-      <el-form-item label="注意事项：" prop="tip" required="">
+      <el-form-item label="注意事项：" prop="tip">
         <el-input
           type="textarea"
-          placeholder="请输入试卷名称"
+          placeholder="请输入考试注意事项"
           :autosize="{ minRows: 3, maxRows: 6 }"
           v-model="exam.tip"
           clearable
@@ -42,14 +46,6 @@
           :max="1000"
         ></el-input-number
         ><span>&nbsp;分钟</span>
-      </el-form-item>
-      <el-form-item label="公布答案：">
-        <el-switch
-          v-model="exam.showAnswer"
-          active-text="是"
-          inactive-text="否"
-        >
-        </el-switch>
       </el-form-item>
       <el-form-item
         :key="idx"
@@ -227,7 +223,7 @@ export default {
         listLoading: false,
         showQuestionList: false,
         multipleSlection: [],
-        pages:1,
+        pages: 1,
         questionList: [
           {
             id: 1,
@@ -356,9 +352,9 @@ export default {
         tip: "",
         examClass: [],
         dateMap: [],
-        duration: 1,
+        duration: undefined,
         modules: [],
-        showAnswer: false,
+        subject: "",
       },
       myClass: [
         {
@@ -374,7 +370,25 @@ export default {
           name: "软件工程3班",
         },
       ],
-      rules: {},
+      rules: {
+        title: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
+        subject: [
+          { required: true, message: "请输入考试科目", trigger: "blur" },
+        ],
+        examClass: [
+          { required: true, message: "请选择考试班级", trigger: "blur" },
+        ],
+        dateMap: [
+          { required: true, message: "请选择考试时间范围", trigger: "blur" },
+        ],
+        duration: [
+          {
+            required: true,
+            message: "请输入考试时长",
+            trigger: "blur",
+          },
+        ],
+      },
       pickerOptions: {
         shortcuts: [
           {
