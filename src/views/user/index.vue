@@ -3,7 +3,7 @@
     <!-- 查询框 -->
     <el-form :model="queryParam" ref="queryForm" :inline="true">
       <el-form-item label="账号：">
-        <el-input v-model="queryParam.userName"></el-input>
+        <el-input v-model="queryParam.username"></el-input>
       </el-form-item>
       <el-form-item label="用户昵称：">
         <el-input v-model="queryParam.name"></el-input>
@@ -25,21 +25,13 @@
       style="width: 100%"
     >
       <el-table-column prop="id" label="ID"></el-table-column>
-      <el-table-column prop="userName" label="账号"></el-table-column>
+      <el-table-column prop="username" label="账号"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="sex" label="性别"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="操作" align="center">
         <template>
-          <!-- <router-link
-            :to="{ path: '/class/edit', query: { id: row.id } }"
-            class="link-left"
-          > -->
           <el-button size="mini" type="success">邀请加入班级</el-button>
-          <!-- </router-link> -->
-          <!-- <el-button size="mini" type="danger" class="link-left"
-            >解散</el-button
-          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -65,7 +57,7 @@ export default {
   data() {
     return {
       queryParam: {
-        userName: "",
+        username: "",
         name: "",
         email: "",
         pageIndex: 1,
@@ -82,42 +74,42 @@ export default {
     this.userData = [
       {
         id: 1,
-        userName: "301901",
+        username: "301901",
         name: "泰达米尔",
         sex: "男",
         email: "1234@dasd",
       },
       {
         id: 2,
-        userName: "301902",
+        username: "301902",
         name: "沃里克",
         sex: "男",
         email: "12345@dasd",
       },
       {
         id: 3,
-        userName: "301903",
+        username: "301903",
         name: "艾希",
         sex: "女",
         email: "123456@dasd",
       },
       {
         id: 4,
-        userName: "301904",
+        username: "301904",
         name: "卡萨丁",
         sex: "不详",
         email: "1234567@dasd",
       },
       {
         id: 5,
-        userName: "301905",
+        username: "301905",
         name: "亚索",
         sex: "男",
         email: "12345678@dasd",
       },
       {
         id: 6,
-        userName: "301906",
+        username: "301906",
         name: "金克斯",
         sex: "女",
         email: "123456789@dasd",
@@ -133,35 +125,35 @@ export default {
       this.userData = [
         {
           id: 1,
-          userName: "301901",
+          username: "301901",
           name: "泰达米尔",
           sex: "男",
           email: "1234@dasd",
         },
         {
           id: 2,
-          userName: "301902",
+          username: "301902",
           name: "沃里克",
           sex: "男",
           email: "12345@dasd",
         },
         {
           id: 3,
-          userName: "301903",
+          username: "301903",
           name: "艾希",
           sex: "女",
           email: "123456@dasd",
         },
         {
           id: 4,
-          userName: "301904",
+          username: "301904",
           name: "卡萨丁",
           sex: "不详",
           email: "1234567@dasd",
         },
         {
           id: 5,
-          userName: "301905",
+          username: "301905",
           name: "亚索",
           sex: "男",
           email: "12345678@dasd",
@@ -181,6 +173,5 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: pink; */
 }
 </style>

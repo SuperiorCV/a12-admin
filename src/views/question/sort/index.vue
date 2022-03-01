@@ -97,7 +97,7 @@ import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import RichEditor from "@/components/RichEditor/index.vue";
 import draggable from "vuedraggable";
-import QuestionShow from '@/components/QuestionShow/index.vue';
+import QuestionShow from "@/components/QuestionShow/index.vue";
 export default {
   name: "sort",
   components: {
@@ -111,7 +111,7 @@ export default {
         id: null,
         questionType: 5,
         difficult: 0,
-        // -1表示标题
+
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -125,7 +125,7 @@ export default {
           { prefix: "C", content: "" },
           { prefix: "D", content: "" },
         ],
-        // -2表示解析
+
         analyze: "",
         score: "",
       },
@@ -142,7 +142,6 @@ export default {
     questionItemRemove(idx) {
       this.question.items.splice(idx, 1);
       this.question.answer = this.question.items;
-      //   console.log(this.question.answer);
     },
     questionItemAdd() {
       let items = this.question.items;
@@ -155,19 +154,16 @@ export default {
       }
       items.push({ prefix: newLastPrefix, content: "" });
       this.question.answer = this.question.items;
-      //   console.log(this.question.answer);
     },
     updateContent({ id, content }) {
       if (id === -1) {
         this.question.title = content;
-        // alert(this.question.title);
       } else if (id === -2) {
         this.question.analyze = content;
       } else if (id >= 0) {
         this.question.items[id].content = content;
       }
       this.question.answer = this.question.items;
-      //   console.log(this.question.answer);
     },
     submitQuestion() {
       let that = this;
@@ -185,7 +181,7 @@ export default {
         id: null,
         questionType: 1,
         difficult: 0,
-        // -1表示标题
+
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -199,7 +195,7 @@ export default {
           { prefix: "C", content: "" },
           { prefix: "D", content: "" },
         ],
-        // -2表示解析
+
         analyze: "",
         score: "",
       };
@@ -214,10 +210,9 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: red; */
 }
 .answerBox {
-   cursor: pointer;
+  cursor: pointer;
   min-height: 40px;
   margin-bottom: 15px;
   background: #ffff;

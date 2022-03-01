@@ -49,23 +49,28 @@
       <el-form-item>
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
-        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
+        <el-button type="success" @click="questionVisible = true"
+          >预览题目</el-button
+        >
       </el-form-item>
     </el-form>
-     <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
-      <QuestionShow :question="question"/>
+    <el-dialog
+      :visible.sync="questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="question" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from '@/components/QuestionShow/index.vue';
+import QuestionShow from "@/components/QuestionShow/index.vue";
 export default {
   name: "trueFalse",
   components: {
     RichEditor,
-    QuestionShow
+    QuestionShow,
   },
   data() {
     return {
@@ -80,33 +85,31 @@ export default {
       },
       formLoading: false,
       rules: {
-        title: [{ required: true, message: "请输入题干", trigger: "blur"}],
-        answer: [{ required: true, message: "请输入答案", trigger: "blur"}],
-        analyze: [{ required: true, message: "请输入解析", trigger: "blur"}],
+        title: [{ required: true, message: "请输入题干", trigger: "blur" }],
+        answer: [{ required: true, message: "请输入答案", trigger: "blur" }],
+        analyze: [{ required: true, message: "请输入解析", trigger: "blur" }],
       },
       questionVisible: false,
     };
   },
   methods: {
-    updateContent({ id, content}) {
-      if(id === 0){
+    updateContent({ id, content }) {
+      if (id === 0) {
         this.question.title = content;
-      }else if(id === 1){
+      } else if (id === 1) {
         this.question.answer = content;
-      }else if(id === 2){
+      } else if (id === 2) {
         this.question.analyze = content;
       }
     },
     submitQuestion() {
       let that = this;
       this.$refs.question.validate((valid) => {
-        if(valid){
-
-        }else{
+        if (valid) {
+        } else {
           return false;
         }
-      }
-      )
+      });
     },
     resetQuestion() {
       let lastId = this.question.id;
@@ -132,6 +135,5 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: red; */
 }
 </style>

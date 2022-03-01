@@ -39,7 +39,6 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import hljs from "highlight.js";
-// highlight.js style
 import "highlight.js/styles/vs2015.css";
 import { quillEditor } from "vue-quill-editor";
 var quilEditorUploader = null;
@@ -61,7 +60,6 @@ export default {
   mounted() {
     quilEditorUploader =
       this.$refs.quilEditorUploader.$el.firstChild.firstChild;
-    // console.log(quilEditorUploader);
   },
   data() {
     const toolbarOptions = [
@@ -88,8 +86,6 @@ export default {
               image: function (value) {
                 //替换原图片上传功能
                 if (value) {
-                  //   document
-                  //     .querySelector(".quill-picture-uploader input")
                   quilEditorUploader.click(); //核心
                 } else {
                   this.quill.format("image", false);
@@ -115,7 +111,6 @@ export default {
       this.dialogVisible = false;
     },
     onEditorChange(e) {
-      // console.log(this.content);
       const _this = this;
       _this.content = e.html; // 标签以<p></p> 形式渲染 （重点）
       _this.contentTxt = e.text.substr(0, 100);

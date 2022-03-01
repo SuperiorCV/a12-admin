@@ -29,15 +29,15 @@
       <el-table-column prop="id" label="试卷Id" width="90px" />
       <el-table-column prop="testName" label="试卷名称" show-overflow-tooltip />
       <el-table-column prop="name" label="用户名称" />
-      <el-table-column prop="account" label="用户账号" />
-      <el-table-column prop="grade" label="得分" width="80px" />
+      <el-table-column prop="username" label="用户账号" />
+      <el-table-column prop="score" label="得分" width="80px" />
       <el-table-column prop="rate" label="题目正确率" width="100px" />
       <el-table-column prop="cost" label="耗时" width="160px" />
       <el-table-column prop="time" label="提交时间" width="160px" />
       <el-table-column label="操作" align="center" width="160px">
         <template slot-scope="{ row }">
           <el-button size="mini" @click="showQuestion(row)">查看</el-button>
-          <!-- <el-button size="mini" @click="showQuestion(row)">打印</el-button> -->
+         
         </template>
       </el-table-column>
     </el-table>
@@ -70,15 +70,15 @@ export default {
         pageSize: 10,
       },
 
-      //   subjectFilter: null,
+      
       listLoading: false,
       tableData: [
         {
           id: 1,
           testName: "第一次高数月考",
           name: "langwenchong",
-          account: "3019244520",
-          grade: "2/15",
+          username: "3019244520",
+          score: "2/15",
           rate: "1/6",
           cost: "10秒",
           time: "2020-2-22 19:09:32",
@@ -87,8 +87,8 @@ export default {
           id: 132,
           testName: "操作系统期末考试",
           name: "langwenchong",
-          account: "3019244520",
-          grade: "88/100",
+          username: "3019244520",
+          score: "88/100",
           rate: "26/30",
           cost: "1小时20分10秒",
           time: "2020-2-23 19:23:32",
@@ -97,8 +97,8 @@ export default {
           id: 2,
           testName: "第二次高数月考",
           name: "langwenchong",
-          account: "3019244520",
-          grade: "15/15",
+          username: "3019244520",
+          score: "15/15",
           rate: "6/6",
           cost: "20分10秒",
           time: "2020-3-12 19:09:32",
@@ -107,8 +107,8 @@ export default {
           id: 3,
           testName: "第三次高数月考",
           name: "langwenchong",
-          account: "3019244520",
-          grade: "12/15",
+          username: "3019244520",
+          score: "12/15",
           rate: "5/6",
           cost: "10分10秒",
           time: "2020-3-22 19:09:32",
@@ -117,8 +117,8 @@ export default {
           id: 32,
           testName: "第一次高数月考",
           name: "Guotao",
-          account: "3019244999",
-          grade: "0/15",
+          username: "3019244999",
+          score: "0/15",
           rate: "0/6",
           cost: "1秒",
           time: "2020-2-22 19:09:32",

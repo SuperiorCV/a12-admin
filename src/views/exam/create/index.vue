@@ -233,7 +233,7 @@ export default {
             id: 1,
             questionType: 1,
             difficult: 4,
-            // -1表示标题
+
             title: "fsfsf",
             items: [
               { prefix: "A", content: "fsfs" },
@@ -242,7 +242,7 @@ export default {
               { prefix: "D", content: "fsfsf" },
             ],
             answer: "",
-            // -2表示解析
+
             analyze: "",
             score: "2",
             name: "郎老师",
@@ -269,14 +269,14 @@ export default {
             id: 3,
             questionType: 3,
             difficult: 2,
-            // -1表示标题
+
             title: "jrhhrshesehdshdhd",
             items: [
               { prefix: "A", content: "<p>正确</p>" },
               { prefix: "B", content: "<p>错误</p>" },
             ],
             answer: "",
-            // -2表示解析
+
             analyze: "",
             score: "1",
             name: "郎老师",
@@ -297,7 +297,7 @@ export default {
             id: 5,
             questionType: 5,
             difficult: 0,
-            // -1表示标题
+
             title: "hsahshgas",
             items: [
               { prefix: "A", content: "fs" },
@@ -311,7 +311,7 @@ export default {
               { prefix: "C", content: "" },
               { prefix: "D", content: "" },
             ],
-            // -2表示解析
+
             analyze: "",
             score: "2",
             name: "郎老师",
@@ -439,9 +439,6 @@ export default {
       });
     },
     addQuestion(idx) {
-      // this.exam.modules[idx].questionList.push({
-      //   score: 2,
-      // });
       this.modIdx = idx;
       this.questionPage.showQuestionList = true;
     },
@@ -469,6 +466,5 @@ export default {
   min-height: 50vh;
   box-sizing: border-box;
   padding: 20px;
-  /* background: yellow; */
 }
 </style>
