@@ -2,11 +2,11 @@
   <div id="list">
     <!-- 查询框 -->
     <el-form :model="queryParam" ref="queryForm" :inline="true">
-      <el-form-item label="题目ID：">
-        <el-input v-model="queryParam.questionId"></el-input>
+      <el-form-item label="上传教师：">
+        <el-input v-model="queryParam.teacherName"></el-input>
       </el-form-item>
-      <el-form-item label="题干：">
-        <el-input v-model="queryParam.questionBody"></el-input>
+      <el-form-item label="难度：">
+        <el-input v-model="queryParam.difficult"></el-input>
       </el-form-item>
       <el-form-item label="分数：">
         <el-input v-model="queryParam.score"></el-input>
@@ -54,10 +54,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="teacherUsername" label="教师"></el-table-column>
-      <el-table-column
-        prop="name"
-        label="教师昵称"
-      ></el-table-column>
+      <el-table-column prop="name" label="教师昵称"></el-table-column>
       <el-table-column label="操作" align="center">
         <template>
           <el-button size="mini">预览</el-button>
@@ -90,10 +87,10 @@ export default {
   data() {
     return {
       queryParam: {
-        questionId: "",
-        questionBody: "",
+        teacherName: "",
         score: "",
         type: "",
+        difficult: undefined,
         role: 1,
         pageIndex: 1,
         pageSize: 10,
@@ -171,50 +168,50 @@ export default {
       this.listLoading = true;
       this.questionData = [
         {
-        id: 1,
-        type: "单选题",
-        questionBody: "单选题1",
-        score: "2",
-        difficult: 1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 2,
-        type: "多选题",
-        questionBody: "多选题1",
-        score: "2",
-        difficult: 2,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 3,
-        type: "判断题",
-        questionBody: "判断题1",
-        score: "1",
-        difficult: 1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 4,
-        type: "简答题",
-        questionBody: "简答题1",
-        score: "5",
-        difficult: 3.1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 5,
-        type: "单选题",
-        questionBody: "单选题2",
-        score: "1",
-        difficult: 2.5,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
+          id: 1,
+          type: "单选题",
+          questionBody: "单选题1",
+          score: "2",
+          difficult: 1,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
+        {
+          id: 2,
+          type: "多选题",
+          questionBody: "多选题1",
+          score: "2",
+          difficult: 2,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
+        {
+          id: 3,
+          type: "判断题",
+          questionBody: "判断题1",
+          score: "1",
+          difficult: 1,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
+        {
+          id: 4,
+          type: "简答题",
+          questionBody: "简答题1",
+          score: "5",
+          difficult: 3.1,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
+        {
+          id: 5,
+          type: "单选题",
+          questionBody: "单选题2",
+          score: "1",
+          difficult: 2.5,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
       ];
       this.total = 5;
       this.queryParam.pageIndex = 1;

@@ -108,7 +108,7 @@ export default {
         },
         series: [
           {
-            name: "Access From",
+            name: "班级人数",
             type: "pie",
             radius: ["40%", "70%"],
             avoidLabelOverlap: false,
@@ -127,11 +127,11 @@ export default {
               show: false,
             },
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
+             { value: 1048, name: "软工一班" },
+              { value: 735, name: "人工智能二班" },
+              { value: 580, name: "软工三班" },
+              { value: 484, name: "网络安全四班" },
+              { value: 300, name: "计算机科学技术六班" },
             ],
           },
         ],
@@ -158,15 +158,15 @@ export default {
         },
         series: [
           {
-            name: "Access From",
+            name: "班级试卷",
             type: "pie",
             radius: "50%",
             data: [
-              { value: 1048, name: "Search Engine" },
-              { value: 735, name: "Direct" },
-              { value: 580, name: "Email" },
-              { value: 484, name: "Union Ads" },
-              { value: 300, name: "Video Ads" },
+              { value: 1048, name: "软工一班" },
+              { value: 735, name: "人工智能二班" },
+              { value: 580, name: "软工三班" },
+              { value: 484, name: "网络安全四班" },
+              { value: 300, name: "计算机科学技术六班" },
             ],
             emphasis: {
               itemStyle: {

@@ -82,11 +82,11 @@
         <transition-group>
           <div
             class="answerBox"
-            v-for="(element, j) in arr"
+            v-for="element in arr"
             :key="element.prefix"
           >
             <div class="ql-container ql-snow">
-              <span>{{ j }}</span>
+              <span>{{ element.prefix }}</span>
               <div class="content ql-editor" v-html="element.content" />
             </div>
           </div>

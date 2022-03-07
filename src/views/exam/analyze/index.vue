@@ -1,13 +1,7 @@
 <template>
-  <div id="check">
+  <div id="analyze">
     <div id="l-side">
       <h3>{{ exam.title }}</h3>
-      <div class="info">
-        <p>提交人：{{ exam.student }}</p>
-        <p>提交时间：{{ exam.submitTime }}</p>
-        <p>已判题数：6 / {{ exam.total }}题</p>
-        <p>试卷分数：{{ exam.currentScore }} / {{ exam.fullScore }}分</p>
-      </div>
       <div class="menu">
         <el-tag
           class="tag"
@@ -26,22 +20,101 @@
       </div>
     </div>
     <div id="r-main">
+      <div id="top-analyze">
+        <div class="header">
+          <h3>试卷分析总览</h3>
+        </div>
+        <div class="count-wrapper">
+          <el-row :gutter="40" class="panel-group">
+            <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-people">
+                  <svg-icon icon-class="star" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">最高分</div>
+                  <count-to
+                    :start-val="0"
+                    :end-val="exam.firstPoint"
+                    :duration="2600"
+                    class="card-panel-num"
+                    v-loading="loading"
+                  />
+                </div>
+              </div>
+            </el-col>
+            <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-message">
+                  <svg-icon icon-class="exam" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">最低分</div>
+                  <count-to
+                    :start-val="0"
+                    :end-val="exam.lastPoint"
+                    :duration="3000"
+                    class="card-panel-num"
+                    v-loading="loading"
+                  />
+                </div>
+              </div>
+            </el-col>
+            <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-shopping">
+                  <svg-icon icon-class="user" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">平均分</div>
+                  <count-to
+                    :start-val="0"
+                    :end-val="exam.averagePoint"
+                    :duration="3600"
+                    class="card-panel-num"
+                    v-loading="loading"
+                  />
+                </div>
+              </div>
+            </el-col>
+            <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+              <div class="card-panel">
+                <div class="card-panel-icon-wrapper icon-money">
+                  <svg-icon icon-class="chart" class-name="card-panel-icon" />
+                </div>
+                <div class="card-panel-description">
+                  <div class="card-panel-text">中位分</div>
+                  <count-to
+                    :start-val="0"
+                    :end-val="exam.centerPoint"
+                    :duration="3200"
+                    class="card-panel-num"
+                    v-loading="loading"
+                  />
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div id="histogram"></div>
+      </div>
       <div class="module" v-for="(mod, idx) in exam.modules" :key="idx">
         <div class="header">
           <h3>模块{{ idx + 1 }}：{{ mod.title }}</h3>
         </div>
+        <histogram></histogram>
         <div
           :id="`question-${question.id}`"
           class="card"
           v-for="(question, j) in mod.questionList"
           :key="j"
         >
-          <AnswerShow
+          <AnalyzeShow
             :edit="edit"
             :idx="IndexCompute(idx, j)"
             :question="question"
             @updateExam="updateExam"
-          ></AnswerShow>
+          ></AnalyzeShow>
         </div>
       </div>
     </div>
@@ -50,11 +123,15 @@
 
 
 <script>
-import AnswerShow from "@/components/AnswerShow";
+import AnalyzeShow from "@/components/AnalyzeShow";
+import CountTo from "vue-count-to";
+import histogram from "./histogram";
 export default {
-  name: "check",
+  name: "analyze",
   components: {
-    AnswerShow,
+    AnalyzeShow,
+    CountTo,
+    histogram,
   },
   created() {
     var params = this.$route.params;
@@ -62,10 +139,18 @@ export default {
       this.edit = params.edit;
     }
   },
+  mounted() {
+    this.initHistogram();
+  },
   data() {
     return {
       edit: true,
+      loading: false,
       exam: {
+        firstPoint: 95,
+        lastPoint: 46,
+        averagePoint: 78,
+        centerPoint: 75,
         currentScore: 80,
         fullScore: 150,
         total: 30,
@@ -342,12 +427,33 @@ export default {
     },
   },
   methods: {
+    initHistogram() {
+      var echarts = require("echarts");
+      var myChart = echarts.init(document.getElementById("histogram"));
+      var option;
+      option = {
+        xAxis: {
+          type: "category",
+          data: [65, 70, 75, 80, 85, 90, 95],
+        },
+        yAxis: {
+          type: "value",
+        },
+        series: [
+          {
+            data: [120, 200, 150, 80, 70, 110, 130],
+            type: "bar",
+            showBackground: true,
+            backgroundStyle: {
+              color: "rgba(180, 180, 180, 0.2)",
+            },
+          },
+        ],
+      };
+      option && myChart.setOption(option);
+    },
     toList() {
-      if (this.edit) {
-        this.$router.push({ name: "examCorrect" });
-      } else {
-        this.$router.push({ name: "resultList" });
-      }
+     this.$router.push({name: 'examList'})
     },
     questionStatus(status, type) {
       if (status === -1) {
@@ -391,13 +497,20 @@ export default {
 </script>
 
 <style scoped>
-#check {
+#analyze {
   width: 100%;
   background: #eff3f7;
   box-sizing: border-box;
   padding: 20px;
   display: flex;
   justify-content: space-between;
+}
+#top-analyze {
+  width: 100%;
+}
+#histogram {
+  width: 100%;
+  height: 400px;
 }
 #l-side {
   position: fixed;
@@ -447,5 +560,170 @@ export default {
   width: calc(100% - 320px);
   margin-left: 320px;
   background: #fff;
+}
+</style>
+
+<style lang="scss" scoped>
+#charts {
+  width: 100%;
+  height: 400px;
+  display: flex;
+  justify-content: space-between;
+
+  .chart {
+    width: 48%;
+    height: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 30px;
+  }
+}
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
+}
+
+.dashboard-editor-container {
+  padding: 32px;
+  background-color: rgb(240, 242, 245);
+  position: relative;
+
+  .github-corner {
+    position: absolute;
+    top: 0px;
+    border: 0;
+    right: 0;
+  }
+
+  .chart-wrapper {
+    background: #fff;
+    padding: 16px 16px 0;
+    margin-bottom: 32px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
+}
+
+.panel-group {
+  margin-top: 18px;
+
+  .card-panel-col {
+    margin-bottom: 32px;
+  }
+
+  .card-panel {
+    height: 108px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+    background: #fff;
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      .card-panel-icon-wrapper {
+        color: #fff;
+      }
+
+      .icon-people {
+        background: #40c9c6;
+      }
+
+      .icon-message {
+        background: #36a3f7;
+      }
+
+      .icon-money {
+        background: #f4516c;
+      }
+
+      .icon-shopping {
+        background: #feca57;
+      }
+    }
+
+    .icon-people {
+      color: #40c9c6;
+    }
+
+    .icon-message {
+      color: #36a3f7;
+    }
+
+    .icon-money {
+      color: #f4516c;
+    }
+
+    .icon-shopping {
+      color: #feca57;
+    }
+
+    .card-panel-icon-wrapper {
+      float: left;
+      margin: 14px 0 0 14px;
+      padding: 16px;
+      transition: all 0.38s ease-out;
+      border-radius: 6px;
+    }
+
+    .card-panel-icon {
+      float: left;
+      font-size: 48px;
+    }
+
+    .card-panel-description {
+      float: right;
+      font-weight: bold;
+      margin: 26px;
+      margin-left: 0px;
+
+      .card-panel-text {
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+
+      .card-panel-num {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+@media (max-width: 550px) {
+  .card-panel-description {
+    display: none;
+  }
+
+  .card-panel-icon-wrapper {
+    float: none !important;
+    width: 100%;
+    height: 100%;
+    margin: 0 !important;
+
+    .svg-icon {
+      display: block;
+      margin: 14px auto !important;
+      float: none !important;
+    }
+  }
+}
+
+.echarts-line {
+  background: #fff;
+  padding: 16px 16px 0;
+  margin-bottom: 32px;
+}
+.count-wrapper {
+  width: 95%;
+  margin: 0 auto;
 }
 </style>

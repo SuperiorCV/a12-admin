@@ -110,9 +110,6 @@
     </el-dialog>
     <el-dialog :visible.sync="questionPage.showQuestionList" width="75%">
       <el-form :model="questionPage.queryParam" ref="queryForm" :inline="true">
-        <el-form-item label="ID：">
-          <el-input v-model="questionPage.queryParam.id" clearable></el-input>
-        </el-form-item>
         <el-form-item label="题型：">
           <el-select v-model="questionPage.queryParam.questionType" clearable>
             <el-option
@@ -129,19 +126,13 @@
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="题干：">
+        <el-form-item label="分数：">
           <el-input
-            v-model="questionPage.queryParam.content"
+            v-model="questionPage.queryParam.score"
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="教师账号：">
-          <el-input
-            v-model="questionPage.queryParam.username"
-            clearable
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="教师昵称：">
+        <el-form-item label="上传教师：">
           <el-input v-model="questionPage.queryParam.name" clearable></el-input>
         </el-form-item>
         <el-form-item>
@@ -167,8 +158,8 @@
           width="70px"
         ></el-table-column>
         <el-table-column
-          prop="title"
-          label="题干"
+          prop="score"
+          label="分数"
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column prop="difficult" label="难度"></el-table-column>
@@ -315,12 +306,11 @@ export default {
           },
         ],
         queryParam: {
-          id: null,
           questionType: null,
           content: "",
+          score: undefined,
           difficulty: undefined,
           name: "",
-          username: "",
           pageIndex: 1,
           pagesize: 5,
         },

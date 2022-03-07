@@ -1,9 +1,9 @@
 <template>
-  <div id="answerShow">
+  <div id="analyzeShow">
     <div id="singleChoice" v-if="question.questionType === 1" class="wrap">
       <p class="head" style="background: #8cbda4">{{ idx }}、 单选题</p>
       <div class="ql-editor" v-html="question.title"></div>
-      <el-radio-group v-model="question.studentAnswer">
+      <el-radio-group v-model="question.answer">
         <div v-for="(el, idx) in question.items" :key="idx">
           <el-radio :label="el.prefix">
             <div class="radio">
@@ -14,14 +14,6 @@
         </div>
       </el-radio-group>
       <div class="info">
-        <p>
-          结果：<el-tag
-            :type="questionStatus(question.status, question.questionType)"
-          >
-            {{ tagContent(question.status, question.questionType) }}</el-tag
-          >
-        </p>
-        <p>得分：{{ question.studentScore }} / {{ question.score }}分</p>
         <p class="rate">
           难度：<el-rate disabled v-model="question.difficult"></el-rate>
         </p>
@@ -30,6 +22,8 @@
           <div class="ql-editor" v-html="question.analyze"></div>
         </div>
         <p>正确答案：{{ question.answer }}</p>
+        <p>选项分析：</p>
+        <div id="chart" ref="chart"></div>
       </div>
     </div>
     <div
@@ -39,7 +33,7 @@
     >
       <p class="head" style="background: #e9ad69">{{ idx }}、 多选题</p>
       <div class="ql-editor" v-html="question.title"></div>
-      <el-checkbox-group v-model="question.studentAnswer">
+      <el-checkbox-group v-model="question.answer">
         <div v-for="(el, idx) in question.items" :key="idx">
           <el-checkbox :label="el.prefix">
             <div class="radio">
@@ -50,12 +44,6 @@
         </div>
       </el-checkbox-group>
       <div class="info">
-        <p>
-          结果：<el-tag :type="questionStatus(question.status)">
-            {{ tagContent(question.status) }}</el-tag
-          >
-        </p>
-        <p>得分：{{ question.studentScore }} / {{ question.score }}分</p>
         <p class="rate">
           难度：<el-rate disabled v-model="question.difficult"></el-rate>
         </p>
@@ -69,12 +57,14 @@
             {{ el }}
           </div>
         </div>
+        <p>选项分析：</p>
+        <div id="chart" ref="chart"></div>
       </div>
     </div>
     <div id="trueFalse" class="wrapper" v-else-if="question.questionType === 3">
       <p class="head" style="background: #6a89cc">{{ idx }}、 判断题</p>
       <div class="ql-editor" v-html="question.title"></div>
-      <el-radio-group v-model="question.studentAnswer">
+      <el-radio-group v-model="question.answer">
         <div v-for="(el, idx) in question.items" :key="idx">
           <el-radio :label="el.prefix">
             <div class="radio">
@@ -85,14 +75,6 @@
         </div>
       </el-radio-group>
       <div class="info">
-        <p>
-          结果：<el-tag
-            :type="questionStatus(question.status, question.questionType)"
-          >
-            {{ tagContent(question.status, question.questionType) }}</el-tag
-          >
-        </p>
-        <p>得分：{{ question.studentScore }} / {{ question.score }}分</p>
         <p class="rate">
           难度：<el-rate disabled v-model="question.difficult"></el-rate>
         </p>
@@ -101,6 +83,8 @@
           <div class="ql-editor" v-html="question.analyze"></div>
         </div>
         <p>正确答案：{{ question.answer }}</p>
+        <p>选项分析：</p>
+        <div id="chart" ref="chart"></div>
       </div>
     </div>
     <div
@@ -113,25 +97,6 @@
       <div class="note">考生答案：</div>
       <div class="ql-editor" v-html="question.studentAnswer"></div>
       <div class="info">
-        <p>
-          结果：<el-tag
-            :type="questionStatus(question.status, question.questionType)"
-          >
-            {{ tagContent(question.status, question.questionType) }}</el-tag
-          >
-        </p>
-        <div class="giveScore" v-if="question.status === 0 || edit === true">
-          <span>得分：</span>
-          <el-input-number
-            :min="0"
-            :max="question.score"
-            :step="0.5"
-            v-model="question.studentScore"
-          ></el-input-number>
-        </div>
-        <p v-if="question.status === 2 && edit === false">
-          得分：{{ question.studentScore }} / {{ question.score }}分
-        </p>
         <p class="rate">
           难度：<el-rate disabled v-model="question.difficult"></el-rate>
         </p>
@@ -141,6 +106,8 @@
         </div>
         <p>正确答案：</p>
         <div class="ql-editor" v-html="question.analyze"></div>
+        <p>选项分析：</p>
+        <div id="chart" ref="chart"></div>
       </div>
     </div>
     <div id="sort" v-else-if="question.questionType === 5" class="wrap">
@@ -160,12 +127,6 @@
         </transition-group>
       </draggable>
       <div class="info">
-        <p>
-          结果：<el-tag :type="questionStatus(question.status)">
-            {{ tagContent(question.status) }}</el-tag
-          >
-        </p>
-        <p>得分：{{ question.studentScore }} / {{ question.score }}分</p>
         <p class="rate">
           难度：<el-rate disabled v-model="question.difficult"></el-rate>
         </p>
@@ -188,6 +149,8 @@
             </div>
           </transition-group>
         </draggable>
+        <p>选项分析：</p>
+        <div id="chart" ref="chart"></div>
       </div>
     </div>
   </div>
@@ -213,38 +176,219 @@ export default {
       radio: "",
     };
   },
-  methods: {
-    questionStatus(status, type) {
-      if (status === -1) {
-        return `danger`;
-      } else if (status === 0) {
-        return `warning`;
-      } else if (status === 1) {
-        return `success`;
-      } else if (status === 2) {
-        return ``;
-      }
-    },
-    tagContent(status, type) {
-      if (status === -1) {
-        return `错误`;
-      } else if (status === 0) {
-        return `待批改`;
-      } else if (status === 1) {
-        return `正确`;
-      } else if (status === 2) {
-        return `已审批`;
-      }
-    },
+  mounted() {
+    this.initChart();
   },
-  watch: {
-    question: {
-      handler(n, o) {
-        if (o.questionType === 4) {
-          this.$emit("updateExam", n, o);
-        }
-      },
-      deep: true,
+  methods: {
+    initChart() {
+      var echarts = require("echarts");
+      var myChart = echarts.init(this.$refs.chart);
+      var option;
+      if (this.question.questionType === 1) {
+        //   单选题
+        option = {
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              name: "Access From",
+              type: "pie",
+              radius: "50%",
+              data: [
+                { value: 1048, name: "A" },
+                { value: 735, name: "B" },
+                { value: 580, name: "C" },
+                { value: 484, name: "D" },
+                { value: 300, name: "E" },
+              ],
+              emphasis: {
+                itemStyle: {
+                  shadowBlur: 10,
+                  shadowOffsetX: 0,
+                  shadowColor: "rgba(0, 0, 0, 0.5)",
+                },
+              },
+            },
+          ],
+        };
+      } else if (this.question.questionType === 2) {
+        option = {
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              name: "选项人数",
+              type: "pie",
+              radius: [12, 100],
+              center: ["50%", "50%"],
+              roseType: "area",
+              itemStyle: {
+                borderRadius: 8,
+              },
+              data: [
+                { value: 40, name: "A" },
+                { value: 38, name: "B" },
+                { value: 32, name: "C" },
+                { value: 30, name: "D" },
+                { value: 28, name: "E" },
+                { value: 26, name: "F" },
+              ],
+            },
+          ],
+        };
+      } else if (this.question.questionType === 3) {
+        option = {
+          tooltip: {
+            trigger: "item",
+          },
+          legend: {
+            top: "5%",
+            left: "center",
+          },
+          series: [
+            {
+              type: "pie",
+              radius: ["40%", "70%"],
+              avoidLabelOverlap: false,
+              itemStyle: {
+                borderRadius: 10,
+                borderColor: "#fff",
+                borderWidth: 2,
+              },
+              label: {
+                show: false,
+                position: "center",
+              },
+              emphasis: {
+                label: {
+                  show: true,
+                  fontSize: "40",
+                  fontWeight: "bold",
+                },
+              },
+              labelLine: {
+                show: false,
+              },
+              data: [
+                { value: 1048, name: "否" },
+                { value: 735, name: "是" },
+              ],
+              color: ["#eb4d4b", "#6ab04c"],
+            },
+          ],
+        };
+      } else if (this.question.questionType === 4) {
+        option = {
+          title: {
+            left: "center",
+            top: 20,
+            textStyle: {
+              color: "#000",
+            },
+          },
+          tooltip: {
+            trigger: "item",
+          },
+
+          series: [
+            {
+              name: "得分人数",
+              type: "pie",
+              radius: "75%",
+              center: ["50%", "50%"],
+              data: [
+                { value: 335, name: "1分" },
+                { value: 310, name: "2分" },
+                { value: 274, name: "3分" },
+                { value: 235, name: "4分" },
+                { value: 400, name: "5分" },
+              ].sort(function (a, b) {
+                return a.value - b.value;
+              }),
+              roseType: "radius",
+              label: {
+                color: "#333",
+              },
+              labelLine: {
+                lineStyle: {
+                  color: "#333",
+                },
+                smooth: 0.2,
+                length: 10,
+                length2: 20,
+              },
+              itemStyle: {
+                shadowBlur: 10,
+                shadowColor: "rgba(0, 0, 0, 0.1)",
+              },
+              animationType: "scale",
+              animationEasing: "elasticOut",
+              animationDelay: function (idx) {
+                return Math.random() * 200;
+              },
+            },
+          ],
+        };
+      } else {
+        option = {
+          legend: {},
+          tooltip: {},
+          dataset: {
+            dimensions: ["product", "A", "B", "C", "D"],
+            source: [
+              {
+                product: "第一位",
+                A: 43.3,
+                B: 85.8,
+                C: 93.7,
+                D: 90.5,
+              },
+              {
+                product: "第二位",
+                A: 83.1,
+                B: 73.4,
+                C: 55.1,
+                D: 90.5,
+              },
+              {
+                product: "第三位",
+                A: 86.4,
+                B: 65.2,
+                C: 82.5,
+                D: 90.5,
+              },
+              {
+                product: "第四位",
+                A: 72.4,
+                B: 53.9,
+                C: 39.1,
+                D: 90.5,
+              },
+            ],
+          },
+          xAxis: { type: "category" },
+          yAxis: {},
+          // Declare several bar series, each will be mapped
+          // to a column of dataset.source by default.
+          series: [
+            { type: "bar" },
+            { type: "bar" },
+            { type: "bar" },
+            { type: "bar" },
+          ],
+        };
+      }
+      option && myChart.setOption(option);
     },
   },
 };
@@ -252,9 +396,14 @@ export default {
 
 
 <style scoped>
-#answerShow {
+#analyzeShow {
   width: 100%;
   min-height: 200px;
+}
+#chart {
+  border: 1px solid #333;
+  width: 100%;
+  min-height: 300px;
 }
 .wrapper {
   width: 100%;

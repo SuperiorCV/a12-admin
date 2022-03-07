@@ -132,6 +132,15 @@ export const constantRoutes = [{
         title: '试卷创编',
         noCache: true
       }
+    }, {
+      path: 'analyze',
+      name: 'analyze',
+      component: () => import('@/views/exam/analyze/index'),
+      hidden: true,
+      meta: {
+        title: '试卷分析',
+        noCache: true
+      }
     }]
   },
   {

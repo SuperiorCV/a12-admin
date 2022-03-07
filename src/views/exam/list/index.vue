@@ -1,9 +1,6 @@
 <template>
   <div id="list">
     <el-form :model="queryParam" ref="queryForm" :inline="true">
-      <el-form-item label="试卷ID：">
-        <el-input v-model="queryParam.id" clearable></el-input>
-      </el-form-item>
       <el-form-item label="试卷名称：">
         <el-input v-model="queryParam.examTitle" clearable></el-input>
       </el-form-item>
@@ -26,10 +23,11 @@
       <el-table-column prop="id" label="Id" width="90px" />
       <el-table-column prop="testName" label="名称" show-overflow-tooltip />
       <el-table-column prop="class" label="班级" />
-      <el-table-column label="操作" align="center" width="220px">
+      <el-table-column label="操作" align="center" width="290px">
         <template slot-scope="{ row }">
           <el-button size="mini" @click="showQuestion(row)">编辑</el-button>
           <el-button size="mini" @click="editQuestion(row)">查看</el-button>
+           <el-button size="mini" @click="analyze(row)">分析</el-button>
           <el-button
             size="mini"
             type="danger"
@@ -180,18 +178,12 @@ export default {
     //   return this.subjectEnumFormat(cellValue);
     // },
     // ...mapActions("exam", { initSubject: "initSubject" }),
+    analyze(row){
+      this.$router.push({name: 'analyze'});
+    }
   },
 
-  //   computed: {
-  //     ...mapGetters("enumItem", ["enumFormat"]),
-  //     ...mapState("enumItem", {
-  //       questionType: (state) => state.exam.question.typeEnum,
-  //       editUrlEnum: (state) => state.exam.question.editUrlEnum,
-  //       levelEnum: (state) => state.user.levelEnum,
-  //     }),
-  //     ...mapGetters("exam", ["subjectEnumFormat"]),
-  //     ...mapState("exam", { subjects: (state) => state.subjects }),
-  //   },
+ 
 };
 </script>
 

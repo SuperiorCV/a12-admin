@@ -1,9 +1,6 @@
 <template>
   <div id="list">
     <el-form :model="queryParam" ref="queryForm" :inline="true">
-      <el-form-item label="试卷ID：">
-        <el-input v-model="queryParam.id" clearable></el-input>
-      </el-form-item>
       <el-form-item label="试卷名称：">
         <el-input v-model="queryParam.examTitle" clearable></el-input>
       </el-form-item>

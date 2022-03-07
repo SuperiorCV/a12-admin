@@ -143,9 +143,15 @@ export default {
           password: "5",
           num: 200,
         },
+        {
+        id: 6,
+        className: "6班",
+        password: "6",
+        num: 200,
+      },
       ];
-      this.total = 5;
-      this.queryParam.pageIndex = 1;
+      this.total = 6;
+      this.queryParam.pageIndex = 2;
       this.listLoading = false;
     },
   },
