@@ -37,6 +37,25 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    // 'http://172.23.161.252:8080/'
+    // proxyTable: {
+    //   '/apis':{
+    //     target: 'http://172.23.161.252:8080/',
+    //     changeOrigin: true,//允许跨域
+    //     pathRewrite: {
+    //       '^/apis': ''
+    //     }
+    //   }
+    // },
+    proxy: {
+      '/apis': {
+        target: 'http://172.23.161.252:8080/',
+        changeOrigin: true,
+        pathRewrite: {
+                '^/apis': ''
+              }
+      }
+    },
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {

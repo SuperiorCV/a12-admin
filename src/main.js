@@ -40,6 +40,9 @@ Vue.use(ElementUI, {
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 // 引入axios
+// apis
+import apis from '@/api'
+Vue.prototype.apis=apis;
 import axios from 'axios';
 // 挂载到vue原型链上
 Vue.prototype.axios = axios;
