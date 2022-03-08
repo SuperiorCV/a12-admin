@@ -219,31 +219,42 @@ export const constantRoutes = [{
       icon: 'edit'
     },
     children: [{
-      path: 'examCorrect',
-      name: 'examCorrect',
-      component: () => import("@/views/answerpaper/examCorrect/list"),
-      meta: {
-        title: '批改列表',
-        noCache: true
+        path: 'screenShot',
+        name: 'screenShot',
+        component: () => import("@/views/answerpaper/screenShot/"),
+        hidden: true,
+        meta: {
+          title: '考试抓拍',
+          noCache: true
+        }
+      },
+      {
+        path: 'examCorrect',
+        name: 'examCorrect',
+        component: () => import("@/views/answerpaper/examCorrect/list"),
+        meta: {
+          title: '批改列表',
+          noCache: true
+        }
+      }, {
+        path: 'resultList',
+        name: 'resultList',
+        component: () => import("@/views/answerpaper/resultList/list"),
+        meta: {
+          title: '试卷完成',
+          noCache: true
+        }
+      }, {
+        path: 'check',
+        name: 'check',
+        hidden: true,
+        component: () => import("@/views/answerpaper/check"),
+        meta: {
+          title: '试卷审阅',
+          noCache: true,
+        }
       }
-    }, {
-      path: 'resultList',
-      name: 'resultList',
-      component: () => import("@/views/answerpaper/resultList/list"),
-      meta: {
-        title: '试卷完成',
-        noCache: true
-      }
-    }, {
-      path: 'check',
-      name: 'check',
-      hidden: true,
-      component: () => import("@/views/answerpaper/check"),
-      meta: {
-        title: '试卷审阅',
-        noCache: true,
-      }
-    }]
+    ]
   },
   // {
   //   path: '/example',

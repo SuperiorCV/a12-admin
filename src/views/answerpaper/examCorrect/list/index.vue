@@ -31,8 +31,9 @@
       <el-table-column prop="rate" label="题目正确率" width="100px" />
       <el-table-column prop="cost" label="耗时" width="160px" />
       <el-table-column prop="time" label="提交时间" width="160px" />
-      <el-table-column label="操作" align="center" width="80px">
+      <el-table-column label="操作" align="center" width="200px">
         <template slot-scope="{ row }">
+          <el-button size="mini" @click="screenShot(row)">监控</el-button>
           <el-button size="mini" @click="showQuestion(row)">批改</el-button>
         </template>
       </el-table-column>
@@ -65,7 +66,6 @@ export default {
         pageSize: 10,
       },
 
-      
       listLoading: false,
       tableData: [
         {
@@ -135,6 +135,9 @@ export default {
   //     this.search();
   //   },
   methods: {
+    screenShot(row) {
+      this.$router.push({ name: "screenShot" });
+    },
     submitForm() {
       //   this.queryParam.pageIndex = 1;
       //   this.search();

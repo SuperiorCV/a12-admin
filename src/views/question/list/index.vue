@@ -45,7 +45,7 @@
       <el-table-column prop="type" label="题型"></el-table-column>
       <el-table-column prop="questionBody" label="题干"></el-table-column>
       <el-table-column prop="score" label="分数"></el-table-column>
-      <el-table-column prop="difficult" label="难度">
+      <el-table-column prop="difficult" label="难度" width="250px">
         <template slot-scope="{ row }">
           <div class="rate-wrapper">
             <el-rate v-model="row.difficult" disabled> </el-rate
@@ -55,13 +55,13 @@
       </el-table-column>
       <el-table-column prop="teacherUsername" label="教师"></el-table-column>
       <el-table-column prop="name" label="教师昵称"></el-table-column>
-      <el-table-column label="操作" align="center">
+      <el-table-column label="操作" align="center" width="200px">
         <template>
           <el-button size="mini">预览</el-button>
           <el-button size="mini">编辑</el-button>
-          <el-button size="mini" type="danger" class="link-left"
+          <!-- <el-button size="mini" type="danger" class="link-left"
             >删除</el-button
-          >
+          > -->
         </template>
       </el-table-column>
     </el-table>
@@ -212,8 +212,17 @@ export default {
           teacherUsername: "朗文翀",
           name: "朗文翀",
         },
+         {
+          id: 6,
+          type: "单选题",
+          questionBody: "单选题2",
+          score: "1",
+          difficult: 2.5,
+          teacherUsername: "朗文翀",
+          name: "朗文翀",
+        },
       ];
-      this.total = 5;
+      this.total = 6;
       this.queryParam.pageIndex = 1;
       this.listLoading = false;
     },

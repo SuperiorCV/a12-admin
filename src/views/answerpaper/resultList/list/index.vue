@@ -33,8 +33,8 @@
       <el-table-column prop="time" label="提交时间" width="160px" />
       <el-table-column label="操作" align="center" width="160px">
         <template slot-scope="{ row }">
+          <el-button size="mini" @click="screenShot(row)">监控</el-button>
           <el-button size="mini" @click="showQuestion(row)">查看</el-button>
-         
         </template>
       </el-table-column>
     </el-table>
@@ -46,7 +46,6 @@
       :limit.sync="queryParam.pageSize"
       @pagination="search"
     />
-
   </div>
 </template>
 
@@ -67,7 +66,6 @@ export default {
         pageSize: 10,
       },
 
-      
       listLoading: false,
       tableData: [
         {
@@ -137,6 +135,9 @@ export default {
   //     this.search();
   //   },
   methods: {
+    screenShot(row) {
+      this.$router.push({ name: "screenShot" });
+    },
     submitForm() {
       //   this.queryParam.pageIndex = 1;
       //   this.search();
