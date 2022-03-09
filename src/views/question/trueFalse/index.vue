@@ -124,6 +124,17 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
+          let item1 = this.question.items[0].prefix + "<sep2>" + this.question.items[0].content;
+          let item2 = this.question.items[1].prefix + "<sep2>" + this.question.items[1].content;
+          let item3 = item1 + "<sep1>" + item2;
+          this.apis.question.submitQuestion(this.question.questionType,this.question.title,this.question.answer,this.question.analyze,item3,this.question.score,this.question.difficult,).then(
+            (res) => {
+              if(res.status === 200){
+                console.log("上传成功");
+              }
+              
+            }
+          );
         } else {
           return false;
         }

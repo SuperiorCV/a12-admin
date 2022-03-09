@@ -39,6 +39,7 @@ axios.interceptors.response.use(
 
 // 暴露给外部以便调用，此时所有的api方法整合到了一起形成一个对象命名为apis
 const apis = {
-  login
+  login,
+  question,
 }
 export default apis
