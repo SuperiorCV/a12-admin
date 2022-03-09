@@ -1,7 +1,7 @@
 // 读取所欲模块内部定义的请求方法
 import axios from 'axios'
 import * as login from './login.js'
-import * as login from './question.js'
+import * as question from './question.js'
 import ElementUI from 'element-ui';
 
 

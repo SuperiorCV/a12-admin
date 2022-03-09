@@ -20,5 +20,5 @@ export const submitQuestion = (teacherUsername, teacherName, title, answer, anal
   fd.append("difficulty", difficulty);
   fd.append("qtype", qtype);
 
-  return axios.post('/question/api/edit', fd);
+  return axios.post('/question/api/upload', fd);
 }

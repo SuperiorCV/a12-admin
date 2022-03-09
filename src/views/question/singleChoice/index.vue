@@ -149,7 +149,32 @@ export default {
     submitQuestion() {
       let that = this;
       this.$refs.question.validate((valid) => {
-        if (valid) {
+        if (valid) {  
+          var items = ""
+          for(let i = 0;i < this.question.items.length;i++){
+            items += this.question.items[i].prefix;
+            items += "<sep2>";
+            items += this.question.items[i].content;
+            if(i != this.question.items.length-1){
+              items += "<sep1>";
+            }
+          }
+
+          this.apis.question
+            .submitQuestion(
+              sessionStorage.getItem('teacherUsername'),
+              sessionStorage.getItem('teacherName'),
+              this.question.title,
+              this.question.answer,
+              this.question.analyze,
+              items,
+              this.question.score,
+              this.question.difficult,
+              1
+            )
+            .then((res) => {
+              console.log(res);
+            });
         } else {
           return false;
         }
