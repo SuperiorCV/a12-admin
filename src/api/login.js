@@ -7,7 +7,7 @@ axios.defaults.baseURL = '/apis';
 // axios.defaults.baseURL = 'http://api.cheeseburgerim.space';
 
 
-export const login = (username, password) => {
+export const question = (username, password) => {
   let fd = new FormData();
   fd.append("username", username);
   fd.append("password", password);
