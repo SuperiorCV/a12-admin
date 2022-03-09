@@ -106,7 +106,7 @@ export default {
           { prefix: "A", content: "" },
           { prefix: "B", content: "" },
           { prefix: "C", content: "" },
-          { prefix: "D", content: "" }, 
+          { prefix: "D", content: "" },
         ],
         answer: "",
         analyze: "",
@@ -149,6 +149,38 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
+          var items = "";
+          for (let i = 0; i < this.question.items.length; i++) {
+            items += this.question.items[i].prefix;
+            items += "<sep2>";
+            items += this.question.items[i].content;
+            if (i != this.question.items.length - 1) {
+              items += "<sep1>";
+            }
+          }
+
+          this.apis.question
+            .submitQuestion(
+              sessionStorage.getItem("teacherUsername"),
+              sessionStorage.getItem("teacherName"),
+              this.question.title,
+              this.question.answer,
+              this.question.analyze,
+              items,
+              this.question.score,
+              this.question.difficult,
+              1
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "题目上传成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "questionList" });
+              }
+            });
         } else {
           return false;
         }

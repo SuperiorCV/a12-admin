@@ -124,18 +124,18 @@ export default {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true;
-          var that=this;
-          setTimeout(function(){
-            that.loading=false;
-          },20000)
+          var that = this;
+          setTimeout(function () {
+            that.loading = false;
+          }, 20000);
           this.apis.login
             .login(this.loginForm.username, this.loginForm.password)
             .then((res) => {
               this.loading = false;
               if (res.status === 200) {
-                sessionStorage.setItem("teacherUsername",this.teacherUsername);
-                sessionStorage.setItem("teacherName",this.teacherUsername);
-                sessionStorage.setItem("token",res.data.result.token)
+                sessionStorage.setItem("teacherUsername", this.teacherUsername);
+                sessionStorage.setItem("teacherName", this.teacherUsername);
+                sessionStorage.setItem("token", res.data.result.token);
                 this.$router.push({ name: "Dashboard" });
               }
             });
