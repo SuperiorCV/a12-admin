@@ -56,9 +56,9 @@
       <el-table-column prop="teacherUsername" label="教师"></el-table-column>
       <el-table-column prop="name" label="教师昵称"></el-table-column>
       <el-table-column label="操作" align="center" width="200px">
-        <template>
+        <template slot-scope="{row}">
           <el-button size="mini">预览</el-button>
-          <el-button size="mini">编辑</el-button>
+          <el-button size="mini" @click="editQuestion(row)">编辑</el-button>
           <!-- <el-button size="mini" type="danger" class="link-left"
             >删除</el-button
           > -->
@@ -164,6 +164,9 @@ export default {
     this.listLoading = false;
   },
   methods: {
+    editQuestion(row){
+      if(row.question)
+    },
     search() {
       this.listLoading = true;
       this.questionData = [
