@@ -145,11 +145,11 @@ export default {
   methods: {
     editQuestion(row) {
       if (row.type === "单选题") {
-        this.$router.push({ name: "singleChoice", param: { question: row } });
+        this.$router.push({ name: "singleChoice", params: { question: row } });
       } else if (row.type === "多选题") {
-        this.$router.push({ name: "multiChoice", param: { question: row } });
+        this.$router.push({ name: "multiChoice", params: { question: row } });
       } else if (row.type === "判断题") {
-        this.$router.push({ name: "trueFalse", param: { question: row } });
+        this.$router.push({ name: "trueFalse", params: { question: row } });
       } else if (row.type === "简答题") {
         this.$router.push({ name: "shortAnswer", params: { question: row } });
       } else {
