@@ -1,6 +1,7 @@
 // 读取所欲模块内部定义的请求方法
 import axios from 'axios'
 import * as login from './login.js'
+import * as question from './question.js'
 import ElementUI from 'element-ui';
 
 
@@ -39,6 +40,7 @@ axios.interceptors.response.use(
 
 // 暴露给外部以便调用，此时所有的api方法整合到了一起形成一个对象命名为apis
 const apis = {
-  login
+  login,
+  question
 }
 export default apis

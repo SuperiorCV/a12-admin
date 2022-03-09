@@ -106,10 +106,9 @@ export default {
           { prefix: "A", content: "" },
           { prefix: "B", content: "" },
           { prefix: "C", content: "" },
-          { prefix: "D", content: "" },
+          { prefix: "D", content: "" }, 
         ],
         answer: "",
-
         analyze: "",
         score: "",
       },

@@ -152,6 +152,12 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
+          var items="";
+          for(let i=0;i<this.question.items.length-1;i++){
+            items+=this.question.items[i].prefix+"<sep2>"+this.question.items[i].content+"<sep1>";
+          }
+          items+=this.question.items[this.items.length-1].prefix+"<sep2>"+this.question.items.content;
+          this.apis.question.submitQuestion()
         } else {
           return false;
         }
