@@ -127,10 +127,26 @@ export default {
           let item1 = this.question.items[0].prefix + "<sep2>" + this.question.items[0].content;
           let item2 = this.question.items[1].prefix + "<sep2>" + this.question.items[1].content;
           let item3 = item1 + "<sep1>" + item2;
-          this.apis.question.submitQuestion(this.question.questionType,this.question.title,this.question.answer,this.question.analyze,item3,this.question.score,this.question.difficult,).then(
+          this.apis.question.submitQuestion(
+            sessionStorage.getItem("teacherUsername"),
+            sessionStorage.getItem("teacherName"),
+            this.question.title,
+            this.question.answer,
+            this.question.analyze,
+            item3,
+            this.question.score,
+            this.question.difficult,
+            3
+            ).then(
             (res) => {
-              if(res.status === 200){
-                console.log("上传成功");
+              
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "题目上传成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "questionList" });
               }
               
             }

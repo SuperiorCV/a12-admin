@@ -7,10 +7,11 @@ axios.defaults.baseURL = '/apis';
 // axios.defaults.baseURL = 'http://api.cheeseburgerim.space';
 
 
-export const submitQuestion = (qid, title, answer, analysis, items, score, difficulty, qtype) => {
+export const submitQuestion = (teacherUsername, teacherName, title, answer, analysis, items, score, difficulty, qtype) => {
   let fd = new FormData();
 
-  fd.append("qid", qid);
+  fd.append("teacherUsername", teacherUsername);
+  fd.append("teacherName", teacherName);
   fd.append("title", title);
   fd.append("answer", answer);
   fd.append("analysis", analysis);
@@ -19,5 +20,5 @@ export const submitQuestion = (qid, title, answer, analysis, items, score, diffi
   fd.append("difficulty", difficulty);
   fd.append("qtype", qtype);
 
-  return axios.post('/question/api/edit', fd);
+  return axios.post('/question/api/upload', fd);
 }
