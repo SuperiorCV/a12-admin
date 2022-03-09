@@ -52,8 +52,8 @@ module.exports = {
         target: 'http://172.23.161.252:8080/',
         changeOrigin: true,
         pathRewrite: {
-                '^/apis': ''
-              }
+          '^/apis': ''
+        }
       }
     },
     before: require('./mock/mock-server.js')
