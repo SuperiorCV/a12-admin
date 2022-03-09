@@ -169,6 +169,44 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
+          var items = "";
+          for (let i = 0; i < this.question.items.length - 1; i++) {
+            items +=
+              this.question.items[i].prefix +
+              "<sep2>" +
+              this.question.items[i].content +
+              "<sep1>";
+          }
+          items +=
+            this.question.items[this.question.items.length - 1].prefix +
+            "<sep2>" +
+            this.question.items[this.question.items.length - 1].content;
+          var answer = "";
+          for (let i = 0; i < this.question.answer.length; i++) {
+            answer += this.question.answer[i].prefix;
+          }
+          this.apis.question
+            .submitQuestion(
+              sessionStorage.getItem("teacherUsername"),
+              sessionStorage.getItem("teacherUsername"),
+              this.question.title,
+              answer,
+              this.question.analyze,
+              items,
+              this.question.score,
+              this.question.difficult,
+              5
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "题目上传成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "questionList" });
+              }
+            });
         } else {
           return false;
         }

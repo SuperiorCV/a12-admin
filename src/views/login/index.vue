@@ -17,7 +17,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
+          ref="username" 
           v-model="loginForm.username"
           placeholder="Username"
           name="username"
@@ -133,7 +133,10 @@ export default {
             .then((res) => {
               this.loading = false;
               if (res.status === 200) {
-                sessionStorage.setItem("teacherUsername", this.loginForm.username);
+                sessionStorage.setItem(
+                  "teacherUsername",
+                  this.loginForm.username
+                );
                 sessionStorage.setItem("teacherName", this.loginForm.username);
                 sessionStorage.setItem("token", res.data.result.token);
                 this.$router.push({ name: "Dashboard" });

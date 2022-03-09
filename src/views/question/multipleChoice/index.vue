@@ -78,18 +78,23 @@
         <el-button type="primary" @click="submitQuestion">提交</el-button>
         <el-button @click="resetQuestion">重置</el-button>
         <el-button type="success" @click="questionItemAdd">添加选项</el-button>
-        <el-button type="success" @click="questionVisible=true">预览题目</el-button>
+        <el-button type="success" @click="questionVisible = true"
+          >预览题目</el-button
+        >
       </el-form-item>
     </el-form>
-    <el-dialog :visible.sync="questionVisible" style="width: 100%;height: 100%">
-      <QuestionShow :question="question"/>
+    <el-dialog
+      :visible.sync="questionVisible"
+      style="width: 100%; height: 100%"
+    >
+      <QuestionShow :question="question" />
     </el-dialog>
   </div>
 </template>
 
 <script>
 import RichEditor from "@/components/RichEditor/index.vue";
-import QuestionShow from '@/components/QuestionShow/index.vue';
+import QuestionShow from "@/components/QuestionShow/index.vue";
 export default {
   components: {
     RichEditor,
@@ -152,12 +157,44 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
-          var items="";
-          for(let i=0;i<this.question.items.length-1;i++){
-            items+=this.question.items[i].prefix+"<sep2>"+this.question.items[i].content+"<sep1>";
+          var items = "";
+          for (let i = 0; i < this.question.items.length - 1; i++) {
+            items +=
+              this.question.items[i].prefix +
+              "<sep2>" +
+              this.question.items[i].content +
+              "<sep1>";
           }
-          items+=this.question.items[this.items.length-1].prefix+"<sep2>"+this.question.items.content;
-          this.apis.question.submitQuestion()
+          items +=
+            this.question.items[this.question.items.length - 1].prefix +
+            "<sep2>" +
+            this.question.items[this.question.items.length - 1].content;
+          var answer = "";
+          for (let i = 0; i < this.question.answer.length; i++) {
+            answer += this.question.answer[i];
+          }
+          this.apis.question
+            .submitQuestion(
+              sessionStorage.getItem("teacherUsername"),
+              sessionStorage.getItem("teacherUsername"),
+              this.question.title,
+              answer,
+              this.question.analyze,
+              items,
+              this.question.score,
+              this.question.difficult,
+              2
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "题目上传成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "questionList" });
+              }
+            });
         } else {
           return false;
         }

@@ -41,9 +41,8 @@
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column prop="id" label="ID"></el-table-column>
+      <el-table-column prop="qid" label="ID"></el-table-column>
       <el-table-column prop="type" label="题型"></el-table-column>
-      <el-table-column prop="questionBody" label="题干"></el-table-column>
       <el-table-column prop="score" label="分数"></el-table-column>
       <el-table-column prop="difficult" label="难度" width="250px">
         <template slot-scope="{ row }">
@@ -56,9 +55,9 @@
       <el-table-column prop="teacherUsername" label="教师"></el-table-column>
       <el-table-column prop="name" label="教师昵称"></el-table-column>
       <el-table-column label="操作" align="center" width="200px">
-        <template>
+        <template slot-scope="{ row }">
           <el-button size="mini">预览</el-button>
-          <el-button size="mini">编辑</el-button>
+          <el-button size="mini" @click="editQuestion(row)">编辑</el-button>
           <!-- <el-button size="mini" type="danger" class="link-left"
             >删除</el-button
           > -->
@@ -103,67 +102,60 @@ export default {
   },
   created() {
     this.listLoading = true;
-    this.questionData = [
-      {
-        id: 1,
-        type: "单选题",
-        questionBody: "单选题1",
-        score: "2",
-        difficult: 1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 2,
-        type: "多选题",
-        questionBody: "多选题1",
-        score: "2",
-        difficult: 2,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 3,
-        type: "判断题",
-        questionBody: "判断题1",
-        score: "1",
-        difficult: 1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 4,
-        type: "简答题",
-        questionBody: "简答题1",
-        score: "5",
-        difficult: 3.1,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 5,
-        type: "单选题",
-        questionBody: "单选题2",
-        score: "1",
-        difficult: 2.5,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-      {
-        id: 6,
-        type: "多选题",
-        questionBody: "多选题2",
-        score: "2",
-        difficult: 3,
-        teacherUsername: "朗文翀",
-        name: "朗文翀",
-      },
-    ];
+
+    this.apis.question.getList().then((res) => {
+      let res_data = res.data.result;
+      console.log(res_data);
+
+      for (let i = 0; i < res_data.length; i++) {
+        var pushList = new Object();
+        pushList.qid = res_data[i].qid;
+
+        if (res_data[i].qtype == 1) {
+          pushList.type = "单选题";
+        } else if (res_data[i].qtype == 2) {
+          pushList.type = "多选题";
+        } else if (res_data[i].qtype == 3) {
+          pushList.type = "判断题";
+        } else if (res_data[i].qtype == 4) {
+          pushList.type = "简答题";
+        } else if (res_data[i].qtype == 5) {
+          pushList.type = "排序题";
+        }
+
+        pushList.score = res_data[i].score;
+        pushList.difficult = res_data[i].difficulty;
+        pushList.teacherUsername = res_data[i].teacherUsername;
+        pushList.name = res_data[i].teacherName;
+        pushList.items = res_data[i].items;
+        pushList.analysis = res_data[i].analysis;
+        pushList.answer = res_data[i].answer;
+        pushList.count = res_data[i].count;
+        pushList.rightCnt = res_data[i].rightCnt;
+        pushList.title = res_data[i].title;
+
+        this.questionData.push(pushList);
+      }
+    });
+
     this.total = 6;
     this.queryParam.pageIndex = 1;
     this.listLoading = false;
   },
   methods: {
+    editQuestion(row) {
+      if (row.type === "单选题") {
+        this.$router.push({ name: "singleChoice", params: { question: row } });
+      } else if (row.type === "多选题") {
+        this.$router.push({ name: "multiChoice", params: { question: row } });
+      } else if (row.type === "判断题") {
+        this.$router.push({ name: "trueFalse", params: { question: row } });
+      } else if (row.type === "简答题") {
+        this.$router.push({ name: "shortAnswer", params: { question: row } });
+      } else {
+        this.$router.push({ name: "sort", params: { question: row } });
+      }
+    },
     search() {
       this.listLoading = true;
       this.questionData = [
@@ -212,7 +204,7 @@ export default {
           teacherUsername: "朗文翀",
           name: "朗文翀",
         },
-         {
+        {
           id: 6,
           type: "单选题",
           questionBody: "单选题2",
