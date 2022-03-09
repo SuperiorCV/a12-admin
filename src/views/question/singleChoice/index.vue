@@ -96,6 +96,7 @@ export default {
   name: "singleChoice",
   data() {
     return {
+      isEdit: false,
       question: {
         id: null,
         questionType: 1,
@@ -120,6 +121,29 @@ export default {
       },
       questionVisible: false,
     };
+  },
+  created () {
+    let myRow = this.$route.question
+    if(myRow!=null){
+      isEdit=true;
+      let myItems = question.items
+      let singleItem = myItem.split("<sep1>")
+
+      this.question.items = [];
+      for(var i=0;i<singleItem.length;i--){
+        let item = singleItem[i].split("<sep2>")
+        let obj = {prefix: item[0], content: item[1]}
+        this.question.items.push(obj)
+      }
+
+      this.question.title = myRow.title;
+      this.question.answer = myRow.answer;
+      this.question.analyze = myRow.analysis;
+      this.question.score = myRow.score;
+      this.question.difficult = myRow.difficulty;
+      this.question.questionType = myRow.qtype;
+
+    }
   },
   methods: {
     questionItemRemove(idx) {
@@ -146,8 +170,8 @@ export default {
       }
     },
     submitQuestion() {
-      let that = this;
-      this.$refs.question.validate((valid) => {
+      if(!this.isEdit){
+        this.$refs.question.validate((valid) => {
         if (valid) {
           var items = "";
           for (let i = 0; i < this.question.items.length; i++) {
@@ -185,6 +209,13 @@ export default {
           return false;
         }
       });
+      }else{
+        editQuestion();
+      }
+      
+    },
+    editQuestion() {
+      
     },
     resetQuestion() {
       let lastId = this.question.id;
