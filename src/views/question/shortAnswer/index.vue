@@ -106,6 +106,28 @@ export default {
       let that = this;
       this.$refs.question.validate((valid) => {
         if (valid) {
+          this.apis.question
+            .submitQuestion(
+              sessionStorage.getItem("teacherUsername"),
+              sessionStorage.getItem("teacherName"),
+              this.question.title,
+              this.question.answer,
+              this.question.analyze,
+              "",
+              this.question.score,
+              this.question.difficult,
+              4
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "题目上传成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "questionList" });
+              }
+            });
         } else {
           return false;
         }

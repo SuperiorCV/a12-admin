@@ -17,7 +17,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
+          ref="username" 
           v-model="loginForm.username"
           placeholder="Username"
           name="username"
