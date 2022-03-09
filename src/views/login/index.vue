@@ -133,8 +133,8 @@ export default {
             .then((res) => {
               this.loading = false;
               if (res.status === 200) {
-                sessionStorage.setItem("teacherUsername", this.teacherUsername);
-                sessionStorage.setItem("teacherName", this.teacherUsername);
+                sessionStorage.setItem("teacherUsername", this.loginForm.username);
+                sessionStorage.setItem("teacherName", this.loginForm.username);
                 sessionStorage.setItem("token", res.data.result.token);
                 this.$router.push({ name: "Dashboard" });
               }

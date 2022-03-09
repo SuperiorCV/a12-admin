@@ -22,3 +22,7 @@ export const submitQuestion = (teacherUsername, teacherName, title, answer, anal
 
   return axios.post('/question/api/upload', fd);
 }
+
+export const getList = () => {
+    return axios.post('/question/api/search');
+}
