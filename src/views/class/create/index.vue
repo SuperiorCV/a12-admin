@@ -46,7 +46,24 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          this.apis.Class
+            .createClass(
+              sessionStorage.getItem("teacherUsername"),
+              this.ruleForm.className,
+              sessionStorage.getItem("teacherName")
+            )
+            .then((res) => {
+              if (res.data.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "创建班级成功！",
+                  type: "success",
+                });
+                this.$router.push({ name: "classList" });
+              } else {
+                return false;
+              }
+            });
         } else {
           console.log("error submit!!");
           return false;
@@ -66,6 +83,5 @@ export default {
   min-height: 100vh;
   box-sizing: border-box;
   padding: 20px;
-  
 }
 </style>

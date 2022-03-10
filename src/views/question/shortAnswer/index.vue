@@ -74,6 +74,7 @@ export default {
   },
   data() {
     return {
+      isEdit: false,
       question: {
         id: null,
         questionType: 4,
@@ -92,6 +93,20 @@ export default {
       questionVisible: false,
     };
   },
+  created() {
+    let myRow = this.$route.params.question;
+    if (myRow != null) {
+      this.isEdit = true;
+
+      this.question.id = myRow.qid;
+      this.question.title = myRow.title;
+      this.question.answer = myRow.answer;
+      this.question.analyze = myRow.analysis;
+      this.question.score = myRow.score;
+      this.question.difficult = myRow.difficult;
+      this.question.questionType = myRow.qtype;
+    }
+  },
   methods: {
     updateContent({ id, content }) {
       if (id === 0) {
@@ -103,13 +118,45 @@ export default {
       }
     },
     submitQuestion() {
-      let that = this;
+      if (!this.isEdit) {
+        this.$refs.question.validate((valid) => {
+          if (valid) {
+            this.apis.question
+              .submitQuestion(
+                sessionStorage.getItem("teacherUsername"),
+                sessionStorage.getItem("teacherName"),
+                this.question.title,
+                this.question.answer,
+                this.question.analyze,
+                "",
+                this.question.score,
+                this.question.difficult,
+                4
+              )
+              .then((res) => {
+                if (res.data.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "题目上传成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "questionList" });
+                }
+              });
+          } else {
+            return false;
+          }
+        });
+      } else {
+        this.editQuestion();
+      }
+    },
+    editQuestion() {
       this.$refs.question.validate((valid) => {
         if (valid) {
           this.apis.question
-            .submitQuestion(
-              sessionStorage.getItem("teacherUsername"),
-              sessionStorage.getItem("teacherName"),
+            .editQuestion(
+              this.question.id,
               this.question.title,
               this.question.answer,
               this.question.analyze,
@@ -122,7 +169,7 @@ export default {
               if (res.data.status === 200) {
                 this.$notify({
                   title: "成功",
-                  message: "题目上传成功！",
+                  message: "题目修改成功！",
                   type: "success",
                 });
                 this.$router.push({ name: "questionList" });

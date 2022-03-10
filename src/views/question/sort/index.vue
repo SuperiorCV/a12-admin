@@ -105,13 +105,45 @@ export default {
     draggable,
     QuestionShow,
   },
+  created() {
+    let myRow = this.$route.params.question;
+    if (myRow != null) {
+      this.isEdit = true;
+      let myItems = myRow.items;
+      let Items = myItems.split("<sep1>");
+      this.question.items = [];
+      this.question.id = myRow.qid;
+      for (let i = 0; i < Items.length; i++) {
+        let item = Items[i].split("<sep2>");
+        let obj = { prefix: item[0], content: item[1] };
+        this.question.items.push(obj);
+      }
+      var answer = [];
+      for (let i = 0; i < myRow.answer.length; i++) {
+        var obj = {};
+        obj.prefix = myRow.answer[i];
+        for (let j = 0; j < this.question.items.length; j++) {
+          if (this.question.items[j].prefix === obj.prefix) {
+            obj.content = this.question.items[j].content;
+          }
+        }
+        answer.push(obj);
+      }
+      this.question.title = myRow.title;
+      this.question.answer = answer;
+      this.question.analyze = myRow.analysis;
+      this.question.score = myRow.score;
+      this.question.difficult = myRow.difficult;
+      this.question.questionType = myRow.qtype;
+    }
+  },
   data() {
     return {
+      isEdit: false,
       question: {
         id: null,
         questionType: 5,
         difficult: 0,
-
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -185,28 +217,52 @@ export default {
           for (let i = 0; i < this.question.answer.length; i++) {
             answer += this.question.answer[i].prefix;
           }
-          this.apis.question
-            .submitQuestion(
-              sessionStorage.getItem("teacherUsername"),
-              sessionStorage.getItem("teacherUsername"),
-              this.question.title,
-              answer,
-              this.question.analyze,
-              items,
-              this.question.score,
-              this.question.difficult,
-              5
-            )
-            .then((res) => {
-              if (res.data.status === 200) {
-                this.$notify({
-                  title: "成功",
-                  message: "题目上传成功！",
-                  type: "success",
-                });
-                this.$router.push({ name: "questionList" });
-              }
-            });
+          if (!this.isEdit) {
+            this.apis.question
+              .submitQuestion(
+                sessionStorage.getItem("teacherUsername"),
+                sessionStorage.getItem("teacherUsername"),
+                this.question.title,
+                answer,
+                this.question.analyze,
+                items,
+                this.question.score,
+                this.question.difficult,
+                5
+              )
+              .then((res) => {
+                if (res.data.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "题目上传成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "questionList" });
+                }
+              });
+          } else {
+            this.apis.question
+              .editQuestion(
+                this.question.id,
+                this.question.title,
+                answer,
+                this.question.analyze,
+                items,
+                this.question.score,
+                this.question.difficult,
+                5
+              )
+              .then((res) => {
+                if (res.data.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "题目修改成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "questionList" });
+                }
+              });
+          }
         } else {
           return false;
         }

@@ -26,3 +26,18 @@ export const submitQuestion = (teacherUsername, teacherName, title, answer, anal
 export const getList = () => {
     return axios.post('/question/api/search');
 }
+
+export const editQuestion = (qid, title, answer, analysis, items, score, difficulty, qtype) => {
+  let fd = new FormData();
+
+  fd.append("qid", qid);
+  fd.append("title", title);
+  fd.append("answer", answer);
+  fd.append("analysis", analysis);
+  fd.append("items", items);
+  fd.append("score", score);
+  fd.append("difficulty", difficulty);
+  fd.append("qtype", qtype);
+
+  return axios.post('/question/api/edit', fd);
+}
