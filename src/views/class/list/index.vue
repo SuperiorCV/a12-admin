@@ -24,9 +24,22 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
           <el-button size="mini" @click="editClass(row)">编辑</el-button>
-          <el-button size="mini" type="danger" class="link-left"
-            >解散</el-button
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            icon="el-icon-info"
+            icon-color="red"
+            @onConfirm="dismiss(row)"
+            title="确定要解散该班级吗？"
           >
+            <el-button
+              size="mini"
+              type="danger"
+              class="link-left"
+              slot="reference"
+              >解散</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -118,6 +131,15 @@ export default {
     change({ page, limit }) {
       this.queryParam.pageIndex = page;
       this.queryParam.pageSize = limit;
+    },
+    dismiss(row) {
+      this.apis.Class.dismissClass(row.id).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          var index = this.arr.indexOf(row);
+          this.arr.splice(index, 1);
+        }
+      });
     },
   },
 };

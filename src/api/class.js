@@ -26,3 +26,9 @@ export const editClass = (cid, cname) => {
   fd.append("cname", cname);
   return axios.post("/class/api/edit", fd);
 }
+
+export const dismissClass = (cid) => {
+  let fd = new FormData();
+  fd.append("cid", cid);
+  return axios.post("/class/api/dismiss", fd);
+}
