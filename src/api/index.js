@@ -3,6 +3,7 @@ import axios from 'axios'
 import * as login from './login.js'
 import * as question from './question.js'
 import * as Class from './class.js'
+import * as student from './student.js'
 import ElementUI from 'element-ui';
 
 
@@ -44,5 +45,6 @@ const apis = {
   login,
   question,
   Class,
+  student,
 }
 export default apis
