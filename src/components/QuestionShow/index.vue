@@ -78,13 +78,10 @@
       <p class="head" style="background: #596275">
         [{{ question.score }}分] 排序题
       </p>
+      <div class="ql-editor" v-html="question.title"></div>
       <draggable v-model="arr">
         <transition-group>
-          <div
-            class="answerBox"
-            v-for="element in arr"
-            :key="element.prefix"
-          >
+          <div class="answerBox" v-for="element in arr" :key="element.prefix">
             <div class="ql-container ql-snow">
               <span>{{ element.prefix }}</span>
               <div class="content ql-editor" v-html="element.content" />

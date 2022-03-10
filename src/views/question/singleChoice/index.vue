@@ -101,7 +101,6 @@ export default {
         id: "",
         questionType: 1,
         difficult: 0,
-
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -124,7 +123,6 @@ export default {
   },
   created() {
     let myRow = this.$route.params.question;
-    console.log(myRow);
     if (myRow != null) {
       this.isEdit = true;
       let myItems = myRow.items;
