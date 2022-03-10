@@ -34,3 +34,8 @@ export const invite = (cid, username, teacherUsername) => {
   fd.append("teacherName", teacherUsername)
   return axios.post("/class/api/invite", fd);
 }
+export const dismissClass = (cid) => {
+  let fd = new FormData();
+  fd.append("cid", cid);
+  return axios.post("/class/api/dismiss", fd);
+}
