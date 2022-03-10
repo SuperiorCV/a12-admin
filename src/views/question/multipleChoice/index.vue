@@ -103,6 +103,7 @@ export default {
   name: "multipleChoice",
   data() {
     return {
+      isEdit: false,
       question: {
         id: null,
         questionType: 2,
@@ -129,6 +130,30 @@ export default {
       questionVisible: false,
     };
   },
+  created() {
+    let myRow = this.$route.params.question;
+    if (myRow != null) {
+      this.isEdit = true;
+      let myItems = myRow.items;
+      let singleItem = myItems.split("<sep1>");
+
+      this.question.items = [];
+      this.question.id = myRow.qid;
+      for (var i = 0; i < singleItem.length; i++) {
+        let item = singleItem[i].split("<sep2>");
+        let obj = { prefix: item[0], content: item[1] };
+        this.question.items.push(obj);
+      }
+
+      let myAnswer = myRow.answer;
+      this.question.answer = Array.from(myAnswer);
+      this.question.title = myRow.title;
+      this.question.analyze = myRow.analysis;
+      this.question.score = myRow.score;
+      this.question.difficult = myRow.difficult;
+      this.question.questionType = myRow.qtype;
+    }
+  },
   methods: {
     questionItemRemove(idx) {
       this.question.items.splice(idx, 1);
@@ -154,29 +179,75 @@ export default {
       }
     },
     submitQuestion() {
-      let that = this;
+      if (!this.isEdit) {
+        this.$refs.question.validate((valid) => {
+          if (valid) {
+            var items = "";
+            for (let i = 0; i < this.question.items.length - 1; i++) {
+              items +=
+                this.question.items[i].prefix +
+                "<sep2>" +
+                this.question.items[i].content +
+                "<sep1>";
+            }
+            items +=
+              this.question.items[this.question.items.length - 1].prefix +
+              "<sep2>" +
+              this.question.items[this.question.items.length - 1].content;
+            var answer = "";
+            for (let i = 0; i < this.question.answer.length; i++) {
+              answer += this.question.answer[i];
+            }
+            this.apis.question
+              .submitQuestion(
+                sessionStorage.getItem("teacherUsername"),
+                sessionStorage.getItem("teacherUsername"),
+                this.question.title,
+                answer,
+                this.question.analyze,
+                items,
+                this.question.score,
+                this.question.difficult,
+                2
+              )
+              .then((res) => {
+                if (res.data.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "题目上传成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "questionList" });
+                }
+              });
+          } else {
+            return false;
+          }
+        });
+      } else {
+        this.editQuestion();
+      }
+    },
+    editQuestion() {
       this.$refs.question.validate((valid) => {
         if (valid) {
           var items = "";
-          for (let i = 0; i < this.question.items.length - 1; i++) {
-            items +=
-              this.question.items[i].prefix +
-              "<sep2>" +
-              this.question.items[i].content +
-              "<sep1>";
+          for (let i = 0; i < this.question.items.length; i++) {
+            items += this.question.items[i].prefix;
+            items += "<sep2>";
+            items += this.question.items[i].content;
+            if (i != this.question.items.length - 1) {
+              items += "<sep1>";
+            }
           }
-          items +=
-            this.question.items[this.question.items.length - 1].prefix +
-            "<sep2>" +
-            this.question.items[this.question.items.length - 1].content;
+
           var answer = "";
           for (let i = 0; i < this.question.answer.length; i++) {
             answer += this.question.answer[i];
           }
           this.apis.question
-            .submitQuestion(
-              sessionStorage.getItem("teacherUsername"),
-              sessionStorage.getItem("teacherUsername"),
+            .editQuestion(
+              this.question.id,
               this.question.title,
               answer,
               this.question.analyze,
@@ -189,7 +260,7 @@ export default {
               if (res.data.status === 200) {
                 this.$notify({
                   title: "成功",
-                  message: "题目上传成功！",
+                  message: "题目修改成功！",
                   type: "success",
                 });
                 this.$router.push({ name: "questionList" });
