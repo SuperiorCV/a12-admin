@@ -26,3 +26,11 @@ export const editClass = (cid, cname) => {
   fd.append("cname", cname);
   return axios.post("/class/api/edit", fd);
 }
+
+export const invite = (cid, username, teacherUsername) => {
+  let fd = new FormData();
+  fd.append("cid", cid);
+  fd.append("username", username);
+  fd.append("teacherName", teacherUsername)
+  return axios.post("/class/api/invite", fd);
+}
