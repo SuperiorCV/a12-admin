@@ -35,21 +35,32 @@
     </el-form>
     <!-- table -->
     <el-table
-      :data="userData"
+      :data="sliceUserData"
       v-loading="listLoading"
       border
       fit
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column prop="id" label="ID"></el-table-column>
+      <!-- <el-table-column prop="id" label="ID"></el-table-column> -->
       <el-table-column prop="userName" label="账号"></el-table-column>
       <el-table-column prop="name" label="姓名"></el-table-column>
       <el-table-column prop="sex" label="性别"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column label="操作" align="center">
-        <template>
-          <el-button size="mini" type="danger">移出</el-button>
+        <template slot-scope="{ row }">
+          <el-popconfirm
+            confirm-button-text="确定"
+            cancel-button-text="取消"
+            icon="el-icon-info"
+            icon-color="red"
+            @onConfirm="kick(row)"
+            title="确定要移出该学生吗？"
+          >
+            <el-button size="mini" slot="reference" type="danger"
+              >移出</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -60,7 +71,7 @@
       :total="total"
       :page.sync="queryParam.pageIndex"
       :limit.sync="queryParam.pageSize"
-      @pagination="search"
+      @pagination="change"
     />
   </div>
 </template>
@@ -84,6 +95,7 @@ export default {
     };
     return {
       id: 0,
+      arr: [],
       ruleForm: {
         className: "",
       },
@@ -99,78 +111,90 @@ export default {
         pageSize: 10,
       },
       listLoading: true,
-      userData: [],
-      total: 0,
     };
   },
   created() {
     var myClass = this.$route.params.myClass;
     this.ruleForm.className = myClass.className;
-    this.id=myClass.id;
+    this.id = myClass.id;
     this.listLoading = true;
-    this.userData = [
-      {
-        id: 1,
-        userName: "301901",
-        name: "泰达米尔",
-        sex: "男",
-        email: "1234@dasd",
-      },
-      {
-        id: 2,
-        userName: "301902",
-        name: "沃里克",
-        sex: "男",
-        email: "12345@dasd",
-      },
-      {
-        id: 3,
-        userName: "301903",
-        name: "艾希",
-        sex: "女",
-        email: "123456@dasd",
-      },
-      {
-        id: 4,
-        userName: "301904",
-        name: "卡萨丁",
-        sex: "不详",
-        email: "1234567@dasd",
-      },
-      {
-        id: 5,
-        userName: "301905",
-        name: "亚索",
-        sex: "男",
-        email: "12345678@dasd",
-      },
-      {
-        id: 6,
-        userName: "301906",
-        name: "金克斯",
-        sex: "女",
-        email: "123456789@dasd",
-      },
-    ];
-    this.total = 6;
+
+    this.apis.Class.getClassStudents(this.id).then((res) => {
+      let res_data = res.data.result;
+
+      for (let i = 0; i < res_data.length; i++) {
+        var pushList = new Object();
+        pushList.userName = res_data[i].username;
+        pushList.name = res_data[i].name;
+        pushList.sex = res_data[i].sex;
+        pushList.email = res_data[i].email;
+
+        this.arr.push(pushList);
+      }
+    });
     this.queryParam.pageIndex = 1;
     this.listLoading = false;
+  },
+  computed: {
+    userData() {
+      var ans = [];
+      var arr = this.arr;
+      for (let i = 0; i < this.arr.length; i++) {
+        var singleUser = arr[i];
+        var v = true;
+        if (
+          this.queryParam.userName !== "" &&
+          singleUser.userName.search(this.queryParam.userName) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.name !== "" &&
+          singleUser.name.search(this.queryParam.name) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.email !== "" &&
+          singleUser.email.search(this.queryParam.email) === -1
+        ) {
+          v = false;
+        }
+        if (v) {
+          ans.push(singleUser);
+        }
+      }
+      return ans;
+    },
+    sliceUserData() {
+      var re = [];
+      var arr = this.userData;
+      var start = (this.queryParam.pageIndex - 1) * this.queryParam.pageSize;
+      var end =
+        (this.queryParam.pageIndex - 1) * this.queryParam.pageSize +
+        this.queryParam.pageSize;
+      var re = arr.slice(start, end);
+      return re;
+    },
+    total() {
+      return this.userData.length;
+    },
   },
   methods: {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          this.apis.Class.editClass(this.id,this.ruleForm.className).then(res=>{
-            if(res.data.status===200){
+          this.apis.Class.editClass(this.id, this.ruleForm.className).then(
+            (res) => {
               if (res.data.status === 200) {
+                if (res.data.status === 200) {
                   this.$notify({
                     title: "成功",
                     message: "班级名称修改成功！",
                     type: "success",
                   });
                 }
+              }
             }
-          })
+          );
         } else {
           console.log("error submit!!");
           return false;
@@ -180,9 +204,19 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    search() {
-
+    change({ page, limit }) {
+      this.queryParam.pageIndex = page;
+      this.queryParam.pageSize = limit;
     },
+    kick(row) {
+      this.apis.Class.kickStudent(this.id, row.userName).then((res) => {
+        if (res.status === 200) {
+          var index = this.arr.indexOf(row);
+          this.arr.splice(index, 1);
+        }
+      });
+    },
+    search() {},
   },
 };
 </script>

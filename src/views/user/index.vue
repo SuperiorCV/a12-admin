@@ -6,9 +6,9 @@
         <div class="classList">
           <div
             class="item"
-            v-for="item in myClass"
+            v-for="(item,i) in myClass"
             :key="item.id"
-            @click="join(item.id)"
+            @click="join(i)"
           >
             <span
               ><svg
@@ -211,9 +211,9 @@ export default {
       this.classVisible = true;
       this.student = row;
     },
-    join(id) {
+    join(i) {
       this.apis.Class.invite(
-        id,
+        this.myClass[i].id,
         this.student.username,
         sessionStorage.getItem("teacherUsername")
       ).then((res) => {
@@ -224,6 +224,7 @@ export default {
             type: "success",
           });
           this.classVisible=false;
+          this.myClass[i].num+=1;
         }
       });
     },

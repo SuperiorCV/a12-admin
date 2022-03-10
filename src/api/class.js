@@ -39,3 +39,16 @@ export const dismissClass = (cid) => {
   fd.append("cid", cid);
   return axios.post("/class/api/dismiss", fd);
 }
+
+export const getClassStudents = (cid) => {
+  let fd = new FormData();
+  fd.append("cid", cid);
+  return axios.post("/class/api/get/student", fd);
+}
+
+export const kickStudent = (cid,studentUsername) => {
+  let fd = new FormData();
+  fd.append("cid", cid);
+  fd.append("studentUsername",studentUsername);
+  return axios.post("/class/api/kick", fd);
+}
