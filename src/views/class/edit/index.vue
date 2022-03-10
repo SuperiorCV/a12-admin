@@ -104,6 +104,9 @@ export default {
     };
   },
   created() {
+    var myClass = this.$route.params.myClass;
+    this.ruleForm.className = myClass.className;
+    this.id=myClass.id;
     this.listLoading = true;
     this.userData = [
       {
@@ -157,7 +160,17 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("submit!");
+          this.apis.Class.editClass(this.id,this.ruleForm.className).then(res=>{
+            if(res.data.status===200){
+              if (res.data.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "班级名称修改成功！",
+                    type: "success",
+                  });
+                }
+            }
+          })
         } else {
           console.log("error submit!!");
           return false;
@@ -168,47 +181,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     search() {
-      this.listLoading = true;
-      this.userData = [
-        {
-          id: 1,
-          userName: "301901",
-          name: "泰达米尔",
-          sex: "男",
-          email: "1234@dasd",
-        },
-        {
-          id: 2,
-          userName: "301902",
-          name: "沃里克",
-          sex: "男",
-          email: "12345@dasd",
-        },
-        {
-          id: 3,
-          userName: "301903",
-          name: "艾希",
-          sex: "女",
-          email: "123456@dasd",
-        },
-        {
-          id: 4,
-          userName: "301904",
-          name: "卡萨丁",
-          sex: "不详",
-          email: "1234567@dasd",
-        },
-        {
-          id: 5,
-          userName: "301905",
-          name: "亚索",
-          sex: "男",
-          email: "12345678@dasd",
-        },
-      ];
-      this.total = 5;
-      this.queryParam.pageIndex = 1;
-      this.listLoading = false;
+
     },
   },
 };

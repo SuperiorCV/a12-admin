@@ -23,12 +23,7 @@
       <el-table-column prop="num" label="班级人数"></el-table-column>
       <el-table-column label="操作" align="center">
         <template slot-scope="{ row }">
-          <router-link
-            :to="{ path: '/class/edit', query: { id: row.id } }"
-            class="link-left"
-          >
-            <el-button size="mini">编辑</el-button>
-          </router-link>
+          <el-button size="mini" @click="editClass(row)">编辑</el-button>
           <el-button size="mini" type="danger" class="link-left"
             >解散</el-button
           >
@@ -70,7 +65,6 @@ export default {
       sessionStorage.getItem("teacherUsername")
     ).then((res) => {
       let res_data = res.data.result;
-      console.log(res_data);
       for (let i = 0; i < res_data.length; i++) {
         var pushList = new Object();
         pushList.id = res_data[i].cid;
@@ -118,6 +112,9 @@ export default {
     },
   },
   methods: {
+    editClass(row) {
+      this.$router.push({ name: "classEdit", params: { myClass: row } });
+    },
     change({ page, limit }) {
       this.queryParam.pageIndex = page;
       this.queryParam.pageSize = limit;
