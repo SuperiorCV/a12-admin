@@ -14,3 +14,8 @@ export const createClass = (username, cname, teacherName) => {
   fd.append("teacherName", teacherName);
   return axios.post('/class/api/create', fd);
 }
+export const getClassList = (teacherUsername) => {
+    let fd = new FormData();
+    fd.append("teacherUsername",teacherUsername);
+    return axios.post('/class/api/get/all',fd);
+}

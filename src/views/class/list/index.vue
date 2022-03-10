@@ -10,7 +10,7 @@
     </el-form>
 
     <el-table
-      :data="classData"
+      :data="sliceClassData"
       v-loading="listLoading"
       border
       fit
@@ -40,7 +40,7 @@
       :total="total"
       :page.sync="queryParam.pageIndex"
       :limit.sync="queryParam.pageSize"
-      @pagination="search"
+      @pagination="change"
     />
   </div>
 </template>
@@ -54,105 +54,73 @@ export default {
   name: "list",
   data() {
     return {
+      arr: [],
       queryParam: {
         className: "",
         pageIndex: 1,
         pageSize: 10,
       },
       listLoading: true,
-      classData: [],
-      pages:30,
-      total: 0,
+      // pages: 30,
     };
   },
   created() {
     this.listLoading = true;
-    this.classData = [
-      {
-        id: 1,
-        className: "1班",
-        password: "1",
-        num: 200,
-      },
-      {
-        id: 2,
-        className: "2班",
-        password: "2",
-        num: 200,
-      },
-      {
-        id: 3,
-        className: "3班",
-        password: "3",
-        num: 200,
-      },
-      {
-        id: 4,
-        className: "4班",
-        password: "4",
-        num: 200,
-      },
-      {
-        id: 5,
-        className: "5班",
-        password: "5",
-        num: 200,
-      },
-      {
-        id: 6,
-        className: "6班",
-        password: "6",
-        num: 200,
-      },
-    ];
-    this.total = 6;
+    this.apis.Class.getClassList(
+      sessionStorage.getItem("teacherUsername")
+    ).then((res) => {
+      let res_data = res.data.result;
+      console.log(res_data);
+      for (let i = 0; i < res_data.length; i++) {
+        var pushList = new Object();
+        pushList.id = res_data[i].cid;
+        pushList.className = res_data[i].cname;
+        pushList.password = res_data[i].command;
+        pushList.num = res_data[i].studentNumber;
+
+        this.arr.push(pushList);
+      }
+    });
     this.queryParam.pageIndex = 1;
     this.listLoading = false;
   },
+  computed: {
+    classData() {
+      var ans = [];
+      var arr = this.arr;
+      for (let i = 0; i < this.arr.length; i++) {
+        var singleClass = arr[i];
+        var v = true;
+        if (
+          this.queryParam.className !== "" &&
+          singleClass.className.search(this.queryParam.className) === -1
+        ) {
+          v = false;
+        }
+        if (v) {
+          ans.push(singleClass);
+        }
+      }
+      return ans;
+    },
+    sliceClassData() {
+      var re = [];
+      var arr = this.classData;
+      var start = (this.queryParam.pageIndex - 1) * this.queryParam.pageSize;
+      var end =
+        (this.queryParam.pageIndex - 1) * this.queryParam.pageSize +
+        this.queryParam.pageSize;
+      var re = arr.slice(start, end);
+      return re;
+    },
+    total() {
+      return this.classData.length;
+    },
+  },
   methods: {
-    search() {
-      this.listLoading = true;
-      this.classData = [
-        {
-          id: 1,
-          className: "1班",
-          password: "1",
-          num: 200,
-        },
-        {
-          id: 2,
-          className: "2班",
-          password: "2",
-          num: 200,
-        },
-        {
-          id: 3,
-          className: "3班",
-          password: "3",
-          num: 200,
-        },
-        {
-          id: 4,
-          className: "4班",
-          password: "4",
-          num: 200,
-        },
-        {
-          id: 5,
-          className: "5班",
-          password: "5",
-          num: 200,
-        },
-        {
-        id: 6,
-        className: "6班",
-        password: "6",
-        num: 200,
-      },
-      ];
-      this.total = 6;
-      this.queryParam.pageIndex = 2;
-      this.listLoading = false;
+    change({ page, limit }) {
+      this.queryParam.pageIndex = page;
+      this.queryParam.pageSize = limit;
     },
   },
 };
