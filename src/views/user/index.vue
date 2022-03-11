@@ -217,15 +217,21 @@ export default {
         this.student.username,
         sessionStorage.getItem("teacherUsername")
       ).then((res) => {
+        console.log(res);
         if (res.data.status === 200) {
           this.$notify({
             title: "成功",
             message: "邀请加入班级成功！",
             type: "success",
           });
-          this.classVisible=false;
+        } else if (res.data.status == 403) {
+          this.$notify.error({
+            title: "错误",
+            message: "该学生已加入该班级！",
+          });
         }
       });
+      this.classVisible = false;
     },
   },
 };
