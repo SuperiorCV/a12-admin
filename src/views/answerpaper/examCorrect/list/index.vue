@@ -64,6 +64,7 @@ export default {
           let data = res.data.result;
           for (let i = 0; i < data.length; i++) {
             var pushList = new Object();
+            pushList.eid=data[i].eid;
             pushList.testName = data[i].title;
             pushList.name = data[i].studentName;
             pushList.username = data[i].studentUsername;
