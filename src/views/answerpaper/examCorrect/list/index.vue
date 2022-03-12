@@ -11,19 +11,19 @@
         <el-input v-model="queryParam.username" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">查询</el-button>
+        <el-button type="primary">查询</el-button>
       </el-form-item>
     </el-form>
 
     <el-table
       v-loading="listLoading"
-      :data="tableData"
+      :data="sliceTableData"
       border
       fit
       highlight-current-row
       style="width: 100%"
     >
-      <el-table-column prop="id" label="试卷Id" width="90px" />
+      <!-- <el-table-column prop="id" label="试卷Id" width="90px" /> -->
       <el-table-column prop="testName" label="试卷名称" show-overflow-tooltip />
       <el-table-column prop="name" label="用户名称" />
       <el-table-column prop="username" label="用户账号" />
@@ -44,7 +44,7 @@
       :total="total"
       :page.sync="queryParam.pageIndex"
       :limit.sync="queryParam.pageSize"
-      @pagination="search"
+      @pagination="change"
     />
   </div>
 </template>
@@ -55,6 +55,72 @@ import Pagination from "@/components/Pagination";
 export default {
   name: "examCorrect",
   components: { Pagination },
+  created() {
+    this.apis.answerpaper
+      .search(sessionStorage.getItem("teacherUsername"), 0)
+      .then((res) => {
+        if (res.data.status === 200) {
+          console.log(res);
+          let data = res.data.result;
+          for (let i = 0; i < data.length; i++) {
+            var pushList = new Object();
+            pushList.testName = data[i].title;
+            pushList.name = data[i].studentName;
+            pushList.username = data[i].studentUsername;
+            pushList.score = data[i].score;
+            pushList.rate = data[i].accuracy;
+            pushList.time = data[i].submitTime;
+            pushList.cost = data[i].duration;
+
+            this.arr.push(pushList);
+          }
+        }
+      });
+    console.log(this.arr);
+  },
+  computed: {
+    tableData() {
+      var ans = [];
+      var arr = this.arr;
+      for (let i = 0; i < this.arr.length; i++) {
+        var singleTable = arr[i];
+        var v = true;
+        if (
+          this.queryParam.examTitle !== "" &&
+          singleTable.testName.search(this.queryParam.examTitle) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.name !== "" &&
+          singleTable.name.search(this.queryParam.name) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.username !== "" &&
+          singleTable.username.search(this.queryParam.username) === -1
+        ) {
+          v = false;
+        }
+        if (v) {
+          ans.push(singleTable);
+        }
+      }
+      return ans;
+    },
+    sliceTableData() {
+      var re = [];
+      var arr = this.tableData;
+      var start = (this.queryParam.pageIndex - 1) * this.queryParam.pageSize;
+      var end =
+        (this.queryParam.pageIndex - 1) * this.queryParam.pageSize +
+        this.queryParam.pageSize;
+      var re = arr.slice(start, end);
+      return re;
+    },
+    total() {
+      return this.tableData.length;
+    },
+  },
   data() {
     return {
       queryParam: {
@@ -67,60 +133,7 @@ export default {
       },
 
       listLoading: false,
-      tableData: [
-        {
-          id: 1,
-          testName: "第一次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "2/15",
-          rate: "1/6",
-          cost: "10秒",
-          time: "2020-2-22 19:09:32",
-        },
-        {
-          id: 132,
-          testName: "操作系统期末考试",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "88/100",
-          rate: "26/30",
-          cost: "1小时20分10秒",
-          time: "2020-2-23 19:23:32",
-        },
-        {
-          id: 2,
-          testName: "第二次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "15/15",
-          rate: "6/6",
-          cost: "20分10秒",
-          time: "2020-3-12 19:09:32",
-        },
-        {
-          id: 3,
-          testName: "第三次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "12/15",
-          rate: "5/6",
-          cost: "10分10秒",
-          time: "2020-3-22 19:09:32",
-        },
-        {
-          id: 32,
-          testName: "第一次高数月考",
-          name: "Guotao",
-          username: "3019244999",
-          score: "0/15",
-          rate: "0/6",
-          cost: "1秒",
-          time: "2020-2-22 19:09:32",
-        },
-      ],
-
-      total: 10,
+      arr: [],
 
       questionShow: {
         qType: 0,
@@ -134,8 +147,9 @@ export default {
     screenShot(row) {
       this.$router.push({ name: "screenShot" });
     },
-    showQuestion(row) {
-      this.$router.push({ name: "check", params: { edit: true } });
+    change({ page, limit }) {
+      this.queryParam.pageIndex = page;
+      this.queryParam.pageSize = limit;
     },
   },
 };
