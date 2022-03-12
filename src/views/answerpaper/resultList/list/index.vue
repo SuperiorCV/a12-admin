@@ -66,6 +66,9 @@ import Pagination from "@/components/Pagination";
 export default {
   name: "examCorrect",
   components: { Pagination },
+  created() {
+    console.log("1");
+  },
   data() {
     return {
       queryParam: {
