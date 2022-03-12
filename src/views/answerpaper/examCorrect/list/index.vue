@@ -55,17 +55,6 @@ import Pagination from "@/components/Pagination";
 export default {
   name: "examCorrect",
   components: { Pagination },
-  created() {
-    console.log("1");
-    this.apis.answerpaper
-      .search(sessionStorage.getItem("teacherUsername"), 0)
-      .then((res) => {
-        if (res.data.status === 200) {
-          console.log(res);
-          // console.log(1);
-        }
-      });
-  },
   data() {
     return {
       queryParam: {
@@ -144,6 +133,9 @@ export default {
   methods: {
     screenShot(row) {
       this.$router.push({ name: "screenShot" });
+    },
+    showQuestion(row) {
+      this.$router.push({ name: "check", params: { edit: true } });
     },
   },
 };
