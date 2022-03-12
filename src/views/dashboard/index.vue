@@ -84,9 +84,41 @@ export default {
   components: {
     CountTo,
   },
+  created() {
+    this.apis.dashboard
+      .getClassInfo(sessionStorage.getItem("teacherUsername"))
+      .then((res) => {
+        if (res.data.status === 200) {
+          console.log(res);
+          let data = res.data.result;
+          this.classCount = data.ClassCnt;
+          this.peopleCount = data.StudentCnt;
+          this.examPaperCount = data.ExamCnt;
+          this.doExamCount = data.LeftExamCnt;
+
+          let obj1 = data.ClassStudentCnt;
+          for (var index in obj1) {
+            let singleClass = {};
+            singleClass.name = index;
+            singleClass.value = obj1[index];
+            this.classInfo.push(singleClass);
+            this.initClass();
+          }
+          // console.log(this.classInfo);
+          let obj2 = data.ClassExamCnt;
+          for(var index in obj2){
+            let singleExam = {};
+            singleExam.name = index;
+            singleExam.value = obj2[index];
+            this.examInfo.push(singleExam);
+            this.initExam();
+          }
+        }
+      });
+  },
   mounted() {
-    this.initClass();
-    this.initExam();
+    
+    
   },
   methods: {
     initClass() {
@@ -126,13 +158,7 @@ export default {
             labelLine: {
               show: false,
             },
-            data: [
-             { value: 1048, name: "软工一班" },
-              { value: 735, name: "人工智能二班" },
-              { value: 580, name: "软工三班" },
-              { value: 484, name: "网络安全四班" },
-              { value: 300, name: "计算机科学技术六班" },
-            ],
+            data: this.classInfo,
           },
         ],
       };
@@ -161,13 +187,7 @@ export default {
             name: "班级试卷",
             type: "pie",
             radius: "50%",
-            data: [
-              { value: 1048, name: "软工一班" },
-              { value: 735, name: "人工智能二班" },
-              { value: 580, name: "软工三班" },
-              { value: 484, name: "网络安全四班" },
-              { value: 300, name: "计算机科学技术六班" },
-            ],
+            data: this.examInfo,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -184,10 +204,12 @@ export default {
   data() {
     return {
       loading: false,
-      classCount: 7,
-      peopleCount: 200,
-      examPaperCount: 15,
-      doExamCount: 169,
+      classInfo: [],
+      examInfo: [],
+      classCount: 0,
+      peopleCount: 0,
+      examPaperCount: 0,
+      doExamCount: 0,
     };
   },
 };
@@ -216,7 +238,7 @@ export default {
     height: 100%;
     background: #fff;
     box-sizing: border-box;
-    padding:30px
+    padding: 30px;
   }
 }
 @media (max-width: 1024px) {
