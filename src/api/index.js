@@ -6,7 +6,9 @@ import * as Class from './class.js'
 import * as student from './student.js'
 import * as exam from './exam.js';
 import * as dashboard from './dashboard.js';
+import * as answerpaper from './answerpaper.js';
 import ElementUI from 'element-ui';
+
 
 // axios.defaults=
 axios.defaults.baseURL = 'http://172.23.19.149:8080/';
@@ -51,5 +53,6 @@ const apis = {
   student,
   exam,
   dashboard,
+  answerpaper,
 }
 export default apis
