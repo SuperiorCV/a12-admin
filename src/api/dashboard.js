@@ -7,6 +7,8 @@ import axios from 'axios'
 // axios.defaults.baseURL = 'http://api.cheeseburgerim.space';
 
 
-export const getStudentList = () => {
-    return axios.post('/user/api/get/all');
+export const getClassInfo = (username) => {
+  let fd = new FormData();
+  fd.append("username", username);
+  return axios.post('/class/api/info', fd);
 }

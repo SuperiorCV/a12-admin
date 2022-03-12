@@ -22,7 +22,7 @@
       <el-form-item label="考试班级：" prop="examClass" required>
         <el-checkbox-group v-model="exam.examClass">
           <el-checkbox v-for="item in myClass" :label="item.id" :key="item.id">
-            {{ item.name }}
+            {{ item.className }}
           </el-checkbox>
         </el-checkbox-group>
       </el-form-item>
@@ -77,11 +77,13 @@
             :key="questionIdx"
             style="margin-bottom: 15px"
             :label="`${questionIdx + 1}、`"
-            v-for="(question, questionIdx) in mod.questionList"
+            v-for="(select, questionIdx) in mod.questionList"
           >
             <el-row>
               <el-col :span="20">
-                <QuestionShow :question="question"></QuestionShow>
+                <QuestionShow
+                  :question="handleSelection(select)"
+                ></QuestionShow>
               </el-col>
               <el-col :span="4">
                 <el-button
@@ -97,7 +99,7 @@
         </el-card>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">提交</el-button>
+        <el-button type="primary" @click="submitForm">提交</el-button>
         <el-button>重置</el-button>
         <el-button type="success" @click="addModule">添加模块</el-button>
       </el-form-item>
@@ -106,23 +108,23 @@
       :visible.sync="questionPage.questionVisible"
       style="width: 100%; height: 100%"
     >
-      <QuestionShow :question="previewQuestionItem" />
+      <QuestionShow :question="question" />
     </el-dialog>
     <el-dialog :visible.sync="questionPage.showQuestionList" width="75%">
       <el-form :model="questionPage.queryParam" ref="queryForm" :inline="true">
         <el-form-item label="题型：">
-          <el-select v-model="questionPage.queryParam.questionType" clearable>
+          <el-select v-model="questionPage.queryParam.type" clearable>
             <el-option
-              v-for="(item, i) in questionTypeEnum"
-              :key="i"
-              :value="item.key"
-              :label="item.value"
+              v-for="item in questionTypeEnum"
+              :key="item"
+              :label="item"
+              :value="item"
             ></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="难度：">
           <el-input
-            v-model="questionPage.queryParam.difficulty"
+            v-model="questionPage.queryParam.difficult"
             clearable
           ></el-input>
         </el-form-item>
@@ -133,16 +135,19 @@
           ></el-input>
         </el-form-item>
         <el-form-item label="上传教师：">
-          <el-input v-model="questionPage.queryParam.name" clearable></el-input>
+          <el-input
+            v-model="questionPage.queryParam.teacherUsername"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm">查询</el-button>
+          <el-button type="primary">查询</el-button>
         </el-form-item>
       </el-form>
       <el-table
         v-loading="questionPage.listLoading"
         ref="questionList"
-        :data="questionPage.questionList"
+        :data="sliceQuestionData"
         @selection-change="handleSelectionChange"
         border
         fit
@@ -150,11 +155,15 @@
         style="width: 100%"
       >
         <el-table-column type="selection" width="35"></el-table-column>
-        <el-table-column prop="id" label="ID" width="60px"></el-table-column>
         <el-table-column
-          prop="questionType"
+          prop="qid"
+          :formatter="idFormatter"
+          label="ID"
+          width="60px"
+        ></el-table-column>
+        <el-table-column
+          prop="type"
           lebel="题型"
-          :formatter="questionTypeFormatter"
           width="70px"
         ></el-table-column>
         <el-table-column
@@ -163,7 +172,7 @@
           show-overflow-tooltip
         ></el-table-column>
         <el-table-column prop="difficult" label="难度"></el-table-column>
-        <el-table-column prop="username" label="教师账号"></el-table-column>
+        <el-table-column prop="name" label="教师账号"></el-table-column>
         <el-table-column prop="name" label="教师昵称"></el-table-column>
         <el-table-column label="操作" align="center">
           <template slot-scope="{ row }">
@@ -175,11 +184,11 @@
       </el-table>
       <pagination
         style="margin-top: 20px"
-        v-show="questionPage.total > 0"
-        :total="questionPage.total"
+        v-show="total > 0"
+        :total="total"
         :page.sync="questionPage.queryParam.pageIndex"
         :limit.sync="questionPage.queryParam.pageSize"
-        @pagination="search"
+        @pagination="change"
       />
 
       <span slot="footer" class="dialog-footer">
@@ -204,139 +213,84 @@ export default {
     Pagination,
     QuestionShow,
   },
+  created() {
+    var eid = this.$route.params.eid;
+    if (eid != null) {
+      this.eid = eid;
+      this.isEdit = true;
+      this.initData();
+    }
+    // 获取全部班级
+    this.apis.Class.getClassList(
+      sessionStorage.getItem("teacherUsername")
+    ).then((res) => {
+      let res_data = res.data.result;
+      for (let i = 0; i < res_data.length; i++) {
+        var pushList = new Object();
+        pushList.id = res_data[i].cid;
+        pushList.className = res_data[i].cname;
+        pushList.password = res_data[i].command;
+        pushList.num = res_data[i].studentNumber;
+        this.myClass.push(pushList);
+      }
+    });
+
+    // 获取题目
+    this.apis.question.getList().then((res) => {
+      let res_data = res.data.result;
+
+      for (let i = 0; i < res_data.length; i++) {
+        var pushList = new Object();
+        pushList.qid = res_data[i].qid;
+        if (res_data[i].qtype == 1) {
+          pushList.type = "单选题";
+        } else if (res_data[i].qtype == 2) {
+          pushList.type = "多选题";
+        } else if (res_data[i].qtype == 3) {
+          pushList.type = "判断题";
+        } else if (res_data[i].qtype == 4) {
+          pushList.type = "简答题";
+        } else if (res_data[i].qtype == 5) {
+          pushList.type = "排序题";
+        }
+        pushList.score = res_data[i].score;
+        pushList.difficult = res_data[i].difficulty;
+        pushList.teacherUsername = res_data[i].teacherUsername;
+        pushList.name = res_data[i].teacherName;
+        pushList.items = res_data[i].items;
+        pushList.analysis = res_data[i].analysis;
+        pushList.answer = res_data[i].answer;
+        pushList.count = res_data[i].count;
+        pushList.rightCnt = res_data[i].rightCnt;
+        pushList.title = res_data[i].title;
+        this.questionPage.questionList.push(pushList);
+      }
+    });
+  },
   data() {
     return {
-      previewQuestionItem: null,
+      isEdit: false,
+      eid: "",
+      totalScore: 0,
+      questionCnt: 0,
+      question: {},
       modIdx: undefined,
       questionPage: {
-        total: 5,
         questionVisible: false,
         listLoading: false,
         showQuestionList: false,
         multipleSlection: [],
-        pages: 1,
-        questionList: [
-          {
-            id: 1,
-            questionType: 1,
-            difficult: 4,
-
-            title: "fsfsf",
-            items: [
-              { prefix: "A", content: "fsfs" },
-              { prefix: "B", content: "fsfsf" },
-              { prefix: "C", content: "fsfs" },
-              { prefix: "D", content: "fsfsf" },
-            ],
-            answer: "",
-
-            analyze: "",
-            score: "2",
-            name: "郎老师",
-            username: "langwenchong",
-          },
-          {
-            id: 2,
-            questionType: 2,
-            difficult: 1,
-            title: "hdhh",
-            items: [
-              { prefix: "A", content: "ewuhehu" },
-              { prefix: "B", content: "fs" },
-              { prefix: "C", content: "gdsgd" },
-              { prefix: "D", content: "ujrj" },
-            ],
-            answer: [],
-            analyze: "",
-            score: "4",
-            name: "郎老师",
-            username: "langwenchong",
-          },
-          {
-            id: 3,
-            questionType: 3,
-            difficult: 2,
-
-            title: "jrhhrshesehdshdhd",
-            items: [
-              { prefix: "A", content: "<p>正确</p>" },
-              { prefix: "B", content: "<p>错误</p>" },
-            ],
-            answer: "",
-
-            analyze: "",
-            score: "1",
-            name: "郎老师",
-            username: "langwenchong",
-          },
-          {
-            id: 4,
-            questionType: 4,
-            difficult: 3,
-            title: "fsafsfsgshgs",
-            answer: "",
-            analyze: "",
-            score: "3",
-            name: "郎老师",
-            username: "langwenchong",
-          },
-          {
-            id: 5,
-            questionType: 5,
-            difficult: 0,
-
-            title: "hsahshgas",
-            items: [
-              { prefix: "A", content: "fs" },
-              { prefix: "B", content: "fsf" },
-              { prefix: "C", content: "hyehs" },
-              { prefix: "D", content: "hdshds" },
-            ],
-            answer: [
-              { prefix: "A", content: "" },
-              { prefix: "B", content: "" },
-              { prefix: "C", content: "" },
-              { prefix: "D", content: "" },
-            ],
-
-            analyze: "",
-            score: "2",
-            name: "郎老师",
-            username: "langwenchong",
-          },
-        ],
+        questionList: [],
         queryParam: {
-          questionType: null,
-          content: "",
-          score: undefined,
-          difficulty: undefined,
-          name: "",
+          type: "",
+          score: "",
+          difficult: "",
+          teacherUsername: "",
           pageIndex: 1,
-          pagesize: 5,
+          pageSize: 5,
         },
       },
-      questionTypeEnum: [
-        {
-          key: 1,
-          value: "单选题",
-        },
-        {
-          key: 2,
-          value: "多选题",
-        },
-        {
-          key: 3,
-          value: "判断题",
-        },
-        {
-          key: 4,
-          value: "简答题",
-        },
-        {
-          key: 5,
-          value: "排序题",
-        },
-      ],
+      questionTypeEnum: ["单选题", "多选题", "判断题", "简答题", "排序题"],
       exam: {
         title: "",
         tip: "",
@@ -346,20 +300,7 @@ export default {
         modules: [],
         subject: "",
       },
-      myClass: [
-        {
-          id: 1,
-          name: "软件工程1班",
-        },
-        {
-          id: 2,
-          name: "软件工程2班",
-        },
-        {
-          id: 3,
-          name: "软件工程3班",
-        },
-      ],
+      myClass: [],
       rules: {
         title: [{ required: true, message: "请输入试卷名称", trigger: "blur" }],
         subject: [
@@ -413,15 +354,251 @@ export default {
     };
   },
   methods: {
-    search() {},
-    submitForm() {},
-    previewQuestion(question) {
-      this.previewQuestionItem = question;
+    initData() {
+      // 获取考试信息
+      this.apis.exam.getInfo(this.eid).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          var data = res.data.result;
+          this.exam.title = data.exam.title;
+          this.exam.subject = data.exam.course;
+          this.exam.tip = data.exam.tips;
+          this.exam.dateMap = [data.exam.startTime, data.exam.endTime];
+          this.exam.duration = data.exam.duration;
+          this.exam.examClass = data.class;
+        }
+      });
+      //获取考试题目
+      this.apis.exam.getQuestionList(this.eid).then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          var result = res.data.result;
+          this.exam.modules = result;
+        }
+      });
+    },
+    change({ page, limit }) {
+      this.questionPage.queryParam.pageIndex = page;
+      this.questionPage.queryParam.pageSize = limit;
+    },
+    idFormatter(row) {
+      return row.qid.substring(1, 8);
+    },
+    handleSelection(question) {
+      if (question.type === "单选题" && typeof question.items == "string") {
+        // console.log(question);
+        question.questionType = 1;
+        var items = [];
+        for (let i = 0; i < question.items.split("<sep1>").length; i++) {
+          let item = question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        question.items = items;
+      } else if (
+        question.type === "多选题" &&
+        typeof question.items == "string"
+      ) {
+        question.questionType = 2;
+        var items = [];
+        for (let i = 0; i < question.items.split("<sep1>").length; i++) {
+          let item = question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        question.items = items;
+      } else if (
+        question.type === "判断题" &&
+        typeof question.items == "string"
+      ) {
+        question.questionType = 3;
+        var items = [];
+        for (let i = 0; i < question.items.split("<sep1>").length; i++) {
+          let item = question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        question.items = items;
+      } else if (question.type === "简答题") {
+        question.questionType = 4;
+      } else if (
+        question.type === "排序题" &&
+        typeof question.items == "string"
+      ) {
+        question.questionType = 5;
+        var items = [];
+        for (let i = 0; i < question.items.split("<sep1>").length; i++) {
+          let item = question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        question.items = items;
+      }
+      return question;
+    },
+    submitForm() {
+      this.$refs.exam.validate((valid) => {
+        if (valid) {
+          if (this.exam.modules.length === 0) {
+            this.$notify.error({
+              title: "错误",
+              message: "试卷至少需要由一个模块组成！",
+            });
+          }
+          var v = this.checkModules();
+          if (!v) {
+            this.$notify.error({
+              title: "错误",
+              message: "请检查是否存在空模块或者未命名模块！",
+            });
+          }
+          var modules = [];
+          for (let i = 0; i < this.exam.modules.length; i++) {
+            var myModule = this.createModule(this.exam.modules[i], i);
+            modules.push(myModule);
+          }
+          var myClass = "";
+          for (let i = 0; i < this.exam.examClass.length; i++) {
+            myClass += this.exam.examClass[i];
+            if (i != this.exam.examClass.length - 1) {
+              myClass += "-";
+            }
+          }
+          if (!this.isEdit) {
+            // 试卷上传
+            this.apis.exam
+              .createExam(
+                sessionStorage.getItem("teacherUsername"),
+                this.exam.title,
+                this.exam.tip,
+                this.exam.dateMap[0],
+                this.exam.dateMap[1],
+                myClass,
+                this.exam.subject,
+                this.exam.duration,
+                this.totalScore,
+                this.questionCnt,
+                modules
+              )
+              .then((res) => {
+                // console.log(res);
+                if (res.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "试卷创建成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "examList" });
+                }
+              });
+          } else {
+            this.apis.exam
+              .editExam(
+                this.eid,
+                sessionStorage.getItem("teacherUsername"),
+                this.exam.title,
+                this.exam.tip,
+                this.exam.dateMap[0],
+                this.exam.dateMap[1],
+                myClass,
+                this.exam.subject,
+                this.exam.duration,
+                this.totalScore,
+                this.questionCnt,
+                modules
+              )
+              .then((res) => {
+                // console.log(res);
+                if (res.status === 200) {
+                  this.$notify({
+                    title: "成功",
+                    message: "试卷修改成功！",
+                    type: "success",
+                  });
+                  this.$router.push({ name: "examList" });
+                }
+              });
+          }
+        }
+      });
+    },
+    createModule(myModule, id) {
+      // console.log(myModule);
+      var ans = {};
+      ans.mid = "" + id;
+      ans.title = myModule.title;
+      var questionsId = "";
+      for (let i = 0; i < myModule.questionList.length; i++) {
+        var question = myModule.questionList[i];
+        this.totalScore += question.score;
+        this.questionCnt += 1;
+        questionsId += question.qid;
+        if (i != myModule.questionList.length - 1) {
+          questionsId += "-";
+        }
+      }
+      ans.questionsId = questionsId;
+      return ans;
+    },
+    checkModules() {
+      var modules = this.exam.modules;
+      for (let i = 0; i < modules.length; i++) {
+        if (
+          modules[i].title.trim() === `` ||
+          modules[i].questionList.length == 0
+        ) {
+          return false;
+        }
+      }
+      return true;
+    },
+    previewQuestion(row) {
+      this.questionVisible = true;
+      this.question = row;
+      if (this.question.type === "单选题") {
+        this.question.questionType = 1;
+        var items = [];
+        for (let i = 0; i < this.question.items.split("<sep1>").length; i++) {
+          let item = this.question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        this.question.items = items;
+      } else if (this.question.type === "多选题") {
+        this.question.questionType = 2;
+        var items = [];
+        for (let i = 0; i < this.question.items.split("<sep1>").length; i++) {
+          let item = this.question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        this.question.items = items;
+      } else if (this.question.type === "判断题") {
+        this.question.questionType = 3;
+        var items = [];
+        for (let i = 0; i < this.question.items.split("<sep1>").length; i++) {
+          let item = this.question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        this.question.items = items;
+      } else if (this.question.type === "简答题") {
+        this.question.questionType = 4;
+      } else {
+        this.question.questionType = 5;
+        var items = [];
+        for (let i = 0; i < this.question.items.split("<sep1>").length; i++) {
+          let item = this.question.items.split("<sep1>")[i].split("<sep2>");
+          let obj = { prefix: item[0], content: item[1] };
+          items.push(obj);
+        }
+        this.question.items = items;
+      }
       this.questionPage.questionVisible = true;
     },
     handleSelectionChange(val) {
       this.questionPage.multipleSlection = val;
-      console.log(this.questionPage.multipleSlection);
+      // console.log(this.questionPage.multipleSlection);
     },
     questionTypeFormatter(row, column) {
       if (row.questionType === 1) {
@@ -459,6 +636,62 @@ export default {
     },
     deleteQuestion(idx, questionIdx) {
       this.exam.modules[idx].questionList.splice(questionIdx, 1);
+    },
+  },
+  computed: {
+    questionData() {
+      var ans = [];
+      var arr = this.questionPage.questionList;
+      for (let i = 0; i < arr.length; i++) {
+        var question = arr[i];
+        var v = true;
+        if (
+          this.questionPage.queryParam.teacherUsername !== `` &&
+          question.teacherUsername.search(
+            this.questionPage.queryParam.teacherUsername
+          ) === -1
+        ) {
+          v = false;
+        }
+        if (
+          this.questionPage.queryParam.difficult != "" &&
+          question.difficult != this.questionPage.queryParam.difficult
+        ) {
+          v = false;
+        }
+        if (
+          this.questionPage.queryParam.score != "" &&
+          question.score != this.questionPage.queryParam.score
+        ) {
+          v = false;
+        }
+        if (
+          this.questionPage.queryParam.type !== `` &&
+          question.type !== this.questionPage.queryParam.type
+        ) {
+          v = false;
+        }
+        if (v) {
+          ans.push(question);
+        }
+      }
+      return ans;
+    },
+    sliceQuestionData() {
+      var re = [];
+      var arr = this.questionData;
+      var start =
+        (this.questionPage.queryParam.pageIndex - 1) *
+        this.questionPage.queryParam.pageSize;
+      var end =
+        (this.questionPage.queryParam.pageIndex - 1) *
+          this.questionPage.queryParam.pageSize +
+        this.questionPage.queryParam.pageSize;
+      var re = arr.slice(start, end);
+      return re;
+    },
+    total() {
+      return this.questionData.length;
     },
   },
 };

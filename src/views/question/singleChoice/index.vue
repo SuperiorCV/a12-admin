@@ -258,7 +258,6 @@ export default {
         id: null,
         questionType: 1,
         difficult: 0,
-
         title: "",
         items: [
           { prefix: "A", content: "" },
@@ -267,7 +266,6 @@ export default {
           { prefix: "D", content: "" },
         ],
         answer: "",
-
         analyze: "",
         score: "",
       };

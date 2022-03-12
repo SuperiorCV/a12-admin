@@ -47,15 +47,15 @@ module.exports = {
     //     }
     //   }
     // },
-    proxy: {
-      '/apis': {
-        target: 'http://172.23.210.122:8080/',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/apis': ''
-        }
-      }
-    },
+    // proxy: {
+    //   // '/apis': {
+    //   //   target: 'http://172.23.210.122:8080/',
+    //   //   changeOrigin: true,
+    //   //   pathRewrite: {
+    //   //     '^/apis': ''
+    //   //   }
+    //   // }
+    // },
     before: require('./mock/mock-server.js')
   },
   configureWebpack: {

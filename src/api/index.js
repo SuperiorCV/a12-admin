@@ -4,15 +4,18 @@ import * as login from './login.js'
 import * as question from './question.js'
 import * as Class from './class.js'
 import * as student from './student.js'
+import * as exam from './exam.js';
+import * as dashboard from './dashboard.js';
 import ElementUI from 'element-ui';
 
-
-axios.defaults.timeout = 30000;
+// axios.defaults=
+axios.defaults.baseURL = 'http://172.23.19.149:8080/';
+axios.defaults.timeout = 90000;
 
 // http request拦截器 添加一个请求拦截器
 axios.interceptors.request.use(function (config) {
 
-  config.headers['Content-Type'] = "multipart/form-data"
+  // config.headers['Content-Type'] = "multipart/form-data"
   // 
   let token = sessionStorage.getItem("token");
 
@@ -46,5 +49,7 @@ const apis = {
   question,
   Class,
   student,
+  exam,
+  dashboard,
 }
 export default apis

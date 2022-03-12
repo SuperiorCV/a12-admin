@@ -86,6 +86,7 @@ export default {
               image: function (value) {
                 //替换原图片上传功能
                 if (value) {
+                  // console.log(quillEditor)
                   quilEditorUploader.click(); //核心
                 } else {
                   this.quill.format("image", false);
@@ -116,7 +117,24 @@ export default {
       _this.contentTxt = e.text.substr(0, 100);
     },
     bfUpload(file) {
+      var quill = this.$refs.myQuillEditor.quill;
       if ("image/png" == file.type || "image/jpeg" == file.type) {
+        this.apis.question.uploadImg(file).then((res) => {
+          if (res.data.status === 200) {
+            //获取光标所在位置
+            let length = quill.getSelection().index;
+            //插入图片
+            quill.insertEmbed(
+              length,
+              "image",
+              "https://sexam.static.cheeseburgerim.space" + data
+            );
+            //移动光标到图片后
+            quill.setSelection(length + 1);
+          } else {
+            this.$message.error("图片插入失败,请检查文件格式");
+          }
+        });
       } else {
         this.$message.error("图片插入失败,请检查文件格式");
         return;
@@ -127,7 +145,7 @@ export default {
 </script>
 
 <style scoped>
-#richEditor{
+#richEditor {
   width: 100%;
   margin-left: 5px;
 }
