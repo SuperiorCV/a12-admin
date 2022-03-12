@@ -145,7 +145,7 @@ export default {
   },
   methods: {
     screenShot(row) {
-      this.$router.push({ name: "screenShot" });
+      this.$router.push({ name: "screenShot", params: { exam: row } });
     },
     change({ page, limit }) {
       this.queryParam.pageIndex = page;
