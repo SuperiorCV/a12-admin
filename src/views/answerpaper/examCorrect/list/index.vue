@@ -60,7 +60,7 @@ export default {
       .search(sessionStorage.getItem("teacherUsername"), 0)
       .then((res) => {
         if (res.data.status === 200) {
-          console.log(res);
+          // console.log(res);
           let data = res.data.result;
           for (let i = 0; i < data.length; i++) {
             var pushList = new Object();
@@ -76,7 +76,7 @@ export default {
           }
         }
       });
-    console.log(this.arr);
+    // console.log(this.arr);
   },
   computed: {
     tableData() {

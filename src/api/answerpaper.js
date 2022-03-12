@@ -13,3 +13,11 @@ export const search = (teacherUsername,examState) => {
     return axios.post('/exam/api/search', fd);
 
 }
+
+// export const screenshot = (eid,) => {
+//     let fd = new FormData();
+//     fd.append("teacherUsername",teacherUsername);
+//     fd.append("examState",examState);
+//     return axios.post('/exam/api/search', fd);
+
+// }
