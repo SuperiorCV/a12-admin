@@ -130,88 +130,11 @@ export default {
       },
     };
   },
-  //   created() {
-  //     this.initSubject();
-  //     this.search();
-  //   },
   methods: {
     screenShot(row) {
       this.$router.push({ name: "screenShot" });
     },
-    submitForm() {
-      //   this.queryParam.pageIndex = 1;
-      //   this.search();
-    },
-
-    search() {
-      //   this.listLoading = true;
-      //   questionApi.pageList(this.queryParam).then((data) => {
-      //     const re = data.response;
-      //     this.tableData = re.list;
-      //     this.total = re.total;
-      //     this.queryParam.pageIndex = re.pageNum;
-      //     this.listLoading = false;
-      //   });
-    },
-
-    // levelChange() {
-    //   this.queryParam.subjectId = null;
-    //   this.subjectFilter = this.subjects.filter(
-    //     (data) => data.level === this.queryParam.level
-    //   );
-    // },
-    // addQuestion() {
-    //   this.$router.push("/exam/question/edit/singleChoice");
-    // },
-
-    showQuestion(row) {
-      this.$router.push({ name: "check", params: { edit: true } });
-      //   let _this = this;
-      //   this.questionShow.dialog = true;
-      //   this.questionShow.loading = true;
-      //   questionApi.select(row.id).then((re) => {
-      //     _this.questionShow.qType = re.response.questionType;
-      //     _this.questionShow.question = re.response;
-      //     _this.questionShow.loading = false;
-      //   });
-    },
-
-    editQuestion(row) {
-      //   let url = this.enumFormat(this.editUrlEnum, row.questionType);
-      // this.$router.push({ path: url, query: { id: row.id, edit: true } });
-    },
-
-    deleteQuestion(row) {
-      //   let _this = this;
-      //   questionApi.deleteQuestion(row.id).then((re) => {
-      //     if (re.code === 1) {
-      //       _this.search();
-      //       _this.$message.success(re.message);
-      //     } else {
-      //       _this.$message.error(re.message);
-      //     }
-      //   });
-    },
-
-    // questionTypeFormatter(row, column, cellValue, index) {
-    //   return this.enumFormat(this.questionType, cellValue);
-    // },
-    // subjectFormatter(row, column, cellValue, index) {
-    //   return this.subjectEnumFormat(cellValue);
-    // },
-    // ...mapActions("exam", { initSubject: "initSubject" }),
   },
-
-  //   computed: {
-  //     ...mapGetters("enumItem", ["enumFormat"]),
-  //     ...mapState("enumItem", {
-  //       questionType: (state) => state.exam.question.typeEnum,
-  //       editUrlEnum: (state) => state.exam.question.editUrlEnum,
-  //       levelEnum: (state) => state.user.levelEnum,
-  //     }),
-  //     ...mapGetters("exam", ["subjectEnumFormat"]),
-  //     ...mapState("exam", { subjects: (state) => state.subjects }),
-  //   },
 };
 </script>
 

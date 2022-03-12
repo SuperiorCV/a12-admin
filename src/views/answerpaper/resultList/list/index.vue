@@ -27,7 +27,18 @@
       <el-table-column prop="testName" label="试卷名称" show-overflow-tooltip />
       <el-table-column prop="name" label="用户名称" />
       <el-table-column prop="username" label="用户账号" />
-      <el-table-column prop="score" label="得分" width="80px" />
+      <el-table-column width="120px" label="得分">
+        <template slot-scope="{ row }">
+          {{ row.score
+          }}<el-tag
+            style="float:right;"
+            v-if="row.examState === 2"
+            type="danger"
+             effect="plain"
+            >作弊</el-tag
+          >
+        </template>
+      </el-table-column>
       <el-table-column prop="rate" label="题目正确率" width="100px" />
       <el-table-column prop="cost" label="耗时" width="160px" />
       <el-table-column prop="time" label="提交时间" width="160px" />
@@ -77,6 +88,7 @@ export default {
           rate: "1/6",
           cost: "10秒",
           time: "2020-2-22 19:09:32",
+          examState: 0,
         },
         {
           id: 132,
@@ -87,6 +99,7 @@ export default {
           rate: "26/30",
           cost: "1小时20分10秒",
           time: "2020-2-23 19:23:32",
+          examState: 2,
         },
         {
           id: 2,
@@ -97,6 +110,7 @@ export default {
           rate: "6/6",
           cost: "20分10秒",
           time: "2020-3-12 19:09:32",
+          examState: 2,
         },
         {
           id: 3,
@@ -107,6 +121,7 @@ export default {
           rate: "5/6",
           cost: "10分10秒",
           time: "2020-3-22 19:09:32",
+          examState: 2,
         },
         {
           id: 32,
@@ -117,23 +132,13 @@ export default {
           rate: "0/6",
           cost: "1秒",
           time: "2020-2-22 19:09:32",
+          examState: 2,
         },
       ],
 
       total: 10,
-
-      questionShow: {
-        qType: 0,
-        dialog: false,
-        question: null,
-        loading: false,
-      },
     };
   },
-  //   created() {
-  //     this.initSubject();
-  //     this.search();
-  //   },
   methods: {
     screenShot(row) {
       this.$router.push({ name: "screenShot" });
