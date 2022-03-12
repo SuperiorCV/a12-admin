@@ -47,8 +47,8 @@ export default {
       this.centerDialogVisible = false;
     },
   },
-  created(){
-    var exam=this.$route.params.exam;
+  created() {
+    var exam = this.$route.params.exam;
     console.log(exam);
   },
   data() {
