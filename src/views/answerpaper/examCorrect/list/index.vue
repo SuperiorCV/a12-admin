@@ -60,7 +60,6 @@ export default {
     this.apis.answerpaper
       .search(sessionStorage.getItem("teacherUsername"), 0)
       .then((res) => {
-        console.log(res);
         if (res.data.status === 200) {
           console.log(res);
           // console.log(1);
