@@ -58,7 +58,7 @@
             <svg-icon icon-class="edit" class-name="card-panel-icon" />
           </div>
           <div class="card-panel-description">
-            <div class="card-panel-text">答卷总数</div>
+            <div class="card-panel-text">待批试卷</div>
             <count-to
               :start-val="0"
               :end-val="doExamCount"
