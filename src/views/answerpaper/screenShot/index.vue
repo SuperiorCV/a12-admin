@@ -30,7 +30,7 @@
               <p class="teacher">{{ sc.name }}</p>
             </div>
             <div class="bottom-c">
-              <p class="snum">{{ sc.shotTime }}课时</p>
+              <p class="snum">抓拍时间：{{ sc.shotTime }}</p>
             </div>
           </div>
         </div>
