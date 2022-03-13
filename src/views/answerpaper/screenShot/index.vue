@@ -52,7 +52,12 @@ export default {
         )
         .then((res) => {
           if (res.data.status === 200) {
-            this.$router.push({ name: "examCorrect" });
+            this.$notify({
+              title: "成功",
+              message: "试卷分数修改成功！",
+              type: "success",
+            });
+            this.$router.go(-1);
           }
         });
       this.centerDialogVisible = false;

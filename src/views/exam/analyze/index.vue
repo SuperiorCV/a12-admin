@@ -434,7 +434,7 @@ export default {
       option = {
         xAxis: {
           type: "category",
-          data: [65, 70, 75, 80, 85, 90, 95],
+          data: [65.5, 70, 75, 80, 85, 90, 95],
         },
         yAxis: {
           type: "value",
