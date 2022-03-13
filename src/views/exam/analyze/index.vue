@@ -138,22 +138,41 @@ export default {
     if (params != null) {
       this.edit = params.edit;
       this.eid = params.eid;
-      console.log(params.eid);
     }
+    this.apis.exam.getExamAnalyze(this.eid,sessionStorage.getItem("teacherUsername")).then((res) => {
+      if(res.data.status === 200){
+        console.log(res);
+        let data = res.data.result;
+        this.exam.firstPoint = data.firstPoint;
+        this.exam.lastPoint = data.lastPoint;
+        this.exam.averagePoint = data.averagePoint;
+        this.exam.centerPoint = data.centerPoint;
+        
+        for(var index in data.countMap){
+          this.histogramx.push(index);
+          this.histogramy.push(data.countMap[index]);
+        }
+        // console.log(this.histogramy);
+        this.initHistogram();
+      }
+    })
   },
+
   mounted() {
-    this.initHistogram();
+    
   },
   data() {
     return {
       eid: "",
       edit: true,
       loading: false,
+      histogramx: [],
+      histogramy: [],
       exam: {
-        firstPoint: 95,
-        lastPoint: 46,
-        averagePoint: 78,
-        centerPoint: 75,
+        firstPoint: 0,
+        lastPoint: 0,
+        averagePoint: 0,
+        centerPoint: 0,
         currentScore: 80,
         fullScore: 150,
         total: 30,
@@ -161,258 +180,9 @@ export default {
         student: "langwenchong",
         title: "第一次试验检测",
         tip: "",
-        examClass: [],
-        dateMap: [],
+        
         duration: 1,
-        modules: [
-          {
-            title: "选择题",
-            questionList: [
-              {
-                id: 1,
-                questionType: 1,
-                difficult: 3,
-                // -1表示标题
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "ggg" },
-                  { prefix: "B", content: "gggggg" },
-                  { prefix: "C", content: "aaa" },
-                  { prefix: "D", content: "cccc" },
-                ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
-                answer: "A",
-                studentAnswer: "C",
-                // -2表示解析
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 2,
-                questionType: 1,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "fafsa" },
-                  { prefix: "B", content: "gsagsgs" },
-                  { prefix: "C", content: "faf" },
-                  { prefix: "D", content: "fasfs" },
-                ],
-                status: -1,
-                answer: "A",
-                analyze: "fafsfs",
-                studentAnswer: "C",
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 3,
-                questionType: 1,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "fsafs" },
-                  { prefix: "B", content: "fsaf" },
-                  { prefix: "C", content: "fsafs" },
-                  { prefix: "D", content: "fsaf" },
-                ],
-                status: 1,
-                answer: "D",
-                studentAnswer: "C",
-                analyze: "",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-          {
-            title: "多选题",
-            questionList: [
-              {
-                id: 4,
-                questionType: 2,
-                difficult: 3,
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "ggg" },
-                  { prefix: "B", content: "gggggg" },
-                  { prefix: "C", content: "aaa" },
-                  { prefix: "D", content: "cccc" },
-                ],
-                status: 1,
-                answer: ["A", "C", "D"],
-                studentAnswer: ["A", "C", "D"],
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 5,
-                questionType: 2,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "fafsa" },
-                  { prefix: "B", content: "gsagsgs" },
-                  { prefix: "C", content: "faf" },
-                  { prefix: "D", content: "fasfs" },
-                ],
-                status: -1,
-                answer: "A",
-                answer: ["A", "C", "B"],
-                studentAnswer: ["A", "C"],
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 6,
-                questionType: 2,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "fsafs" },
-                  { prefix: "B", content: "fsaf" },
-                  { prefix: "C", content: "fsafs" },
-                  { prefix: "D", content: "fsaf" },
-                ],
-                status: 1,
-                answer: ["A", "C"],
-                studentAnswer: ["A", "C"],
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-          {
-            title: "判断题",
-            questionList: [
-              {
-                id: 7,
-                questionType: 3,
-                difficult: 3,
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: 1,
-                answer: "A",
-                studentAnswer: "A",
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 8,
-                questionType: 3,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: -1,
-                answer: "A",
-                analyze: "fafsfs",
-                studentAnswer: "B",
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 9,
-                questionType: 3,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: -1,
-                answer: "A",
-                studentAnswer: "B",
-                analyze: "",
-                score: 2,
-                studentScore: 0,
-              },
-            ],
-          },
-          {
-            title: "简答题",
-            questionList: [
-              {
-                id: 10,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "答案1",
-                studentAnswer: "sddfsssssssssssssssssss",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-              {
-                id: 11,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "123123",
-                studentAnswer: "rtyui",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-              {
-                id: 12,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "456",
-                studentAnswer: "oiuttd",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-            ],
-          },
-          {
-            title: "排序题",
-            questionList: [
-              {
-                id: 13,
-                questionType: 5,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                ],
-                status: 1,
-                answer: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                ],
-                studentAnswer: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                ],
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-        ],
+        modules: [],
       },
     };
   },
@@ -437,14 +207,14 @@ export default {
       option = {
         xAxis: {
           type: "category",
-          data: [65.5, 70, 75, 80, 85, 90, 95],
+          data: this.histogramx,
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            data: [120, 200, 150, 80, 70, 110, 130],
+            data: this.histogramy,
             type: "bar",
             showBackground: true,
             backgroundStyle: {
