@@ -85,7 +85,6 @@ export default {
           this.listLoading = false;
         }
       });
-    
   },
   data() {
     return {
@@ -158,7 +157,7 @@ export default {
       this.$router.push({ name: "examCreate", params: { eid: row.id } });
     },
     analyze(row) {
-      this.$router.push({ name: "analyze" });
+      this.$router.push({ name: "analyze", params: { eid: row.id } });
     },
   },
 };
