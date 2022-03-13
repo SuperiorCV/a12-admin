@@ -44,15 +44,34 @@ export default {
   name: "screenShot",
   methods: {
     cheat() {
+      this.apis.answerpaper
+        .cheat(
+          this.exam.eid,
+          sessionStorage.getItem("teacherUsername"),
+          this.exam.username
+        )
+        .then((res) => {
+          if (res.data.status === 200) {
+            this.$router.push({ name: "examCorrect" });
+          }
+        });
       this.centerDialogVisible = false;
     },
   },
   created() {
-    var exam = this.$route.params.exam;
-    console.log(exam);
+    this.exam = this.$route.params.exam;
+    // console.log(exam);
+    this.apis.answerpaper
+      .screenshot(this.exam.eid, this.exam.username)
+      .then((res) => {
+        if (res.data.status === 200) {
+          console.log(res);
+        }
+      });
   },
   data() {
     return {
+      exam: {},
       centerDialogVisible: false,
       dialogMessage: `被判定为作弊的试卷将会记为0分，您确定要将此试卷判定为作弊吗❓`,
       screenShots: [

@@ -14,7 +14,15 @@ export const search = (teacherUsername, examState) => {
 
 }
 
+export const screenshot = (eid, studentUsername) => {
+  let fd = new FormData();
+  fd.append("eid", eid);
+  fd.append("studentUsername", studentUsername);
+  return axios.post('/screenshot/api/get', fd);
+
+}
 export const getAnswerPaper = (studentUsername, eid) => {
+
   let fd = new FormData();
   fd.append("studentUsername", studentUsername);
   fd.append("eid", eid);
@@ -24,4 +32,12 @@ export const getAnswerPaper = (studentUsername, eid) => {
 export const submitCorrect = (studentUsername, eid, teacherUsername, correctList) => {
   let param = `?studentUsername=${studentUsername}&eid=${eid}&teacherUsername=${teacherUsername}`;
   return axios.post("/exam/api/correct" + param, correctList);
+}
+
+export const cheat = (eid, teacherUsername, studentUsername) => {
+  let fd = new FormData();
+  fd.append("eid", eid);
+  fd.append("teacherUsername", teacherUsername);
+  fd.append("studentUsername", studentUsername);
+  return axios.post("/exam/api/cheat", fd);
 }

@@ -30,10 +30,10 @@
         <template slot-scope="{ row }">
           {{ row.score
           }}<el-tag
-            style="float:right;"
+            style="float: right"
             v-if="row.examState === 2"
             type="danger"
-             effect="plain"
+            effect="plain"
             >作弊</el-tag
           >
         </template>
@@ -54,7 +54,7 @@
       :total="total"
       :page.sync="queryParam.pageIndex"
       :limit.sync="queryParam.pageSize"
-      @pagination="search"
+      @pagination="change"
     />
   </div>
 </template>
@@ -66,10 +66,33 @@ export default {
   name: "examCorrect",
   components: { Pagination },
   created() {
-    console.log("1");
+    this.listLoading = true;
+    this.apis.answerpaper
+      .search(sessionStorage.getItem("teacherUsername"), 1)
+      .then((res) => {
+        if (res.data.status === 200) {
+          // console.log(res);
+          let data = res.data.result;
+          for (let i = 0; i < data.length; i++) {
+            var pushList = new Object();
+            pushList.eid = data[i].eid;
+            pushList.testName = data[i].title;
+            pushList.name = data[i].studentName;
+            pushList.username = data[i].studentUsername;
+            pushList.score = data[i].score;
+            pushList.rate = data[i].accuracy;
+            pushList.time = data[i].submitTime;
+            pushList.cost = data[i].duration;
+            pushList.examState = data[i].examState;
+            this.arr.push(pushList);
+          }
+          this.listLoading = false;
+        }
+      });
   },
   data() {
     return {
+      arr: [],
       queryParam: {
         id: null,
         examTitle: "",
@@ -80,73 +103,61 @@ export default {
       },
 
       listLoading: false,
-      tableData: [
-        {
-          id: 1,
-          testName: "第一次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "2/15",
-          rate: "1/6",
-          cost: "10秒",
-          time: "2020-2-22 19:09:32",
-          examState: 0,
-        },
-        {
-          id: 132,
-          testName: "操作系统期末考试",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "88/100",
-          rate: "26/30",
-          cost: "1小时20分10秒",
-          time: "2020-2-23 19:23:32",
-          examState: 2,
-        },
-        {
-          id: 2,
-          testName: "第二次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "15/15",
-          rate: "6/6",
-          cost: "20分10秒",
-          time: "2020-3-12 19:09:32",
-          examState: 2,
-        },
-        {
-          id: 3,
-          testName: "第三次高数月考",
-          name: "langwenchong",
-          username: "3019244520",
-          score: "12/15",
-          rate: "5/6",
-          cost: "10分10秒",
-          time: "2020-3-22 19:09:32",
-          examState: 2,
-        },
-        {
-          id: 32,
-          testName: "第一次高数月考",
-          name: "Guotao",
-          username: "3019244999",
-          score: "0/15",
-          rate: "0/6",
-          cost: "1秒",
-          time: "2020-2-22 19:09:32",
-          examState: 2,
-        },
-      ],
-
-      total: 10,
     };
+  },
+  computed: {
+    tableData() {
+      var ans = [];
+      var arr = this.arr;
+      for (let i = 0; i < arr.length; i++) {
+        var singleTable = arr[i];
+        var v = true;
+        if (
+          this.queryParam.examTitle !== "" &&
+          singleTable.testName.search(this.queryParam.examTitle) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.name !== "" &&
+          singleTable.name.search(this.queryParam.name) === -1
+        ) {
+          v = false;
+        } else if (
+          this.queryParam.username !== "" &&
+          singleTable.username.search(this.queryParam.username) === -1
+        ) {
+          v = false;
+        }
+        if (v) {
+          ans.push(singleTable);
+        }
+      }
+      return ans;
+    },
+    sliceTableData() {
+      var re = [];
+      var arr = this.tableData;
+      var start = (this.queryParam.pageIndex - 1) * this.queryParam.pageSize;
+      var end =
+        (this.queryParam.pageIndex - 1) * this.queryParam.pageSize +
+        this.queryParam.pageSize;
+      var re = arr.slice(start, end);
+      return re;
+    },
+    total() {
+      return this.tableData.length;
+    },
   },
   methods: {
     screenShot(row) {
       this.$router.push({ name: "screenShot" });
     },
+    change({ page, limit }) {
+      this.queryParam.pageIndex = page;
+      this.queryParam.pageSize = limit;
+    },
+    submitForm(){},
   },
-
 };
 </script>
 
