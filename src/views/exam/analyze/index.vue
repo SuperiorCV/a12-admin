@@ -137,6 +137,8 @@ export default {
     var params = this.$route.params;
     if (params != null) {
       this.edit = params.edit;
+      this.eid = params.eid;
+      console.log(params.eid);
     }
   },
   mounted() {
@@ -144,6 +146,7 @@ export default {
   },
   data() {
     return {
+      eid: "",
       edit: true,
       loading: false,
       exam: {
@@ -453,7 +456,7 @@ export default {
       option && myChart.setOption(option);
     },
     toList() {
-     this.$router.push({name: 'examList'})
+      this.$router.push({ name: "examList" });
     },
     questionStatus(status, type) {
       if (status === -1) {
