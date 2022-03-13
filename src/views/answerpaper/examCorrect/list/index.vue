@@ -29,7 +29,7 @@
       <el-table-column prop="username" label="用户账号" />
       <el-table-column prop="score" label="得分" width="80px" />
       <el-table-column prop="rate" label="题目正确率" width="100px" />
-      <el-table-column prop="cost" label="耗时" width="160px" />
+      <el-table-column prop="cost" label="耗时(min)" width="160px" />
       <el-table-column prop="time" label="提交时间" width="160px" />
       <el-table-column label="操作" align="center" width="200px">
         <template slot-scope="{ row }">
@@ -70,7 +70,7 @@ export default {
             pushList.name = data[i].studentName;
             pushList.username = data[i].studentUsername;
             pushList.score = data[i].score;
-            pushList.rate = data[i].accuracy;
+            pushList.rate = data[i].accuracy+"%";
             pushList.time = data[i].submitTime;
             pushList.cost = data[i].duration;
             this.arr.push(pushList);
