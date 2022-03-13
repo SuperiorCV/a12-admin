@@ -82,9 +82,10 @@ export default {
             obj.questionCnt = data[i].questionCnt;
             this.arr.push(obj);
           }
+          this.listLoading = false;
         }
       });
-    this.listLoading = false;
+    
   },
   data() {
     return {
