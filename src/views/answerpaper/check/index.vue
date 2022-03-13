@@ -3,10 +3,10 @@
     <div id="l-side">
       <h3>{{ exam.title }}</h3>
       <div class="info">
-        <p>提交人：{{ exam.student }}</p>
+        <p>提交人：{{ studentUsername }}</p>
         <p>提交时间：{{ exam.submitTime }}</p>
         <p>已判题数：{{ correctedQuestionNum }} / {{ exam.total }}题</p>
-        <p>试卷得数：{{ currentScore }} / {{ fullScore }}分</p>
+        <p>试卷得分：{{ currentScore }} / {{ fullScore }}分</p>
       </div>
       <div class="menu">
         <el-tag
@@ -191,7 +191,15 @@ export default {
               ans
             )
             .then((res) => {
-              console.log(res);
+              // console.log(res);
+              if (res.status === 200) {
+                this.$notify({
+                  title: "成功",
+                  message: "试卷批改提交成功",
+                  type: "success",
+                });
+                this.$router.push({name: 'examCorrect'});
+              }
             });
         }
       }
