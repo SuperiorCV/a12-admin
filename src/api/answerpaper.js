@@ -6,17 +6,22 @@ import axios from 'axios'
 // axios.defaults.baseURL = '/apis';
 // axios.defaults.baseURL = 'http://api.cheeseburgerim.space';
 
-export const search = (teacherUsername,examState) => {
-    let fd = new FormData();
-    fd.append("teacherUsername",teacherUsername);
-    fd.append("examState",examState);
-    return axios.post('/exam/api/search', fd);
+export const search = (teacherUsername, examState) => {
+  let fd = new FormData();
+  fd.append("teacherUsername", teacherUsername);
+  fd.append("examState", examState);
+  return axios.post('/exam/api/search', fd);
 
 }
 
 export const getAnswerPaper = (studentUsername, eid) => {
-    let fd = new FormData();
-    fd.append("studentUsername", studentUsername);
-    fd.append("eid", eid);
-    return axios.post("/exam/api/getAnswerPaper", fd);
-  }
+  let fd = new FormData();
+  fd.append("studentUsername", studentUsername);
+  fd.append("eid", eid);
+  return axios.post("/exam/api/getAnswerPaper", fd);
+}
+
+export const submitCorrect = (studentUsername, eid, teacherUsername, correctList) => {
+  let param = `?studentUsername=${studentUsername}&eid=${eid}&teacherUsername=${teacherUsername}`;
+  return axios.post("/exam/api/correct" + param, correctList);
+}

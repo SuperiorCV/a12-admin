@@ -127,7 +127,7 @@
             :max="question.score"
             :step="0.5"
             v-model="question.studentScore"
-          ></el-input-number>
+          ></el-input-number>   (满分：{{question.score}}分)
         </div>
         <p v-if="question.status === 2 && edit === false">
           得分：{{ question.studentScore }} / {{ question.score }}分

@@ -5,8 +5,8 @@
       <div class="info">
         <p>提交人：{{ exam.student }}</p>
         <p>提交时间：{{ exam.submitTime }}</p>
-        <p>已判题数：6 / {{ exam.total }}题</p>
-        <p>试卷分数：{{ exam.currentScore }} / {{ exam.fullScore }}分</p>
+        <p>已判题数：{{ correctedQuestionNum }} / {{ exam.total }}题</p>
+        <p>试卷得数：{{ currentScore }} / {{ fullScore }}分</p>
       </div>
       <div class="menu">
         <el-tag
@@ -19,7 +19,11 @@
         >
       </div>
       <div class="tool">
-        <el-button type="primary" plain v-if="edit === true"
+        <el-button
+          type="primary"
+          plain
+          v-if="edit === true"
+          @click="submitCorrect"
           >提交批改</el-button
         >
         <el-button plain @click="toList">返回列表</el-button>
@@ -58,22 +62,36 @@ export default {
   },
   created() {
     var params = this.$route.params;
-    // console.log(params.exam);
     if (params != null) {
       this.edit = params.edit;
       this.eid = params.exam.eid;
+      // console.log(params.exam);
       this.studentUsername = params.exam.username;
+
+      this.exam.title = params.exam.testName;
+      this.exam.submitTime = params.exam.time;
       this.apis.answerpaper
         .getAnswerPaper(this.studentUsername, this.eid)
         .then((res) => {
-          console.log(res)
+          console.log(res);
           if (res.status === 200) {
-            var data = res.status.result;
-            this.exam.modules=data;
+            var data = res.data.result;
+            var num = 0;
+            for (let i = 0; i < data.length; i++) {
+              var questionList = data[i].questionList;
+              for (let j = 0; j < questionList.length; j++) {
+                num += 1;
+                var question = questionList[j];
+                if (this.edit && question.questionType === 4) {
+                  question.studentScore = undefined;
+                }
+              }
+            }
+            this.exam.modules = data;
+            this.exam.total = num;
           }
         });
     }
-    
   },
   data() {
     return {
@@ -81,269 +99,54 @@ export default {
       studentUsername: "",
       edit: true,
       exam: {
-        currentScore: 80,
-        fullScore: 150,
-        total: 30,
-        submitTime: "2022-02-09 22:40",
-        student: "langwenchong",
-        title: "第一次试验检测",
-        tip: "",
-        examClass: [],
-        dateMap: [],
-        duration: 1,
-        modules: [
-          {
-            title: "选择题",
-            questionList: [
-              {
-                id: 1,
-                questionType: 1,
-                difficult: 3,
-                // -1表示标题
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "ggg" },
-                  { prefix: "B", content: "gggggg" },
-                  { prefix: "C", content: "aaa" },
-                  { prefix: "D", content: "cccc" },
-                ],
-                status: 1, //-1表示错误，0表示待批改，1表示正确
-                answer: "A",
-                studentAnswer: "C",
-                // -2表示解析
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 2,
-                questionType: 1,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "fafsa" },
-                  { prefix: "B", content: "gsagsgs" },
-                  { prefix: "C", content: "faf" },
-                  { prefix: "D", content: "fasfs" },
-                ],
-                status: -1,
-                answer: "A",
-                analyze: "fafsfs",
-                studentAnswer: "C",
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 3,
-                questionType: 1,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "fsafs" },
-                  { prefix: "B", content: "fsaf" },
-                  { prefix: "C", content: "fsafs" },
-                  { prefix: "D", content: "fsaf" },
-                ],
-                status: 1,
-                answer: "D",
-                studentAnswer: "C",
-                analyze: "",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-          {
-            title: "多选题",
-            questionList: [
-              {
-                id: 4,
-                questionType: 2,
-                difficult: 3,
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "ggg" },
-                  { prefix: "B", content: "gggggg" },
-                  { prefix: "C", content: "aaa" },
-                  { prefix: "D", content: "cccc" },
-                ],
-                status: 1,
-                answer: ["A", "C", "D"],
-                studentAnswer: ["A", "C", "D"],
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 5,
-                questionType: 2,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "fafsa" },
-                  { prefix: "B", content: "gsagsgs" },
-                  { prefix: "C", content: "faf" },
-                  { prefix: "D", content: "fasfs" },
-                ],
-                status: -1,
-                answer: "A",
-                answer: ["A", "C", "B"],
-                studentAnswer: ["A", "C"],
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 6,
-                questionType: 2,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "fsafs" },
-                  { prefix: "B", content: "fsaf" },
-                  { prefix: "C", content: "fsafs" },
-                  { prefix: "D", content: "fsaf" },
-                ],
-                status: 1,
-                answer: ["A", "C"],
-                studentAnswer: ["A", "C"],
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-          {
-            title: "判断题",
-            questionList: [
-              {
-                id: 7,
-                questionType: 3,
-                difficult: 3,
-                title: "fsfsafsafsfsa",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: 1,
-                answer: "A",
-                studentAnswer: "A",
-                analyze: "fsagsagsagsag",
-                score: 1,
-                studentScore: 1,
-              },
-              {
-                id: 8,
-                questionType: 3,
-                difficult: 2,
-                title: "fsfsfssd",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: -1,
-                answer: "A",
-                analyze: "fafsfs",
-                studentAnswer: "B",
-                score: 2,
-                studentScore: 0,
-              },
-              {
-                id: 9,
-                questionType: 3,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "正确" },
-                  { prefix: "B", content: "错误" },
-                ],
-                status: -1,
-                answer: "A",
-                studentAnswer: "B",
-                analyze: "",
-                score: 2,
-                studentScore: 0,
-              },
-            ],
-          },
-          {
-            title: "简答题",
-            questionList: [
-              {
-                id: 10,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "答案1",
-                studentAnswer: "sddfsssssssssssssssssss",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-              {
-                id: 11,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "123123",
-                studentAnswer: "rtyui",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-              {
-                id: 12,
-                questionType: 4,
-                difficult: 3,
-                title: "fsfsfss",
-                status: 0,
-                answer: "456",
-                studentAnswer: "oiuttd",
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: undefined,
-              },
-            ],
-          },
-          {
-            title: "排序题",
-            questionList: [
-              {
-                id: 13,
-                questionType: 5,
-                difficult: 3,
-                title: "fsfsfss",
-                items: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                ],
-                status: 1,
-                answer: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                ],
-                studentAnswer: [
-                  { prefix: "A", content: "<pre>A</pre>" },
-                  { prefix: "B", content: "<p>B</p>" },
-                  { prefix: "C", content: "<pre>C</pre>" },
-                  { prefix: "D", content: "<p>D</p>" },
-                ],
-                analyze: "SASASASA",
-                score: 2,
-                studentScore: 2,
-              },
-            ],
-          },
-        ],
+        total: 0,
+        submitTime: "",
+        student: "",
+        title: "",
+        modules: [],
       },
     };
   },
   computed: {
+    fullScore() {
+      var ans = 0;
+      for (let i = 0; i < this.exam.modules.length; i++) {
+        var questionList = this.exam.modules[i].questionList;
+        for (let j = 0; j < questionList.length; j++) {
+          var question = questionList[j];
+          ans += question.score;
+        }
+      }
+      return ans;
+    },
+    currentScore() {
+      var ans = 0;
+      for (let i = 0; i < this.exam.modules.length; i++) {
+        var questionList = this.exam.modules[i].questionList;
+        for (let j = 0; j < questionList.length; j++) {
+          var question = questionList[j];
+          if (question.status != 0) {
+            ans += question.studentScore;
+            // console.log(ans);
+          }
+        }
+      }
+      // console.log(ans)
+      return ans;
+    },
+    correctedQuestionNum() {
+      var ans = this.exam.total;
+      for (let i = 0; i < this.exam.modules.length; i++) {
+        var questionList = this.exam.modules[i].questionList;
+        for (let j = 0; j < questionList.length; j++) {
+          var question = questionList[j];
+          if (question.status === 0) {
+            ans -= 1;
+          }
+        }
+      }
+      return ans;
+    },
     tags() {
       var tags = [];
       var modules = this.exam.modules;
@@ -357,7 +160,42 @@ export default {
     },
   },
   methods: {
-    getSubmit() {},
+    submitCorrect() {
+      var ans = [];
+      for (let i = 0; i < this.exam.modules.length; i++) {
+        var v = true;
+        var questionList = this.exam.modules[i].questionList;
+        for (let j = 0; j < questionList.length; j++) {
+          var question = questionList[j];
+          if (question.status === 0) {
+            this.$notify.error({
+              title: "错误",
+              message: "请审阅完所有题目后再提交！",
+            });
+            v = false;
+            break;
+          } else {
+            var correct = {};
+            correct.qid = question.id;
+            correct.qtype = question.questionType;
+            correct.score = question.studentScore;
+            ans.push(correct);
+          }
+        }
+        if (v) {
+          this.apis.answerpaper
+            .submitCorrect(
+              this.studentUsername,
+              this.eid,
+              sessionStorage.getItem("teacherUsername"),
+              ans
+            )
+            .then((res) => {
+              console.log(res);
+            });
+        }
+      }
+    },
     toList() {
       if (this.edit) {
         this.$router.push({ name: "examCorrect" });
@@ -388,10 +226,10 @@ export default {
       var modules = this.exam.modules;
       for (let i = 0; i < modules.length; i++) {
         var questionList = modules[i].questionList;
-        var idx = questionList.indexOf(o);
-        if (idx !== -1) {
-          questionList[idx] = n;
-          return;
+        for (let j = 0; j < questionList.length; j++) {
+          if (n.id === questionList[j].id) {
+            questionList[j] = n;
+          }
         }
       }
     },
