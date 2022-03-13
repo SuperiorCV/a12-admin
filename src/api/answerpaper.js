@@ -14,10 +14,25 @@ export const search = (teacherUsername,examState) => {
 
 }
 
-// export const screenshot = (eid,) => {
-//     let fd = new FormData();
-//     fd.append("teacherUsername",teacherUsername);
-//     fd.append("examState",examState);
-//     return axios.post('/exam/api/search', fd);
+export const screenshot = (eid,studentUsername) => {
+    let fd = new FormData();
+    fd.append("eid",eid);
+    fd.append("studentUsername",studentUsername);
+    return axios.post('/screenshot/api/get', fd);
 
-// }
+}
+export const getAnswerPaper = (studentUsername, eid) => {
+    let fd = new FormData();
+    fd.append("studentUsername", studentUsername);
+    fd.append("eid", eid);
+    return axios.post("/exam/api/getAnswerPaper", fd);
+}
+
+export const cheat = (eid,teacherUsername,studentUsername) => {
+  let fd = new FormData();
+  
+  fd.append("eid", eid);
+  fd.append("teacherUsername",teacherUsername);
+  fd.append("studentUsername", studentUsername);
+  return axios.post("/exam/api/cheat", fd);
+}

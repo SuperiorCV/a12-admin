@@ -23,7 +23,7 @@
       highlight-current-row
       style="width: 100%"
     >
-      <!-- <el-table-column prop="id" label="试卷Id" width="90px" /> -->
+      <!-- <el-table-column prop="eid" label="试卷Id" width="90px" /> -->
       <el-table-column prop="testName" label="试卷名称" show-overflow-tooltip />
       <el-table-column prop="name" label="用户名称" />
       <el-table-column prop="username" label="用户账号" />
@@ -56,6 +56,7 @@ export default {
   name: "examCorrect",
   components: { Pagination },
   created() {
+    this.listLoading=true;
     this.apis.answerpaper
       .search(sessionStorage.getItem("teacherUsername"), 0)
       .then((res) => {
@@ -64,7 +65,7 @@ export default {
           let data = res.data.result;
           for (let i = 0; i < data.length; i++) {
             var pushList = new Object();
-            pushList.eid=data[i].eid;
+            pushList.eid = data[i].eid;
             pushList.testName = data[i].title;
             pushList.name = data[i].studentName;
             pushList.username = data[i].studentUsername;
@@ -72,9 +73,9 @@ export default {
             pushList.rate = data[i].accuracy;
             pushList.time = data[i].submitTime;
             pushList.cost = data[i].duration;
-
             this.arr.push(pushList);
           }
+          this.listLoading=false;
         }
       });
     // console.log(this.arr);
@@ -83,7 +84,7 @@ export default {
     tableData() {
       var ans = [];
       var arr = this.arr;
-      for (let i = 0; i < this.arr.length; i++) {
+      for (let i = 0; i < arr.length; i++) {
         var singleTable = arr[i];
         var v = true;
         if (
@@ -151,6 +152,9 @@ export default {
     change({ page, limit }) {
       this.queryParam.pageIndex = page;
       this.queryParam.pageSize = limit;
+    },
+    showQuestion(row) {
+      this.$router.push({ name: "check", params: { exam: row, edit: true } });
     },
   },
 };

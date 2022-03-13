@@ -34,3 +34,4 @@ export const editExam = (eid, teacherUsername, title, tips, startTime, endTime, 
   let param = `?eid=${eid}&teacherUsername=${teacherUsername}&title=${title}&tips=${tips}&startTime=${startTime}&endTime=${endTime}&examClass=${examClass}&course=${course}&duration=${duration}&totalScore=${totalScore}&questionCnt=${questionCnt}`
   return axios.post('/exam/api/edit' + param, modules);
 }
+

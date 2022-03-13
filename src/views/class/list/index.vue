@@ -87,9 +87,10 @@ export default {
 
         this.arr.push(pushList);
       }
+      this.listLoading = false;
     });
     this.queryParam.pageIndex = 1;
-    this.listLoading = false;
+    
   },
   computed: {
     classData() {

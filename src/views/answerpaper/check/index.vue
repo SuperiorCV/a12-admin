@@ -58,12 +58,27 @@ export default {
   },
   created() {
     var params = this.$route.params;
+    // console.log(params.exam);
     if (params != null) {
       this.edit = params.edit;
+      this.eid = params.exam.eid;
+      this.studentUsername = params.exam.username;
+      this.apis.answerpaper
+        .getAnswerPaper(this.studentUsername, this.eid)
+        .then((res) => {
+          console.log(res)
+          if (res.status === 200) {
+            var data = res.status.result;
+            this.exam.modules=data;
+          }
+        });
     }
+    
   },
   data() {
     return {
+      eid: "",
+      studentUsername: "",
       edit: true,
       exam: {
         currentScore: 80,
@@ -342,6 +357,7 @@ export default {
     },
   },
   methods: {
+    getSubmit() {},
     toList() {
       if (this.edit) {
         this.$router.push({ name: "examCorrect" });
