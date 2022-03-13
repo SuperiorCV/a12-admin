@@ -11,7 +11,7 @@
         <el-input v-model="queryParam.username" clearable></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm">查询</el-button>
+        <el-button type="primary">查询</el-button>
       </el-form-item>
     </el-form>
 

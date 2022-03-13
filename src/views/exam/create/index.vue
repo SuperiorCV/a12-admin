@@ -357,7 +357,7 @@ export default {
     initData() {
       // 获取考试信息
       this.apis.exam.getInfo(this.eid).then((res) => {
-        console.log(res);
+        // console.log(res);
         if (res.status === 200) {
           var data = res.data.result;
           this.exam.title = data.exam.title;

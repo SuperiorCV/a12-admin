@@ -136,13 +136,6 @@ export default {
 
       listLoading: false,
       arr: [],
-
-      questionShow: {
-        qType: 0,
-        dialog: false,
-        question: null,
-        loading: false,
-      },
     };
   },
   methods: {
