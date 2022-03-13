@@ -167,6 +167,7 @@ export default {
     draggable,
   },
   props: {
+    qid: String,
     question: Object,
     idx: Number,
     edit: Boolean,
@@ -174,10 +175,13 @@ export default {
   data() {
     return {
       radio: "",
+      chartData: {},
     };
   },
-  mounted() {
-    this.initChart();
+  created() {
+    this.apis.exam.getQuestionAnalyze(this.qid).then((res) => {
+      console.log(res);
+    });
   },
   methods: {
     initChart() {

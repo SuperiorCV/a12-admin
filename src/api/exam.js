@@ -35,10 +35,28 @@ export const editExam = (eid, teacherUsername, title, tips, startTime, endTime, 
   return axios.post('/exam/api/edit' + param, modules);
 }
 
-export const getExamAnalyze = (eid,teacherUsername) => {
+export const getExamAnalyze = (eid, teacherUsername) => {
   let fd = new FormData();
   fd.append("eid", eid);
-  fd.append("teacherUsername",teacherUsername);
+  fd.append("teacherUsername", teacherUsername);
   return axios.post("/exam/api/getExamAnalyze", fd);
 }
 
+export const getAnalyzeQuestions = (eid) => {
+  let fd = new FormData();
+  fd.append("eid", eid);
+  return axios.post("/exam/api/getAnalyzeQuestions", fd);
+}
+
+
+export const getModuleAnalyze = (mid) => {
+  let fd = new FormData();
+  fd.append("mid", mid);
+  return axios.post("/module/api/analyze", fd);
+}
+
+export const getQuestionAnalyze = (qid) => {
+  let fd = new FormData();
+  fd.append("qid", qid);
+  return axios.post("/question/api/analyze", fd);
+}

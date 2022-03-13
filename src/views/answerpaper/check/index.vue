@@ -73,7 +73,7 @@ export default {
       this.apis.answerpaper
         .getAnswerPaper(this.studentUsername, this.eid)
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           if (res.status === 200) {
             var data = res.data.result;
             var num = 0;

@@ -8,9 +8,29 @@
 <script>
 export default {
   name: "histogram",
-  mounted() {
-    this.initHistogram();
+  props: {
+    mid: String,
   },
+  created() {
+    this.apis.exam.getModuleAnalyze(this.mid).then((res) => {
+      // console.log(res);
+      if (res.status === 200) {
+        var data = res.data.result;
+        for (let key in data) {
+          this.category.push(key);
+          this.value.push(data[key]);
+        }
+        this.initHistogram();
+      }
+    });
+  },
+  data() {
+    return {
+      category: [],
+      value: [],
+    };
+  },
+
   methods: {
     initHistogram() {
       var echarts = require("echarts");
@@ -19,16 +39,14 @@ export default {
       option = {
         xAxis: {
           type: "category",
-          data: [65, 70, 75, 80, 85, 90, 95, 105, 115, 120, 130, 145, 155, 165],
+          data: this.category,
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            data: [
-              120, 200, 150, 80, 70, 110, 130, 120, 200, 150, 80, 70, 110, 130,
-            ],
+            data: this.value,
             type: "bar",
             itemStyle: {
               normal: {

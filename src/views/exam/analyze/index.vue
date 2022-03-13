@@ -2,6 +2,9 @@
   <div id="analyze">
     <div id="l-side">
       <h3>{{ exam.title }}</h3>
+      <div class="info">
+        <p>试卷总分：{{ exam.fullScore }}分</p>
+      </div>
       <div class="menu">
         <el-tag
           class="tag"
@@ -102,7 +105,7 @@
         <div class="header">
           <h3>模块{{ idx + 1 }}：{{ mod.title }}</h3>
         </div>
-        <histogram></histogram>
+        <histogram :mid="mod.mid"></histogram>
         <div
           :id="`question-${question.id}`"
           class="card"
@@ -112,6 +115,7 @@
           <AnalyzeShow
             :edit="edit"
             :idx="IndexCompute(idx, j)"
+            :qid="question.id"
             :question="question"
             @updateExam="updateExam"
           ></AnalyzeShow>
@@ -139,27 +143,41 @@ export default {
       this.edit = params.edit;
       this.eid = params.eid;
     }
-    this.apis.exam.getExamAnalyze(this.eid,sessionStorage.getItem("teacherUsername")).then((res) => {
-      if(res.data.status === 200){
-        console.log(res);
-        let data = res.data.result;
-        this.exam.firstPoint = data.firstPoint;
-        this.exam.lastPoint = data.lastPoint;
-        this.exam.averagePoint = data.averagePoint;
-        this.exam.centerPoint = data.centerPoint;
-        
-        for(var index in data.countMap){
-          this.histogramx.push(index);
-          this.histogramy.push(data.countMap[index]);
-        }
-        // console.log(this.histogramy);
-        this.initHistogram();
-      }
-    })
-  },
+    this.apis.exam
+      .getExamAnalyze(this.eid, sessionStorage.getItem("teacherUsername"))
+      .then((res) => {
+        if (res.data.status === 200) {
+          // console.log(res);
+          let data = res.data.result;
+          this.exam.firstPoint = data.firstPoint;
+          this.exam.lastPoint = data.lastPoint;
+          this.exam.averagePoint = data.averagePoint;
+          this.exam.centerPoint = data.centerPoint;
 
-  mounted() {
-    
+          for (var index in data.countMap) {
+            this.histogramx.push(index);
+            this.histogramy.push(data.countMap[index]);
+          }
+          // console.log(this.histogramy);
+          this.initHistogram();
+        }
+      });
+    this.apis.exam.getAnalyzeQuestions(this.eid).then((res) => {
+      // console.log(res);
+      if (res.status === 200) {
+        var result = res.data.result;
+        var sum = 0;
+        this.exam.modules = result;
+        for (let i = 0; i < result.length; i++) {
+          var questionList = this.exam.modules[i].questionList;
+          for (let j = 0; j < questionList.length; j++) {
+            var question = questionList[j];
+            sum += question.score;
+          }
+        }
+        this.exam.fullScore = sum;
+      }
+    });
   },
   data() {
     return {
@@ -173,16 +191,8 @@ export default {
         lastPoint: 0,
         averagePoint: 0,
         centerPoint: 0,
-        currentScore: 80,
-        fullScore: 150,
-        total: 30,
-        submitTime: "2022-02-09 22:40",
-        student: "langwenchong",
-        title: "第一次试验检测",
-        tip: "",
-        
-        duration: 1,
         modules: [],
+        fullScore: 0,
       },
     };
   },
