@@ -22,7 +22,7 @@
       <div class="wrapper">
         <div class="card" v-for="sc in screenShots" :key="sc.id">
           <div class="headimg">
-            <img src="http://172.28.45.56/static/images/defaultError.png" />
+            <img :src="sc.imagePath" />
           </div>
           <div class="content">
             <div class="top-c">
@@ -30,7 +30,7 @@
               <p class="teacher">{{ sc.name }}</p>
             </div>
             <div class="bottom-c">
-              <p class="snum">抓拍时间：{{ sc.shotTime }}</p>
+              <p class="snum">第{{ sc.id }}次抓拍截图</p>
             </div>
           </div>
         </div>
@@ -71,6 +71,16 @@ export default {
       .then((res) => {
         if (res.data.status === 200) {
           console.log(res);
+          var result = res.data.result;
+          for (let i = 0; i < result.length; i++) {
+            var obj = {};
+            obj.id = i+1;
+            obj.username = result[i].studentUsername;
+            obj.name = result[i].studentUsername;
+            obj.imagePath =
+              "https://sexam.static.cheeseburgerim.space" + result[i].imagePath;
+            this.screenShots.push(obj);
+          }
         }
       });
   },
@@ -79,32 +89,7 @@ export default {
       exam: {},
       centerDialogVisible: false,
       dialogMessage: `被判定为作弊的试卷将会记为0分，您确定要将此试卷判定为作弊吗❓`,
-      screenShots: [
-        {
-          id: 1,
-          username: "langwenchong",
-          name: "langwenchong",
-          shotTime: "2021-02-02",
-        },
-        {
-          id: 2,
-          username: "langwenchong",
-          name: "langwenchong",
-          shotTime: "2021-02-02",
-        },
-        {
-          id: 3,
-          username: "langwenchong",
-          name: "langwenchong",
-          shotTime: "2021-02-02",
-        },
-        {
-          id: 4,
-          username: "langwenchong",
-          name: "langwenchong",
-          shotTime: "2021-02-02",
-        },
-      ],
+      screenShots: [],
     };
   },
 };

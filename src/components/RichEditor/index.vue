@@ -127,7 +127,7 @@ export default {
             quill.insertEmbed(
               length,
               "image",
-              "https://sexam.static.cheeseburgerim.space" + data
+              "https://sexam.static.cheeseburgerim.space" + res.data.result
             );
             //移动光标到图片后
             quill.setSelection(length + 1);

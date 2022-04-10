@@ -180,7 +180,10 @@ export default {
   },
   created() {
     this.apis.exam.getQuestionAnalyze(this.qid).then((res) => {
-      console.log(res);
+      if (res.status === 200) {
+        this.chartData = res.data.result;
+        this.initChart();
+      }
     });
   },
   methods: {
@@ -344,52 +347,41 @@ export default {
           ],
         };
       } else {
+        var dimensions = ["rank"];
+        for (let key in this.chartData) {
+          if (dimensions.indexOf(key[key.length - 1]) === -1) {
+            dimensions.push(key[key.length - 1]);
+          }
+        }
+        var series = [];
+        for (let i = 0; i < dimensions.length - 1; i++) {
+          series.push({ type: "bar" });
+        }
+        var source = [];
+        for (let i = 0; i < dimensions.length - 1; i++) {
+          var obj = {};
+          obj.rank = `第${i + 1}位`;
+          for (let key in this.chartData) {
+            var num = key.substring(0, key.length - 1);
+            if (num == i + 1) {
+              obj[key[key.length - 1]] = this.chartData[key];
+            }
+          }
+          source.push(obj);
+        }
+        // console.log(source);
         option = {
           legend: {},
           tooltip: {},
           dataset: {
-            dimensions: ["product", "A", "B", "C", "D"],
-            source: [
-              {
-                product: "第一位",
-                A: 43.3,
-                B: 85.8,
-                C: 93.7,
-                D: 90.5,
-              },
-              {
-                product: "第二位",
-                A: 83.1,
-                B: 73.4,
-                C: 55.1,
-                D: 90.5,
-              },
-              {
-                product: "第三位",
-                A: 86.4,
-                B: 65.2,
-                C: 82.5,
-                D: 90.5,
-              },
-              {
-                product: "第四位",
-                A: 72.4,
-                B: 53.9,
-                C: 39.1,
-                D: 90.5,
-              },
-            ],
+            dimensions: dimensions,
+            source: source,
           },
           xAxis: { type: "category" },
           yAxis: {},
           // Declare several bar series, each will be mapped
           // to a column of dataset.source by default.
-          series: [
-            { type: "bar" },
-            { type: "bar" },
-            { type: "bar" },
-            { type: "bar" },
-          ],
+          series: series,
         };
       }
       option && myChart.setOption(option);

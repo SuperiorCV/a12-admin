@@ -444,6 +444,8 @@ export default {
               title: "错误",
               message: "试卷至少需要由一个模块组成！",
             });
+            v=false;
+            return;
           }
           var v = this.checkModules();
           if (!v) {
